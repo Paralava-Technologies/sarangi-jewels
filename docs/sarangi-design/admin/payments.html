@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments &amp; Deposits — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="payments"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Payments &amp; Deposits" subtitle="Deposits are tracked separately from revenue">
+      <button class="btn btn-outline btn-sm">Export Statement</button>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="stat-grid">
+        <sj-stat-card icon="&#128176;" label="Revenue (MTD)" value="₹4.2L" trend="+18% vs last month" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#128179;" label="Deposits Currently Held" value="₹1,84,500"></sj-stat-card>
+        <sj-stat-card icon="&#8617;" label="Refunds Pending" value="₹11,000" trend="1 overdue" trend-dir="down"></sj-stat-card>
+        <sj-stat-card icon="&#9888;" label="Failed Transactions" value="1" trend="Needs review" trend-dir="down"></sj-stat-card>
+      </div>
+
+      <sj-panel flush>
+        <div class="table-toolbar">
+          <div class="search-box">&#128269;<input type="text" placeholder="Search by order ID or customer..."></div>
+          <div class="chip-row">
+            <span class="chip active">All</span>
+            <span class="chip">Deposits Held</span>
+            <span class="chip">Refunds Due</span>
+            <span class="chip">Failed</span>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead><tr><th>Transaction</th><th>Customer</th><th>Type</th><th>Amount</th><th>Date</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>#SJ-10482</h5><div class="sub">Payment</div></div></div></td>
+              <td>Divya Krishnan</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹6,499</td>
+              <td>12 Aug 2026</td>
+              <td><sj-badge status="closed">Paid</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>#SJ-R-2291</h5><div class="sub">Rental fee + deposit</div></div></div></td>
+              <td>Divya Krishnan</td>
+              <td><span class="badge badge-neutral">Rental</span></td>
+              <td>₹5,397 + ₹6,000</td>
+              <td>18 Aug 2026</td>
+              <td><sj-badge status="active">Deposit Held</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>#SJ-R-2140</h5><div class="sub">Deposit refund</div></div></div></td>
+              <td>Meera Suresh</td>
+              <td><span class="badge badge-neutral">Refund</span></td>
+              <td>₹5,000</td>
+              <td>Due since 15 Aug</td>
+              <td><sj-badge status="pending">Overdue</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-primary">Refund Now</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#9833;</div><div><h5>#SJ-09980</h5><div class="sub">Payment</div></div></div></td>
+              <td>Pooja Varma</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹999</td>
+              <td>18 Jun 2026</td>
+              <td><span class="badge badge-cancelled">Failed</span></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Retry</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128081;</div><div><h5>#SJ-10310</h5><div class="sub">Payment</div></div></div></td>
+              <td>Anjali R.</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹4,199</td>
+              <td>30 Jul 2026</td>
+              <td><sj-badge status="closed">Paid</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <span>Showing 1–5 of 486 transactions</span>
+          <div class="pages"><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">70</a></div>
+        </div>
+      </sj-panel>
+
+      <sj-panel heading="Damage Fee Tiers" subtext="Reference schedule shown to customers at booking — keeps deductions consistent">
+        <table class="data-table" style="font-size:.85rem;">
+          <thead><tr><th>Condition</th><th>Fee</th></tr></thead>
+          <tbody>
+            <tr><td>Normal wear (expected)</td><td>No charge</td></tr>
+            <tr><td>Minor tarnish / light staining</td><td>10% of item value</td></tr>
+            <tr><td>Stone loss / broken clasp</td><td>25–40% of item value</td></tr>
+            <tr><td>Item lost or unreturned</td><td>Full item value, deposit forfeited</td></tr>
+          </tbody>
+        </table>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

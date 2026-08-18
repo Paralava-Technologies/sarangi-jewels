@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makeup & Staff — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="staff"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Makeup &amp; Staff Scheduling" subtitle="Artist calendars and session bookings">
+      <a href="#" class="btn btn-gold btn-sm">+ New Session</a>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="stat-grid">
+        <sj-stat-card icon="&#128132;" label="Sessions This Week" value="11"></sj-stat-card>
+        <sj-stat-card icon="&#127968;" label="Home Visits" value="4"></sj-stat-card>
+        <sj-stat-card icon="&#128100;" label="Active Artists" value="3"></sj-stat-card>
+        <sj-stat-card icon="&#9203;" label="Unassigned Requests" value="2" trend="Needs attention" trend-dir="down"></sj-stat-card>
+      </div>
+
+      <div class="form-grid" style="grid-template-columns:260px 1fr;">
+        <div>
+          <sj-panel heading="Artists" flush>
+            <table class="data-table" style="font-size:.85rem;">
+              <tbody>
+                <tr><td><div class="cell-main"><div class="avatar">RS</div><div><h5 style="font-size:.9rem;">Ritu Shenoy</h5><div class="sub">4 sessions this week</div></div></div></td></tr>
+                <tr><td><div class="cell-main"><div class="avatar">NJ</div><div><h5 style="font-size:.9rem;">Nisha Jacob</h5><div class="sub">5 sessions this week</div></div></div></td></tr>
+                <tr><td><div class="cell-main"><div class="avatar">SP</div><div><h5 style="font-size:.9rem;">Sneha Pillai</h5><div class="sub">2 sessions this week</div></div></div></td></tr>
+              </tbody>
+            </table>
+          </sj-panel>
+          <sj-panel heading="Add Artist">
+            <div class="field"><label>Name</label><input type="text" placeholder="Artist name"></div>
+            <div class="field"><label>Specialty</label><select><option>Bridal Makeup</option><option>Party Glam</option><option>Stage / Dance Makeup</option></select></div>
+            <button class="btn btn-primary btn-sm btn-block">Add Artist</button>
+          </sj-panel>
+        </div>
+
+        <div>
+          <sj-panel heading="This Week's Sessions" flush>
+            <table class="data-table">
+              <thead><tr><th>Customer</th><th>Service</th><th>Artist</th><th>Date &amp; Time</th><th>Location</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main"><div class="avatar">KN</div><div><h5>Kavya Nair</h5></div></div></td>
+                  <td>Bridal Makeup + Kit</td>
+                  <td>Ritu Shenoy</td>
+                  <td>19 Aug, 8:00 AM</td>
+                  <td>Home Visit</td>
+                  <td><sj-badge status="confirmed">Confirmed</sj-badge></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="avatar">DK</div><div><h5>Divya Krishnan</h5></div></div></td>
+                  <td>Dance Stage Makeup</td>
+                  <td>Nisha Jacob</td>
+                  <td>24 Aug, 9:30 AM</td>
+                  <td>In-Store</td>
+                  <td><sj-badge status="confirmed">Confirmed</sj-badge></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="avatar">?</div><div><h5>New Request</h5></div></div></td>
+                  <td>Party Glam Session</td>
+                  <td><span class="badge badge-low">Unassigned</span></td>
+                  <td>26 Aug, 6:00 PM</td>
+                  <td>Home Visit</td>
+                  <td><sj-badge status="pending">Pending</sj-badge></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="avatar">MS</div><div><h5>Meera Suresh</h5></div></div></td>
+                  <td>Hairstyling + Draping</td>
+                  <td>Sneha Pillai</td>
+                  <td>21 Aug, 7:00 AM</td>
+                  <td>In-Store</td>
+                  <td><sj-badge status="closed">Completed</sj-badge></td>
+                </tr>
+              </tbody>
+            </table>
+          </sj-panel>
+        </div>
+      </div>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

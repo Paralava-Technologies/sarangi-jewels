@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customers — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="customers"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Customers" subtitle="2,940 registered customers">
+      <button class="btn btn-outline btn-sm">Export CSV</button>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="stat-grid">
+        <sj-stat-card icon="&#128101;" label="Total Customers" value="2,940" trend="+64 this month" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#128257;" label="Repeat Customers" value="38%" trend="+3% vs last quarter" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#128179;" label="ID Verified (Rentals)" value="612"></sj-stat-card>
+        <sj-stat-card icon="&#11088;" label="Avg. Loyalty Points" value="840"></sj-stat-card>
+      </div>
+
+      <sj-panel flush>
+        <div class="table-toolbar">
+          <div class="search-box">&#128269;<input type="text" placeholder="Search by name, phone or email..."></div>
+          <div class="chip-row">
+            <span class="chip active">All</span>
+            <span class="chip">Has Active Rental</span>
+            <span class="chip">ID Verified</span>
+            <span class="chip">VIP</span>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>Customer</th><th>Orders</th><th>Rentals</th><th>Loyalty Pts</th><th>ID Verified</th><th>Joined</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">DK</div><div><h5>Divya Krishnan</h5><div class="sub">divya.k@example.com</div></div></div></td>
+              <td>7</td>
+              <td>3</td>
+              <td>1,240</td>
+              <td><span class="badge badge-active">Verified</span></td>
+              <td>Mar 2024</td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">MS</div><div><h5>Meera Suresh</h5><div class="sub">meera.s@example.com</div></div></div></td>
+              <td>4</td>
+              <td>2</td>
+              <td>860</td>
+              <td><span class="badge badge-active">Verified</span></td>
+              <td>Jan 2025</td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">KN</div><div><h5>Kavya Nair</h5><div class="sub">kavya.n@example.com</div></div></div></td>
+              <td>2</td>
+              <td>1</td>
+              <td>310</td>
+              <td><span class="badge badge-neutral">Pending</span></td>
+              <td>Jul 2026</td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">AR</div><div><h5>Anjali R.</h5><div class="sub">anjali.r@example.com</div></div></div></td>
+              <td>5</td>
+              <td>0</td>
+              <td>720</td>
+              <td><span class="badge badge-neutral">—</span></td>
+              <td>Oct 2023</td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">PV</div><div><h5>Pooja Varma</h5><div class="sub">pooja.v@example.com</div></div></div></td>
+              <td>1</td>
+              <td>0</td>
+              <td>40</td>
+              <td><span class="badge badge-neutral">—</span></td>
+              <td>Jun 2026</td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <span>Showing 1–5 of 2,940 customers</span>
+          <div class="pages"><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">588</a></div>
+        </div>
+      </sj-panel>
+
+      <sj-panel heading="Customer Detail — Divya Krishnan" subtext="Quick view · full profile opens on 'View'">
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+          <div>
+            <div class="field-hint" style="margin-bottom:10px;">CONTACT</div>
+            <p style="font-size:.85rem; line-height:1.9; margin:0 0 18px;">
+              divya.k@example.com<br>+91 98XXX XXXXX<br>
+              4th Floor, Lotus Residency, Kadavanthra, Kochi 682020
+            </p>
+            <div class="field-hint" style="margin-bottom:10px;">ID PROOF ON FILE</div>
+            <p style="font-size:.85rem;">Aadhaar — verified 12 Jun 2026 · <a href="#" style="color:var(--wine);">View document</a></p>
+          </div>
+          <div>
+            <div class="field-hint" style="margin-bottom:10px;">RECENT ACTIVITY</div>
+            <table class="data-table" style="font-size:.82rem;">
+              <tbody>
+                <tr><td style="padding:8px 0; border:none;">#SJ-10482 · Lotus Kemp Choker Set</td><td style="padding:8px 0; border:none; text-align:right;"><sj-badge status="out"></sj-badge></td></tr>
+                <tr><td style="padding:8px 0; border:none;">#SJ-R-2291 · Arangetram Set</td><td style="padding:8px 0; border:none; text-align:right;"><sj-badge status="confirmed"></sj-badge></td></tr>
+                <tr><td style="padding:8px 0; border:none;">#SJ-10310 · Nakshi Long Haaram</td><td style="padding:8px 0; border:none; text-align:right;"><sj-badge status="closed"></sj-badge></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog Manager — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="catalog"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Catalog Manager" subtitle="124 products across 6 categories">
+      <a href="product-edit.html" class="btn btn-gold btn-sm">+ New Product</a>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <sj-panel flush>
+        <div class="table-toolbar">
+          <div class="search-box">&#128269;<input type="text" placeholder="Search products by name or SKU..."></div>
+          <div class="chip-row">
+            <span class="chip active">All (124)</span>
+            <span class="chip">For Sale (88)</span>
+            <span class="chip">For Rent (52)</span>
+            <span class="chip">Both (16)</span>
+            <span class="chip">Low Stock (6)</span>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="row-check"></th>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>Lotus Kemp Choker Set</h5><div class="sub">SKU: SJ-BN-0142</div></div></div></td>
+              <td>Bridal Necklace</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹6,499</td>
+              <td>12</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#128081;</div><div><h5>Kanjivaram Bridal Jewellery Set</h5><div class="sub">SKU: SJ-BN-0198</div></div></div></td>
+              <td>Bridal Necklace</td>
+              <td><span class="badge badge-neutral">Both</span></td>
+              <td>₹8,900 / ₹1,899/day</td>
+              <td>4</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#9833;</div><div><h5>Ruby Kemp Jhumka</h5><div class="sub">SKU: SJ-ER-0071</div></div></div></td>
+              <td>Jhumka</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹999</td>
+              <td><span class="badge badge-low">2 left</span></td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>Bharatanatyam Arangetram Set</h5><div class="sub">SKU: SJ-DC-0033</div></div></div></td>
+              <td>Dance Costume</td>
+              <td><span class="badge badge-neutral">Rent</span></td>
+              <td>₹1,799/day</td>
+              <td>3</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#128132;</div><div><h5>Bridal Makeup Artist + Kit</h5><div class="sub">SKU: SJ-MK-0004</div></div></div></td>
+              <td>Makeup Service</td>
+              <td><span class="badge badge-neutral">Rent</span></td>
+              <td>₹3,500/session</td>
+              <td>—</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#128081;</div><div><h5>Sun Motif Maang Tikka</h5><div class="sub">SKU: SJ-MT-0019</div></div></div></td>
+              <td>Maang Tikka</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹899</td>
+              <td><span class="badge badge-low">1 left</span></td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="row-check"></td>
+              <td><div class="cell-main"><div class="thumb">&#128141;</div><div><h5>Antique Gold Kada Set</h5><div class="sub">SKU: SJ-BG-0056</div></div></div></td>
+              <td>Bangles</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹2,750</td>
+              <td>18</td>
+              <td><span class="badge badge-neutral">Draft</span></td>
+              <td class="cell-actions">
+                <a href="product-edit.html" class="btn btn-sm btn-outline">Edit</a>
+                <button class="btn btn-sm btn-icon" title="More">&#8942;</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <span>Showing 1–7 of 124 products</span>
+          <div class="pages">
+            <a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">18</a>
+          </div>
+        </div>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

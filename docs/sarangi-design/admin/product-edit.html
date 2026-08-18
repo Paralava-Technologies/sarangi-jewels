@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Product — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="catalog"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Lotus Kemp Choker Set" subtitle="Catalog Manager / Edit Product">
+      <a href="products.html" class="btn btn-outline btn-sm">Cancel</a>
+      <a href="products.html" class="btn btn-primary btn-sm">Save Product</a>
+    </sj-topbar>
+
+    <div class="admin-content">
+      <form onsubmit="return false;">
+        <div class="form-grid">
+
+          <div>
+            <sj-panel heading="Product Details">
+              <div class="field"><label>Product Name</label><input type="text" value="Lotus Kemp Choker Set"></div>
+              <div class="field-row">
+                <div class="field"><label>Category</label>
+                  <select><option>Bridal Necklace</option><option>Jhumka</option><option>Bangles</option><option>Temple Jewellery</option><option>Dance Costume</option><option>Makeup Service</option></select>
+                </div>
+                <div class="field"><label>SKU</label><input type="text" value="SJ-BN-0142"></div>
+              </div>
+              <div class="field"><label>Description</label>
+                <textarea rows="4">A lotus-motif kemp choker inspired by temple carvings, finished in antique gold-tone with hand-set stones. Comes with matching jhumkas and a maang tikka. Nickel-free, skin-safe base.</textarea>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Material / Finish</label><input type="text" value="Antique gold-tone, kemp stones"></div>
+                <div class="field"><label>Weight</label><input type="text" value="86g"></div>
+              </div>
+            </sj-panel>
+
+            <sj-panel heading="Pricing &amp; Availability" subtext="Choose whether this item is for sale, rent, or both">
+              <div class="field-row" style="margin-bottom:18px;">
+                <label style="display:flex; align-items:center; gap:10px; font-size:.85rem;"><span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span> Available for Sale</label>
+                <label style="display:flex; align-items:center; gap:10px; font-size:.85rem;"><span class="toggle-switch"><input type="checkbox"><span class="track"></span></span> Available for Rent</label>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Sale Price (₹)</label><input type="number" value="6499"></div>
+                <div class="field"><label>MRP / Compare-At (₹)</label><input type="number" value="8900"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Rental Price / Day (₹)</label><input type="number" placeholder="e.g. 1899" disabled></div>
+                <div class="field"><label>Refundable Deposit (₹)</label><input type="number" placeholder="e.g. 5000" disabled></div>
+              </div>
+              <div class="field"><label>Minimum Rental Days</label><input type="number" placeholder="e.g. 2" disabled style="max-width:160px;"></div>
+            </sj-panel>
+
+            <sj-panel heading="Images">
+              <div class="image-upload">Drag &amp; drop images here, or <a href="#" style="color:var(--wine); text-decoration:underline;">browse files</a><br><span class="field-hint">Recommended: square, min 1200×1200px</span></div>
+              <div class="image-upload-grid">
+                <div style="display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:rgba(74,14,30,.3);">&#128142;</div>
+                <div style="display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:rgba(74,14,30,.3);">&#128142;</div>
+                <div style="display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:rgba(74,14,30,.3);">&#128142;</div>
+                <div></div>
+              </div>
+            </sj-panel>
+
+            <sj-panel heading="Care &amp; Rental Notes">
+              <div class="field"><label>Care Instructions</label><textarea rows="2">Store in a dry pouch, avoid perfume contact.</textarea></div>
+              <div class="field"><label>Size &amp; Fit Notes</label><textarea rows="2">Adjustable thread closure, fits neck sizes 12"–16".</textarea></div>
+            </sj-panel>
+          </div>
+
+          <div>
+            <sj-panel heading="Status">
+              <div class="field"><label>Visibility</label>
+                <select><option>Active — visible on storefront</option><option>Draft — hidden</option><option>Archived</option></select>
+              </div>
+              <label style="display:flex; align-items:center; gap:10px; font-size:.85rem; margin-bottom:6px;"><span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span> Featured on homepage</label>
+              <label style="display:flex; align-items:center; gap:10px; font-size:.85rem;"><span class="toggle-switch"><input type="checkbox"><span class="track"></span></span> Mark as New Arrival</label>
+            </sj-panel>
+
+            <sj-panel heading="Inventory">
+              <div class="field"><label>Stock Quantity (Sale)</label><input type="number" value="12"></div>
+              <div class="field"><label>Low Stock Alert Threshold</label><input type="number" value="3"></div>
+              <div class="field-hint">Rental items use the Rental Calendar instead of a stock count — <a href="rental-calendar.html" style="color:var(--wine);">manage there</a>.</div>
+            </sj-panel>
+
+            <sj-panel heading="Organize">
+              <div class="field"><label>Tags</label><input type="text" value="bridal, kemp, temple, bestseller"></div>
+              <div class="field"><label>Collections</label>
+                <select><option>New This Season</option><option>Bridal Edit</option><option>Festive Collection</option></select>
+              </div>
+            </sj-panel>
+
+            <sj-panel heading="Danger Zone">
+              <p style="font-size:.8rem; color:var(--mute); margin-bottom:14px;">Archiving removes this product from the storefront but keeps its order history.</p>
+              <button class="btn btn-danger btn-block btn-sm">Archive Product</button>
+            </sj-panel>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Fine Jewellery — Sarangi Jewels</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="utility-bar">FREE STYLING CONSULTATION ON ORDERS ABOVE ₹15,000 &nbsp;•&nbsp; RENT A BRIDAL SET FROM ₹1,499/DAY &nbsp;•&nbsp; KOCHI STORE OPEN 10AM–8PM</div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><img src="assets/sarangi-logo-mark.png" alt="Sarangi Jewels"><span class="wordmark">Sarangi<small>Jewels For Sale &amp; Rent</small></span></a>
+    <ul class="nav-links">
+      <li><a href="shop.html" class="active">Shop</a></li>
+      <li><a href="bridal-jewellery.html">Bridal Jewellery</a></li>
+      <li><a href="rentals.html">Rentals</a></li>
+      <li><a href="dance-costumes.html">Dance Costumes</a></li>
+      <li><a href="makeup.html">Makeup</a></li>
+      <li><a href="about.html">Our Story</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button title="Search">&#128269;</button>
+      <a href="my-account.html" title="Account"><button>&#128100;</button></a>
+      <a href="#" title="Wishlist"><button>&#9825;</button></a>
+      <a href="cart.html" title="Bag"><button>&#128092;<span class="pill">2</span></button></a>
+      <button class="nav-burger" title="Menu" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <ul class="nav-links">
+      <li><a href="shop.html" class="active">Shop</a></li>
+      <li><a href="bridal-jewellery.html">Bridal Jewellery</a></li>
+      <li><a href="rentals.html">Rentals</a></li>
+      <li><a href="dance-costumes.html">Dance Costumes</a></li>
+      <li><a href="makeup.html">Makeup</a></li>
+      <li><a href="about.html">Our Story</a></li>
+    </ul>
+    <div class="mobile-nav-actions">
+      <a href="my-account.html">&#128100; My Account</a>
+      <a href="cart.html">&#128092; My Bag</a>
+      <a href="track-order.html">&#128269; Track Order</a>
+      <a href="support.html">&#128172; Support</a>
+    </div>
+  </div>
+</nav>
+<script>
+function toggleMobileNav(){
+  var m = document.getElementById('mobileNav');
+  var b = document.querySelector('.nav-burger');
+  var isOpen = m.classList.toggle('is-open');
+  b.classList.toggle('is-open', isOpen);
+  b.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+</script>
+<script>
+function toggleMobileNav(){
+  var m = document.getElementById('mobileNav');
+  var b = document.querySelector('.nav-burger');
+  var isOpen = m.classList.toggle('is-open');
+  b.classList.toggle('is-open', isOpen);
+  b.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+</script>
+
+<div class="page-banner">
+  <div class="crumbs">Home / Shop</div>
+  <h1>Fine &amp; Imitation Jewellery</h1>
+  <p style="color:var(--ivory-deep); font-size:.9rem;">124 pieces, curated by our Kochi jewellers</p>
+</div>
+
+<section class="section">
+  <div class="container shop-layout">
+    <aside>
+      <div class="filter-box">
+        <h5>Category</h5>
+        <div class="filter-opt"><input type="checkbox" checked> Bridal Necklaces</div>
+        <div class="filter-opt"><input type="checkbox"> Earrings &amp; Jhumkas</div>
+        <div class="filter-opt"><input type="checkbox"> Bangles &amp; Kadas</div>
+        <div class="filter-opt"><input type="checkbox"> Temple Jewellery</div>
+        <div class="filter-opt"><input type="checkbox"> Maang Tikka &amp; Hair</div>
+        <div class="filter-opt"><input type="checkbox"> Anklets</div>
+      </div>
+      <div class="filter-box">
+        <h5>Price</h5>
+        <div class="filter-opt"><input type="checkbox"> Under ₹1,500</div>
+        <div class="filter-opt"><input type="checkbox"> ₹1,500 – ₹4,000</div>
+        <div class="filter-opt"><input type="checkbox"> ₹4,000 – ₹8,000</div>
+        <div class="filter-opt"><input type="checkbox"> Above ₹8,000</div>
+      </div>
+      <div class="filter-box">
+        <h5>Finish</h5>
+        <div class="filter-opt"><input type="checkbox"> Antique Gold</div>
+        <div class="filter-opt"><input type="checkbox"> Kemp &amp; Temple</div>
+        <div class="filter-opt"><input type="checkbox"> Kundan &amp; Pearl</div>
+        <div class="filter-opt"><input type="checkbox"> Diamond-Finish</div>
+      </div>
+    </aside>
+    <div>
+      <div class="shop-toolbar">
+        <span>Showing 1–12 of 124 results</span>
+        <div class="toggle-group"><span class="active">Popular</span><span>Newest</span><span>Price ↑</span><span>Price ↓</span></div>
+      </div>
+      <div class="product-grid">
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">Bestseller</span><span class="wish">&#9825;</span><span class="glyph">&#128142;</span></div><div class="product-info"><div class="cat">Bridal Necklace</div><h4>Lotus Kemp Choker Set</h4><div class="price-row"><span class="price">₹6,499</span><span class="price strike">₹8,900</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#9833;</span></div><div class="product-info"><div class="cat">Jhumka</div><h4>Peacock Pearl Drop Earrings</h4><div class="price-row"><span class="price">₹1,299</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">Trending</span><span class="wish">&#9825;</span><span class="glyph">&#128081;</span></div><div class="product-info"><div class="cat">Temple Jewellery</div><h4>Nakshi Long Haaram</h4><div class="price-row"><span class="price">₹4,199</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Bangles</div><h4>Antique Gold Kada Set</h4><div class="price-row"><span class="price">₹2,750</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128142;</span></div><div class="product-info"><div class="cat">Bridal Necklace</div><h4>Kasu Mala Layered Set</h4><div class="price-row"><span class="price">₹5,999</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#9833;</span></div><div class="product-info"><div class="cat">Jhumka</div><h4>Ruby Kemp Jhumka</h4><div class="price-row"><span class="price">₹999</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">New</span><span class="wish">&#9825;</span><span class="glyph">&#128081;</span></div><div class="product-info"><div class="cat">Maang Tikka</div><h4>Sun Motif Maang Tikka</h4><div class="price-row"><span class="price">₹899</span></div></a></div></div>
+        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Anklet</div><h4>Temple Bell Payal Pair</h4><div class="price-row"><span class="price">₹1,450</span></div></a></div></div>
+      </div>
+      <div style="text-align:center; margin-top:50px;"><a href="#" class="btn btn-gold">Load More Pieces</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/sarangi-logo-mark.png" alt="Sarangi Jewels">
+        <p>Fine and imitation jewellery for sale, plus rentals of bridal sets, dance costumes and makeup — from our Kochi store to your doorstep.</p>
+        <div class="social-row"><a href="#">ig</a><a href="#">fb</a><a href="#">wa</a></div>
+      </div>
+      <div><h5>Shop</h5><ul>
+        <li><a href="bridal-jewellery.html">Bridal Sets</a></li>
+        <li><a href="shop.html">Earrings</a></li>
+        <li><a href="shop.html">Bangles</a></li>
+        <li><a href="shop.html">New Arrivals</a></li>
+      </ul></div>
+      <div><h5>Rentals</h5><ul>
+        <li><a href="rentals.html#bridal">Bridal Jewellery</a></li>
+        <li><a href="dance-costumes.html">Dance Costumes</a></li>
+        <li><a href="makeup.html">Makeup &amp; Artists</a></li>
+        <li><a href="rentals.html#howitworks">How It Works</a></li>
+      </ul></div>
+      <div><h5>Help</h5><ul>
+        <li><a href="my-account.html">My Account</a></li>
+        <li><a href="track-order.html">Track Order</a></li>
+        <li><a href="support.html">Support Tickets</a></li>
+        <li><a href="contact.html">Visit The Store</a></li>
+      </ul></div>
+      <div><h5>Visit Us</h5><ul>
+        <li>Sarangi Jewels, MG Road</li>
+        <li>Kochi, Kerala 682035</li>
+        <li>+91 98XXX XXXXX</li>
+        <li>hello@sarangijewels.com</li>
+      </ul></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Sarangi Jewels. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a> · <a href="my-account.html">My Account</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

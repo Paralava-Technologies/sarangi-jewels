@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coupons &amp; Campaigns — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="coupons"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Coupons &amp; Campaigns" subtitle="Discount codes and seasonal offers">
+      <a href="#" class="btn btn-gold btn-sm">+ New Coupon</a>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+      <div class="form-grid">
+        <div>
+          <sj-panel flush heading="Active Coupons">
+            <table class="data-table">
+              <thead><tr><th>Code</th><th>Discount</th><th>Applies To</th><th>Used</th><th>Expires</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong style="font-family:'Marcellus'; letter-spacing:.05em;">WELCOME10</strong></td>
+                  <td>10% off</td>
+                  <td>First order</td>
+                  <td>412 / —</td>
+                  <td>No expiry</td>
+                  <td><sj-badge status="active">Active</sj-badge></td>
+                  <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="font-family:'Marcellus'; letter-spacing:.05em;">ONAM2026</strong></td>
+                  <td>15% off</td>
+                  <td>Bridal category</td>
+                  <td>88 / 500</td>
+                  <td>05 Sep 2026</td>
+                  <td><sj-badge status="active">Active</sj-badge></td>
+                  <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="font-family:'Marcellus'; letter-spacing:.05em;">RENT500</strong></td>
+                  <td>₹500 off</td>
+                  <td>Rentals above ₹2,000</td>
+                  <td>63 / 200</td>
+                  <td>30 Sep 2026</td>
+                  <td><sj-badge status="active">Active</sj-badge></td>
+                  <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+                </tr>
+                <tr>
+                  <td><strong style="font-family:'Marcellus'; letter-spacing:.05em;">SUMMER25</strong></td>
+                  <td>25% off</td>
+                  <td>Sitewide</td>
+                  <td>980 / 1000</td>
+                  <td>31 Jul 2026</td>
+                  <td><span class="badge badge-neutral">Expired</span></td>
+                  <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </sj-panel>
+
+          <sj-panel heading="Campaign Performance" subtext="Last 30 days">
+            <table class="data-table" style="font-size:.85rem;">
+              <thead><tr><th>Campaign</th><th>Redemptions</th><th>Revenue Attributed</th></tr></thead>
+              <tbody>
+                <tr><td>ONAM2026</td><td>88</td><td>₹1,42,000</td></tr>
+                <tr><td>RENT500</td><td>63</td><td>₹94,500</td></tr>
+                <tr><td>WELCOME10</td><td>34</td><td>₹58,200</td></tr>
+              </tbody>
+            </table>
+          </sj-panel>
+        </div>
+
+        <div>
+          <sj-panel heading="Create Coupon">
+            <div class="field"><label>Code</label><input type="text" placeholder="e.g. FESTIVE20"></div>
+            <div class="field"><label>Discount Type</label><select><option>Percentage off</option><option>Flat amount off</option></select></div>
+            <div class="field"><label>Value</label><input type="number" placeholder="e.g. 15"></div>
+            <div class="field"><label>Applies To</label><select><option>Sitewide</option><option>Sale items only</option><option>Rental items only</option><option>Specific category</option></select></div>
+            <div class="field-row">
+              <div class="field"><label>Starts</label><input type="date"></div>
+              <div class="field"><label>Expires</label><input type="date"></div>
+            </div>
+            <div class="field"><label>Usage Limit</label><input type="number" placeholder="e.g. 500 (blank = unlimited)"></div>
+            <button class="btn btn-primary btn-block">Create Coupon</button>
+          </sj-panel>
+        </div>
+      </div>
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>
