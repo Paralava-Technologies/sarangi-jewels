@@ -1,6 +1,6 @@
-# Noeve Store - Comprehensive User Manual
+# Sarangi Jewels Store - Comprehensive User Manual
 
-Welcome to the Noeve Store! This manual provides comprehensive instructions on how to use the various platforms within the Noeve ecosystem, tailored for both Customers and Administrators.
+Welcome to the Sarangi Jewels Store! This manual provides comprehensive instructions on how to use the various platforms within the Sarangi Jewels ecosystem, tailored for both Customers and Administrators.
 
 ## Table of Contents
 1. [For Customers (Web & Mobile Store)](#1-for-customers-web--mobile-store)

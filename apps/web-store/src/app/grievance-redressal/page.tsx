@@ -27,7 +27,7 @@ export default function GrievanceRedressalPage() {
             Your first point of contact for any concerns regarding your order, products, or experience should be our dedicated Customer Care team.
           </p>
           <ul className="text-[rgba(33,29,25,0.78)] space-y-2 mb-4">
-            <li><strong>Email:</strong> support@noeve.store</li>
+            <li><strong>Email:</strong> support@sarangijewels.com</li>
             <li><strong>Response Time:</strong> Within 24-48 business hours.</li>
           </ul>
         </section>
@@ -40,7 +40,7 @@ export default function GrievanceRedressalPage() {
           <div className="bg-cream border border-[rgba(33,29,25,0.1)] p-6 mt-4">
             <h3 className="font-mono text-sm uppercase tracking-widest text-champagne mb-2">Grievance Officer Details</h3>
             <p className="text-[rgba(33,29,25,0.78)] mb-1"><strong>Name:</strong> Ms. N. Sharma</p>
-            <p className="text-[rgba(33,29,25,0.78)] mb-1"><strong>Email:</strong> grievance@noeve.store</p>
+            <p className="text-[rgba(33,29,25,0.78)] mb-1"><strong>Email:</strong> grievance@sarangijewels.com</p>
             <p className="text-[rgba(33,29,25,0.78)] text-sm mt-4">
               *Please include your order number and previous ticket ID when escalating your issue.
             </p>

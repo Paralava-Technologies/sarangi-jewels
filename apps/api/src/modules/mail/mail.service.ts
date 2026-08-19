@@ -48,7 +48,7 @@ export class MailService {
       }
     }
 
-    html += `<p>Thank you for shopping with Noeve!</p>`;
+    html += `<p>Thank you for shopping with Sarangi Jewels!</p>`;
 
     await this.sendMail(email, subject, html);
   }
@@ -60,7 +60,7 @@ export class MailService {
       <p>Your order <strong>${orderNumber}</strong> has been successfully placed.</p>
       <p>Total amount: <strong>${totalAmount}</strong></p>
       <p>We will notify you once it ships.</p>
-      <p>Thank you for shopping with Noeve!</p>
+      <p>Thank you for shopping with Sarangi Jewels!</p>
     `;
 
     await this.sendMail(email, subject, html);
@@ -68,31 +68,31 @@ export class MailService {
 
   async sendWelcomeEmail(email: string, firstName: string | null) {
     const name = firstName ? firstName : 'Friend';
-    const subject = `Welcome to Noeve! We're thrilled to have you.`;
+    const subject = `Welcome to Sarangi Jewels! We're thrilled to have you.`;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
-        <h1 style="color: #8b5cf6;">Welcome to Noeve, ${name}!</h1>
+        <h1 style="color: #8b5cf6;">Welcome to Sarangi Jewels, ${name}!</h1>
         <p>We are absolutely thrilled to welcome you to our application store. Your presence means the world to us!</p>
-        <p>At Noeve, we strive to bring you the best possible experience and the most carefully curated selection of items.</p>
+        <p>At Sarangi Jewels, we strive to bring you the best possible experience and the most carefully curated selection of items.</p>
         <p>Take your time to explore, and if you ever need anything, our support team is just a click away.</p>
         <br/>
         <p>Warmest regards,</p>
-        <p><strong>The Noeve Team</strong></p>
+        <p><strong>The Sarangi Jewels Team</strong></p>
       </div>
     `;
     await this.sendMail(email, subject, html);
   }
 
   async sendNewsletterWelcome(email: string) {
-    const subject = `Welcome to the Noeve Journal`;
+    const subject = `Welcome to the Sarangi Jewels Journal`;
     const html = `
-      <h1>Welcome to Noeve!</h1>
+      <h1>Welcome to Sarangi Jewels!</h1>
       <p>Thank you for subscribing to our journal.</p>
       <p>You'll now receive first access to new drops, early entry to sales, and a short note from our studio.</p>
       <p>We are excited to have you with us.</p>
       <br>
       <p>Best regards,</p>
-      <p><strong>The Noeve Studio</strong></p>
+      <p><strong>The Sarangi Jewels Studio</strong></p>
     `;
 
     await this.sendMail(email, subject, html);
@@ -106,7 +106,7 @@ export class MailService {
       <p>If you need further assistance, please feel free to create a new ticket or reply to the existing conversation in your account dashboard.</p>
       <br>
       <p>Thank you,</p>
-      <p><strong>The Noeve Support Team</strong></p>
+      <p><strong>The Sarangi Jewels Support Team</strong></p>
     `;
 
     await this.sendMail(email, subject, html);
@@ -118,7 +118,7 @@ export class MailService {
       return;
     }
 
-    const from = process.env.MAIL_FROM || '"Noeve Store" <noreply@noeve.store>';
+    const from = process.env.MAIL_FROM || '"Sarangi Jewels Store" <noreply@sarangijewels.com>';
 
     // Send emails concurrently or in batches.
     // For a real production app, we would use a queue system (BullMQ) or a transactional email API (SendGrid, Postmark).
@@ -147,7 +147,7 @@ export class MailService {
   }
 
   async sendAbandonedCartEmail(email: string, cartUrl: string) {
-    const subject = `You left something behind at Noeve!`;
+    const subject = `You left something behind at Sarangi Jewels!`;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
         <h1 style="color: #8b5cf6;">Don't let it slip away...</h1>
@@ -157,7 +157,7 @@ export class MailService {
         <a href="${cartUrl}" style="background-color: #333; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Return to Cart</a>
         <br/><br/>
         <p>Warmest regards,</p>
-        <p><strong>The Noeve Team</strong></p>
+        <p><strong>The Sarangi Jewels Team</strong></p>
       </div>
     `;
     await this.sendMail(email, subject, html);
@@ -176,7 +176,7 @@ export class MailService {
       }
 
       const info = await this.transporter.sendMail({
-        from: process.env.MAIL_FROM || '"Noeve Store" <noreply@noeve.store>',
+        from: process.env.MAIL_FROM || '"Sarangi Jewels Store" <noreply@sarangijewels.com>',
         to,
         subject,
         html,

@@ -1,4 +1,4 @@
-# Noeve — Platform Architecture
+# Sarangi Jewels — Platform Architecture
 
 Online brand store for fine jewellery, ladies accessories, care products, pendants, and related catalog. One backend serves customer web, customer mobile, admin web, and admin mobile so catalog, pricing, inventory, and orders are centrally controlled.
 
@@ -360,7 +360,7 @@ fulfillment queue (admin + mobile-admin)
 
 ---
 
-## 11. Why this architecture fits Noeve
+## 11. Why this architecture fits Sarangi Jewels
 
 - **One API** — Admin updates products once; web and mobile customers see the same catalog and prices without duplicate backends.
 - **Monorepo** — Shared validation prevents mobile/web drift; faster feature delivery for jewellery-specific fields.

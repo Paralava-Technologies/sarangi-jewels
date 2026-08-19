@@ -68,7 +68,7 @@ export default function SettingsPage() {
         shippingRateCents: Math.round(parseFloat(shippingRate || '0') * 100),
         taxRatePercentage: parseFloat(taxRate || '0'),
         marqueeText: marqueeText || null,
-        storeName: storeName || 'Noeve Store',
+        storeName: storeName || 'Sarangi Jewels Store',
         supportEmail: supportEmail || null,
         supportPhone: supportPhone || null,
         whatsappNumber: whatsappNumber || null,
@@ -108,7 +108,7 @@ export default function SettingsPage() {
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
-            <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="Noeve Store" />
+            <input type="text" value={storeName} onChange={(e) => setStoreName(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="Sarangi Jewels Store" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Support Email</label>

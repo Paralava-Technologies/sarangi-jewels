@@ -1,13 +1,13 @@
-# Noeve — Customer Storefront UI/UX Design Layout Specification
+# Sarangi Jewels — Customer Storefront UI/UX Design Layout Specification
 
-This document details the visual style, design patterns, layout templates, and component trees for both **Noeve Webstore** (Next.js 15) and **Noeve Mobile Store** (Expo React Native). It translates the architecture definitions in `docs/ARCHITECTURE.md` and design tokens in `@noeve/ui-tokens` into concrete UI layouts.
+This document details the visual style, design patterns, layout templates, and component trees for both **Sarangi Jewels Webstore** (Next.js 15) and **Sarangi Jewels Mobile Store** (Expo React Native). It translates the architecture definitions in `docs/ARCHITECTURE.md` and design tokens in `@noeve/ui-tokens` into concrete UI layouts.
 
 ---
 
 ## 1. Visual Identity & Design System
 
 ### 1.1 Brand Color Palette
-Noeve uses a sophisticated **Deep Rich Purple & Metallic Gold** theme that reflects prestige, fine craftsmanship, and luxury.
+Sarangi Jewels uses a sophisticated **Deep Rich Purple & Metallic Gold** theme that reflects prestige, fine craftsmanship, and luxury.
 
 *   **Primary Theme (Purple):**
     *   `primary`: `#4A148C` (Deep Imperial Purple - represents luxury, authority, and depth)
@@ -34,7 +34,7 @@ Noeve uses a sophisticated **Deep Rich Purple & Metallic Gold** theme that refle
 
 ## 2. High-Fidelity Design Mockups
 
-Here are the visual representations of the Noeve user interface:
+Here are the visual representations of the Sarangi Jewels user interface:
 
 ### 2.1 Web Store Home Page Mockup
 Displays the luxury storefront landing page layout, showcasing the Hero Banner, Collection grid, and footer.

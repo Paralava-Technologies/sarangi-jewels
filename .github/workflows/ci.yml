@@ -118,7 +118,7 @@ jobs:
           file: apps/web-store/Dockerfile
           push: true
           build-args: |
-            NEXT_PUBLIC_API_URL=https://api.noeve.store/v1
+            NEXT_PUBLIC_API_URL=https://api.sarangijewels.com/v1
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/noeve-web-store:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/noeve-web-store:${{ github.sha }}

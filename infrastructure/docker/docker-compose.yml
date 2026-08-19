@@ -1,32 +1,32 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: noeve-postgres
+    container_name: sarangijewels-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: noeve
-      POSTGRES_PASSWORD: noeve
-      POSTGRES_DB: noeve
+      POSTGRES_USER: sarangijewels
+      POSTGRES_PASSWORD: sarangijewels_pass
+      POSTGRES_DB: sarangijewels
     # Host 5433 — 5432 is often taken by system PostgreSQL
     ports:
       - '${NOEVE_POSTGRES_PORT:-5433}:5432'
     volumes:
-      - noeve_pg_data:/var/lib/postgresql/data
+      - sarangijewels_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U noeve -d noeve']
+      test: ['CMD-SHELL', 'pg_isready -U sarangijewels -d sarangijewels']
       interval: 5s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    container_name: noeve-redis
+    container_name: sarangijewels-redis
     restart: unless-stopped
     # Host 6380 — 6379 is often taken by a system/local Redis
     ports:
       - '${NOEVE_REDIS_PORT:-6380}:6379'
     volumes:
-      - noeve_redis_data:/data
+      - sarangijewels_redis_data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
@@ -35,19 +35,19 @@ services:
 
   minio:
     image: minio/minio:latest
-    container_name: noeve-minio
+    container_name: sarangijewels-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: noeve
-      MINIO_ROOT_PASSWORD: noeve-secret
+      MINIO_ROOT_USER: sarangijewels
+      MINIO_ROOT_PASSWORD: sarangijewels-secret
     ports:
       - '9000:9000'
       - '9001:9001'
     volumes:
-      - noeve_minio_data:/data
+      - sarangijewels_minio_data:/data
 
 volumes:
-  noeve_pg_data:
-  noeve_redis_data:
-  noeve_minio_data:
+  sarangijewels_pg_data:
+  sarangijewels_redis_data:
+  sarangijewels_minio_data:

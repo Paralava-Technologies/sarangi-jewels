@@ -1,7 +1,7 @@
 # Mobile Admin App Plan
 
 ## Overview
-This document outlines the implementation plan for Phase 5: Mobile Admin App (Expo) of the Noeve project, addressing tasks 33 and 34 from the Active Work Tracker.
+This document outlines the implementation plan for Phase 5: Mobile Admin App (Expo) of the Sarangi Jewels project, addressing tasks 33 and 34 from the Active Work Tracker.
 
 ## Task Breakdown & Implementation Strategy
 

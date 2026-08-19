@@ -21,7 +21,7 @@ export function ProductCard({ product, width = '48%' }: ProductCardProps) {
             <Image source={{ uri: image.url }} style={styles.image} resizeMode="cover" />
           ) : (
             <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>Noeve</Text>
+              <Text style={styles.placeholderText}>Sarangi Jewels</Text>
             </View>
           )}
           {product.category ? (

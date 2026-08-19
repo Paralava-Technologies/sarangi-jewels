@@ -18,7 +18,7 @@ export default function CareersPage() {
           Join the team building the future of considered luxury. We are always looking for passionate, detail-oriented individuals to join our studio.
         </p>
         <p className="text-[rgba(33,29,25,0.78)] mb-4">
-          Currently, there are no open positions. Please check back later or send your portfolio to careers@noeve.store.
+          Currently, there are no open positions. Please check back later or send your portfolio to careers@sarangijewels.com.
         </p>
       </div>
     </main>

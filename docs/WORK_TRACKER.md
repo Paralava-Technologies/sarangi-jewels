@@ -1,8 +1,8 @@
-# Noeve — Work Tracker
+# Sarangi Jewels — Work Tracker
 
 Living document for project progress. Update this file at the end of each work session so the next session can resume quickly.
 
-**Brand:** Noeve — ladies brand store (ornaments, jewellery, accessories, apparel, care products).  
+**Brand:** Sarangi Jewels — ladies brand store (ornaments, jewellery, accessories, apparel, care products).  
 **Stack:** pnpm monorepo · NestJS API · Next.js web-store & web-admin · Expo mobile-store & mobile-admin  
 **Design spec:** [UI_DESIGN_LAYOUT.md](./UI_DESIGN_LAYOUT.md) · **Architecture:** [ARCHITECTURE.md](./ARCHITECTURE.md)
 
@@ -55,7 +55,7 @@ Living document for project progress. Update this file at the end of each work s
 
 ---
 
-## 2. Web Store (`apps/web-store`) — `@noeve/web-store` :3000 (Production: https://noeve.store)
+## 2. Web Store (`apps/web-store`) — `@noeve/web-store` :3000 (Production: https://sarangijewels.com)
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -240,7 +240,7 @@ pnpm dev:web-admin    # http://localhost:3002
 | 2026-06-22 | Mobile Store Auth | Migrated Mobile Store `cart.ts` and `api.ts` to use `@noeve/api-client`, created `auth-context.tsx`, and wired up Account login screen. | Mobile checkout; payments |
 | 2026-06-22 | Mobile Store Checkout | Implemented the Mobile Checkout screen to ensure feature parity with the web-store MVP. Wired the cart 'Proceed to checkout' button. | Phase 2: Live Payments |
 | 2026-06-24 | TypeScript fixes + Prisma pin | Fixed mobile checkout import paths, registered checkout Stack.Screen, wired auth token in web-store apiClient, added `category` to shared Product type, deduplicated mobile types.ts to re-export from shared-types, pinned Prisma to ^6.19.3 via pnpm overrides. Both apps TypeScript-clean. | Commit changes; verify end-to-end run; mobile variant selection; Razorpay payments |
-| 2026-06-26 | Noeve Visual Parity & Sync | Standardized login, registration, cart, product detail, account, and checkout layouts using global CSS classes matching ReferenceDesign. Updated shared UI tokens color theme and fully styled the mobile-store applications screens. Staged & committed changes. | Phase 2: Payment Gateway Integration |
+| 2026-06-26 | Sarangi Jewels Visual Parity & Sync | Standardized login, registration, cart, product detail, account, and checkout layouts using global CSS classes matching ReferenceDesign. Updated shared UI tokens color theme and fully styled the mobile-store applications screens. Staged & committed changes. | Phase 2: Payment Gateway Integration |
 | 2026-06-30 | Wishlist & Sandbox Payments | Refactored web-store wishlist to use unified apiClient, implemented sandbox payment simulation with signature verification on mobile checkout screen, added comprehensive unit tests for WishlistService, and fixed TS compilation warnings. | Phase 2: Native payment SDKs (optional) |
 | 2026-07-01 | Mobile Polish & Production Infra | Implemented real-time order history for the mobile Account screen. Created production Docker infrastructure (`docker-compose.prod.yml`, Dockerfiles), Nginx TLS configs, a GitHub Actions CI pipeline, and a comprehensive deployment guide. | Phase 2: Finalize email notifications & web-admin fulfillment UI |
 | 2026-07-02 | Admin Stability & Storefront UX | Fixed Multer image upload paths and added ServeStaticModule to API. Fixed web-store gallery thumbnails and zoom jitter. Refactored Admin product/promotions forms to use standard currency values. Standardized shipping calculations/text. Added dynamic authentication checking to header. | Phase 2: Implement dynamic Product Variants on Web-Store |

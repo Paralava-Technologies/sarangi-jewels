@@ -1,4 +1,4 @@
-# ─── Noeve — Production Docker Compose ──────────────────────────────────────
+# ─── Sarangi Jewels — Production Docker Compose ──────────────────────────────────────
 #
 # Usage:
 #   1. Copy .env.example → .env.production and fill in all values.
@@ -7,9 +7,9 @@
 #   3. Run: docker compose -f infrastructure/docker/docker-compose.prod.yml --env-file .env.production up -d
 #
 # Domains (update DNS A-records to point to your server before running):
-#   noeve.store         → web-store  (:3000)
-#   admin.noeve.store   → web-admin  (:3002)
-#   api.noeve.store     → api        (:3001)
+#   sarangijewels.com         → web-store  (:3000)
+#   admin.sarangijewels.com   → web-admin  (:3002)
+#   api.sarangijewels.com     → api        (:3001)
 #
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -29,15 +29,15 @@ services:
   postgres:
     <<: [*default-restart, *default-logging]
     image: postgres:16-alpine
-    container_name: noeve-postgres
+    container_name: sarangijewels-postgres
     environment:
-      POSTGRES_USER:     ${POSTGRES_USER:-noeve}
+      POSTGRES_USER:     ${POSTGRES_USER:-sarangijewels}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB:       ${POSTGRES_DB:-noeve}
+      POSTGRES_DB:       ${POSTGRES_DB:-sarangijewels}
     volumes:
-      - noeve_pg_data:/var/lib/postgresql/data
+      - sarangijewels_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-noeve} -d ${POSTGRES_DB:-noeve}']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-sarangijewels} -d ${POSTGRES_DB:-sarangijewels}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -48,10 +48,10 @@ services:
   redis:
     <<: [*default-restart, *default-logging]
     image: redis:7-alpine
-    container_name: noeve-redis
+    container_name: sarangijewels-redis
     command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
-      - noeve_redis_data:/data
+      - sarangijewels_redis_data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'ping']
       interval: 10s
@@ -64,13 +64,13 @@ services:
   minio:
     <<: [*default-restart, *default-logging]
     image: minio/minio:latest
-    container_name: noeve-minio
+    container_name: sarangijewels-minio
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER:     ${MINIO_ROOT_USER:-noeve}
+      MINIO_ROOT_USER:     ${MINIO_ROOT_USER:-sarangijewels}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     volumes:
-      - noeve_minio_data:/data
+      - sarangijewels_minio_data:/data
     networks:
       - backend
 
@@ -80,22 +80,22 @@ services:
     build:
       context: ../..
       dockerfile: apps/api/Dockerfile
-    container_name: noeve-api
+    container_name: sarangijewels-api
     environment:
       NODE_ENV:             production
-      DATABASE_URL:         postgresql://${POSTGRES_USER:-noeve}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-noeve}?schema=public
+      DATABASE_URL:         postgresql://${POSTGRES_USER:-sarangijewels}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-sarangijewels}?schema=public
       REDIS_URL:            redis://:${REDIS_PASSWORD}@redis:6379
       JWT_SECRET:           ${JWT_SECRET}
       JWT_EXPIRES_IN:       ${JWT_EXPIRES_IN:-15m}
       JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
-      CORS_ORIGINS:         https://noeve.store,https://admin.noeve.store
+      CORS_ORIGINS:         https://sarangijewels.com,https://admin.sarangijewels.com
       API_PORT:             3001
       S3_ENDPOINT:          http://minio:9000
-      S3_BUCKET:            ${S3_BUCKET:-noeve-media}
-      S3_ACCESS_KEY:        ${MINIO_ROOT_USER:-noeve}
+      S3_BUCKET:            ${S3_BUCKET:-sarangijewels-media}
+      S3_ACCESS_KEY:        ${MINIO_ROOT_USER:-sarangijewels}
       S3_SECRET_KEY:        ${MINIO_ROOT_PASSWORD}
       S3_REGION:            ${S3_REGION:-ap-south-1}
-      S3_PUBLIC_URL:        https://media.noeve.store
+      S3_PUBLIC_URL:        https://media.sarangijewels.com
       RAZORPAY_KEY_ID:      ${RAZORPAY_KEY_ID:-}
       RAZORPAY_KEY_SECRET:  ${RAZORPAY_KEY_SECRET:-}
     depends_on:
@@ -114,8 +114,8 @@ services:
       context: ../..
       dockerfile: apps/web-store/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: https://api.noeve.store/v1
-    container_name: noeve-web-store
+        NEXT_PUBLIC_API_URL: https://api.sarangijewels.com/v1
+    container_name: sarangijewels-web-store
     environment:
       NODE_ENV: production
       PORT:     3000
@@ -131,8 +131,8 @@ services:
       context: ../..
       dockerfile: apps/web-admin/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: https://api.noeve.store/v1
-    container_name: noeve-web-admin
+        NEXT_PUBLIC_API_URL: https://api.sarangijewels.com/v1
+    container_name: sarangijewels-web-admin
     environment:
       NODE_ENV: production
       PORT:     3002
@@ -145,7 +145,7 @@ services:
   nginx:
     <<: [*default-restart, *default-logging]
     image: nginx:1.27-alpine
-    container_name: noeve-nginx
+    container_name: sarangijewels-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -153,7 +153,7 @@ services:
       - ../nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
       - ../certs:/etc/nginx/certs:ro
       # Let's Encrypt webroot for certificate renewal
-      - noeve_certbot_www:/var/www/certbot:ro
+      - sarangijewels_certbot_www:/var/www/certbot:ro
     depends_on:
       - web-store
       - web-admin
@@ -164,19 +164,19 @@ services:
   # ── Certbot (optional — auto-renew Let's Encrypt certs) ───────────────────
   certbot:
     image: certbot/certbot:latest
-    container_name: noeve-certbot
+    container_name: sarangijewels-certbot
     volumes:
       - ../certs:/etc/letsencrypt
-      - noeve_certbot_www:/var/www/certbot
+      - sarangijewels_certbot_www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot; sleep 12h & wait $${!}; done'"
     networks:
       - frontend
 
 volumes:
-  noeve_pg_data:
-  noeve_redis_data:
-  noeve_minio_data:
-  noeve_certbot_www:
+  sarangijewels_pg_data:
+  sarangijewels_redis_data:
+  sarangijewels_minio_data:
+  sarangijewels_certbot_www:
 
 networks:
   backend:

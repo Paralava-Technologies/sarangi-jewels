@@ -1,4 +1,4 @@
-# Deploying Noeve Frontends to Netlify (Free Plan)
+# Deploying Sarangi Jewels Frontends to Netlify (Free Plan)
 
 This guide provides step-by-step instructions to deploy your frontend applications (`web-store` and `web-admin`) from your Turborepo (using `pnpm`) to Netlify's free plan.
 

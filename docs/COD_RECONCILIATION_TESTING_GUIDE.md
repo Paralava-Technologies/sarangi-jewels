@@ -45,7 +45,7 @@ NV-0002,1000.00,BlueDart,TXN-9982
 
 ## 2. Testing Automatic Mode (Webhooks)
 
-The automatic mode relies on real-time POST requests sent by the delivery partners to the Noeve API. To test this locally without the real partners, you can use **Postman**, **cURL**, or a **Node.js Script** to simulate the incoming webhooks.
+The automatic mode relies on real-time POST requests sent by the delivery partners to the Sarangi Jewels API. To test this locally without the real partners, you can use **Postman**, **cURL**, or a **Node.js Script** to simulate the incoming webhooks.
 
 ### Step 1: Enable Automatic Mode
 1. Go to **Admin Dashboard > Settings** (`http://localhost:3002/dashboard/settings`).

@@ -112,7 +112,7 @@ export default function DashboardLayout({ children }: { children: any }) {
           <div className="mb-8 pl-3 pt-2">
             <img
               src="/images/logo.png"
-              alt="Noeve Admin"
+              alt="Sarangi Jewels Admin"
               style={{ height: '32px', width: 'auto' }}
             />
           </div>
@@ -167,7 +167,7 @@ export default function DashboardLayout({ children }: { children: any }) {
         <div className="flex flex-1 flex-col">
           <main className="flex-1 p-8">{children}</main>
           <footer className="border-t border-neutral-200 p-4 text-center text-sm text-neutral-500">
-            &copy; {new Date().getFullYear()} Noeve Web Admin. All rights reserved.
+            &copy; {new Date().getFullYear()} Sarangi Jewels Web Admin. All rights reserved.
           </footer>
         </div>
       </div>

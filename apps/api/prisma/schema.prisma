@@ -350,7 +350,7 @@ model Promotion {
 
 model StoreSettings {
   id                     String   @id @default(uuid())
-  storeName              String   @default("Noeve Store") @map("store_name")
+  storeName              String   @default("Sarangi Jewels Store") @map("store_name")
   supportEmail           String?  @map("support_email")
   supportPhone           String?  @map("support_phone")
   whatsappNumber         String?  @map("whatsapp_number")

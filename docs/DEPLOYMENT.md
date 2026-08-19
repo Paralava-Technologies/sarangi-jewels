@@ -1,14 +1,14 @@
-# Noeve — Deployment Guide
+# Sarangi Jewels — Deployment Guide
 
-This guide details how to deploy the Noeve stack (API, Web Store, Web Admin) along with the required infrastructure (PostgreSQL, Redis, MinIO, Nginx) to a production Ubuntu server using Docker Compose.
+This guide details how to deploy the Sarangi Jewels stack (API, Web Store, Web Admin) along with the required infrastructure (PostgreSQL, Redis, MinIO, Nginx) to a production Ubuntu server using Docker Compose.
 
 ## Prerequisites
 
 1.  **Ubuntu VPS** (e.g., DigitalOcean, AWS EC2, Hetzner) with at least 2GB RAM.
 2.  **Domain Name** with DNS A-records pointing to your VPS IP:
-    *   `noeve.store` (Web Store)
-    *   `api.noeve.store` (NestJS API)
-    *   `admin.noeve.store` (Web Admin)
+    *   `sarangijewels.com` (Web Store)
+    *   `api.sarangijewels.com` (NestJS API)
+    *   `admin.sarangijewels.com` (Web Admin)
 3.  **Docker & Docker Compose** installed on the server.
 4.  **GitHub Actions** (Optional) configured with secrets for CI/CD.
 
@@ -52,12 +52,12 @@ Before starting the full stack, you need SSL certificates. The `docker-compose.p
 If you are using Certbot locally on the host:
 ```bash
 sudo apt update && sudo apt install certbot -y
-sudo certbot certonly --standalone -d noeve.store -d www.noeve.store -d api.noeve.store -d admin.noeve.store
+sudo certbot certonly --standalone -d sarangijewels.com -d www.sarangijewels.com -d api.sarangijewels.com -d admin.sarangijewels.com
 ```
 Then symlink or copy them into the certs directory:
 ```bash
 # Example
-sudo cp -r /etc/letsencrypt/archive/noeve.store/* /opt/noeve/infrastructure/certs/
+sudo cp -r /etc/letsencrypt/archive/sarangijewels.com/* /opt/noeve/infrastructure/certs/
 ```
 
 *Alternatively, the docker-compose file has an Nginx/Certbot setup you can use for webroot challenges.*
@@ -102,9 +102,9 @@ docker exec -it noeve-api npm run db:seed
 
 ## 7. Verifying the Deployment
 
-*   **API:** Visit `https://api.noeve.store/v1/store/health` - should return `{"status": "ok"}`
-*   **Web Store:** Visit `https://noeve.store`
-*   **Web Admin:** Visit `https://admin.noeve.store`
+*   **API:** Visit `https://api.sarangijewels.com/v1/store/health` - should return `{"status": "ok"}`
+*   **Web Store:** Visit `https://sarangijewels.com`
+*   **Web Admin:** Visit `https://admin.sarangijewels.com`
 
 ## Architecture Overview
 

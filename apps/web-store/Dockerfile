@@ -23,7 +23,7 @@ COPY apps/web-store/ ./apps/web-store/
 WORKDIR /repo/apps/web-store
 
 # Build Next.js
-ARG NEXT_PUBLIC_API_URL=https://api.noeve.store/v1
+ARG NEXT_PUBLIC_API_URL=https://api.sarangijewels.com/v1
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 RUN pnpm build

@@ -49,7 +49,7 @@ export default function EWasteCompliancePage() {
         <section>
           <h2 className="font-display text-2xl mb-4">Contact Us</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            For more information on e-waste collection and recycling, please contact our support desk at <a href="mailto:sustainability@noeve.store" className="underline">sustainability@noeve.store</a>.
+            For more information on e-waste collection and recycling, please contact our support desk at <a href="mailto:sustainability@sarangijewels.com" className="underline">sustainability@sarangijewels.com</a>.
           </p>
         </section>
       </div>

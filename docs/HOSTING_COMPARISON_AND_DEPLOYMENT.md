@@ -1,6 +1,6 @@
-# Noeve — Hosting Comparison & Deployment Guide
+# Sarangi Jewels — Hosting Comparison & Deployment Guide
 
-> Comprehensive analysis of hosting providers and step-by-step deployment instructions for **noeve.store**
+> Comprehensive analysis of hosting providers and step-by-step deployment instructions for **sarangijewels.com**
 
 ---
 
@@ -207,8 +207,8 @@ The entire stack runs via a single command using the existing `infrastructure/do
 | Item                            | Details                                                                          |
 | ------------------------------- | -------------------------------------------------------------------------------- |
 | BigRock VPS Cloud 3 (or higher) | Ubuntu 22.04/24.04 LTS recommended                                               |
-| Domain                          | `noeve.store` managed via BigRock or Cloudflare                                  |
-| DNS Records                     | `noeve.store` → VPS IP, `api.noeve.store` → VPS IP, `admin.noeve.store` → VPS IP |
+| Domain                          | `sarangijewels.com` managed via BigRock or Cloudflare                                  |
+| DNS Records                     | `sarangijewels.com` → VPS IP, `api.sarangijewels.com` → VPS IP, `admin.sarangijewels.com` → VPS IP |
 | SSL                             | Let's Encrypt (auto-configured in Docker Compose)                                |
 
 ---
@@ -259,7 +259,7 @@ cd /opt/noeve
 Clone the repository directly on the server:
 
 ```bash
-git clone https://github.com/digeesh09/noeve-store.git /opt/noeve
+git clone https://github.com/digeesh09/sarangijewels.com.git /opt/noeve
 cd /opt/noeve
 ```
 
@@ -294,7 +294,7 @@ Required changes:
 | `REDIS_PASSWORD`      | Different strong random password                         |
 | `JWT_SECRET`          | Long random string (min 64 chars)                        |
 | `MINIO_ROOT_PASSWORD` | Another strong password                                  |
-| `NEXT_PUBLIC_API_URL` | `https://api.noeve.store/v1` (unchanged)                 |
+| `NEXT_PUBLIC_API_URL` | `https://api.sarangijewels.com/v1` (unchanged)                 |
 
 > **💡 Tip:** Generate secure passwords with: `openssl rand -base64 32`
 
@@ -323,16 +323,16 @@ Stop any service on port 80 (make sure nothing is running yet):
 
 ```bash
 certbot certonly --standalone \
-  -d noeve.store \
-  -d www.noeve.store \
-  -d api.noeve.store \
-  -d admin.noeve.store
+  -d sarangijewels.com \
+  -d www.sarangijewels.com \
+  -d api.sarangijewels.com \
+  -d admin.sarangijewels.com
 ```
 
 Copy certificates to the certs directory expected by Docker Compose:
 
 ```bash
-cp -r /etc/letsencrypt/live/noeve.store/* /opt/noeve/infrastructure/certs/
+cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/noeve/infrastructure/certs/
 ```
 
 ---
@@ -379,9 +379,9 @@ Test each endpoint:
 
 | URL                                       | Expected Result        |
 | ----------------------------------------- | ---------------------- |
-| `https://api.noeve.store/v1/store/health` | `{"status": "ok"}`     |
-| `https://noeve.store`                     | Web store loads        |
-| `https://admin.noeve.store`               | Admin login page loads |
+| `https://api.sarangijewels.com/v1/store/health` | `{"status": "ok"}`     |
+| `https://sarangijewels.com`                     | Web store loads        |
+| `https://admin.sarangijewels.com`               | Admin login page loads |
 
 ---
 
@@ -403,7 +403,7 @@ Add the following line (renews every 2 months, reloads nginx):
 
 ## 9. Post-Deployment Checklist
 
-- [ ] DNS A records propagate (check with `dig noeve.store`)
+- [ ] DNS A records propagate (check with `dig sarangijewels.com`)
 - [ ] SSL certificates installed and valid
 - [ ] All 7 Docker containers running (`docker ps`)
 - [ ] API health endpoint returns 200
@@ -424,7 +424,7 @@ Add the following line (renews every 2 months, reloads nginx):
 | Item                           | Cost                   |
 | ------------------------------ | ---------------------- |
 | VPS (₹1,399 × 12)              | ₹16,788                |
-| Domain renewal (`noeve.store`) | ~₹800-1,000/yr         |
+| Domain renewal (`sarangijewels.com`) | ~₹800-1,000/yr         |
 | SSL (Let's Encrypt)            | ✅ Free                |
 | **Total Year 1**               | **~₹17,588 - ₹17,788** |
 | **Total per month**            | **~₹1,466 - ₹1,482**   |

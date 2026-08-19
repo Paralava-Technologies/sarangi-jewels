@@ -36,7 +36,7 @@ function AdminLoginForm(): React.JSX.Element {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-sm rounded-lg border border-neutral-200 bg-white p-8 shadow-sm">
         <div className="mb-2">
-          <img src="/images/logo.png" alt="Noeve Admin" style={{ height: '36px', width: 'auto' }} />
+          <img src="/images/logo.png" alt="Sarangi Jewels Admin" style={{ height: '36px', width: 'auto' }} />
         </div>
         <p className="mt-2 text-sm text-neutral-600">Sign in to manage orders and catalog.</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">

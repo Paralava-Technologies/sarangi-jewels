@@ -173,7 +173,7 @@ export default function CheckoutPage(): React.JSX.Element {
           key: session.keyId,
           amount: session.amount,
           currency: session.currency,
-          name: 'Noeve',
+          name: 'Sarangi Jewels',
           description: `Order ${order.orderNumber}`,
           order_id: session.providerOrderId,
           handler: async function (response: any) {
@@ -915,7 +915,7 @@ export default function CheckoutPage(): React.JSX.Element {
                 marginBottom: '0.8rem',
               }}
             >
-              Noeve Sandbox Payment
+              Sarangi Jewels Sandbox Payment
             </h3>
             <p
               style={{

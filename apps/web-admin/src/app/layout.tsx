@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Noeve Admin',
+  title: 'Sarangi Jewels Admin',
   description: 'Manage orders, products, and fulfillment',
 };
 

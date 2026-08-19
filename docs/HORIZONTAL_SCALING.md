@@ -1,6 +1,6 @@
 # Horizontal Scaling & Deployment Guidelines
 
-This document outlines the architectural requirements and necessary configurations to horizontally scale the Noeve platform across multiple nodes behind a load balancer on cloud providers like AWS.
+This document outlines the architectural requirements and necessary configurations to horizontally scale the Sarangi Jewels platform across multiple nodes behind a load balancer on cloud providers like AWS.
 
 ## 1. Front-End Applications (Next.js)
 

@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       { protocol: 'http',  hostname: 'localhost',   port: '4000' },
       { protocol: 'http',  hostname: 'localhost',   port: '3000' },
       // Production MinIO / S3 CDN
-      { protocol: 'https', hostname: 'media.noeve.store' },
+      { protocol: 'https', hostname: 'media.sarangijewels.com' },
     ],
   },
   async headers() {

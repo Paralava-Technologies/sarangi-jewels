@@ -109,7 +109,7 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Analytics</h1>
-        <p className="text-sm text-neutral-500">Current state analysis of Noeve.store</p>
+        <p className="text-sm text-neutral-500">Current state analysis of Sarangi Jewels.store</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

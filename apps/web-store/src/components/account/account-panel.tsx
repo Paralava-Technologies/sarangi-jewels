@@ -61,7 +61,7 @@ export function AccountPanel(): React.JSX.Element {
     setTab('inbox');
     setInboxForm(true);
     setInboxSubject(`Question about Order #${order.orderNumber}`);
-    setInboxMessage(`Hi Noeve Support,\n\nI need help with my order ${order.orderNumber} placed on ${new Date(order.createdAt).toLocaleDateString()}.\n\n`);
+    setInboxMessage(`Hi Sarangi Jewels Support,\n\nI need help with my order ${order.orderNumber} placed on ${new Date(order.createdAt).toLocaleDateString()}.\n\n`);
   };
 
   useEffect(() => { 
@@ -126,7 +126,7 @@ export function AccountPanel(): React.JSX.Element {
           key: session.keyId,
           amount: session.amount,
           currency: session.currency,
-          name: 'Noeve',
+          name: 'Sarangi Jewels',
           description: `Order ${order.orderNumber}`,
           order_id: session.providerOrderId,
           handler: async function (response: any) {
@@ -203,7 +203,7 @@ export function AccountPanel(): React.JSX.Element {
               <path d="M60 40 C200 10, 380 90, 420 230 C460 370, 320 420, 260 540 C220 620, 140 640, 90 600 C30 555, 80 470, 150 420 C230 365, 250 280, 190 210 C130 140, 20 120, 60 40 Z" fill="url(#af1)"/>
             </svg>
             <div className="auth__visual-top"><span className="tag">Member Access</span></div>
-            <div><div className="auth__visual-hairline"/><h2>&quot;We don&apos;t chase seasons. We build the pieces that outlast them.&quot;</h2><span className="quote-byline">— The Noeve Studio</span></div>
+            <div><div className="auth__visual-hairline"/><h2>&quot;We don&apos;t chase seasons. We build the pieces that outlast them.&quot;</h2><span className="quote-byline">— The Sarangi Jewels Studio</span></div>
           </div>
           <div className="auth__form-card">
             <p className="eyebrow">Welcome Back</p>
@@ -217,7 +217,7 @@ export function AccountPanel(): React.JSX.Element {
             </form>
             <div className="auth__divider">or</div>
             <Link href="/" className="btn btn--outline" style={{width:'100%'}}>Continue as Guest</Link>
-            <p className="auth__switch">New to Noeve? <Link href="/register">Create an account</Link></p>
+            <p className="auth__switch">New to Sarangi Jewels? <Link href="/register">Create an account</Link></p>
             <p style={{textAlign:'center',marginTop:'.5rem',fontSize:'.72rem',color:'rgba(33,29,25,.4)'}}>Demo: customer@noeve.local / Customer123!</p>
           </div>
         </section>
@@ -878,7 +878,7 @@ export function AccountPanel(): React.JSX.Element {
                     </div>
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: isMe ? 'flex-start' : 'flex-end' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem', flexDirection: isMe ? 'row' : 'row-reverse' }}>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{isMe ? 'You' : 'Noeve Support'}</span>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{isMe ? 'You' : 'Sarangi Jewels Support'}</span>
                         <span style={{ fontSize: '0.75rem', color: 'rgba(33,29,25,.5)' }}>{new Date(reply.createdAt).toLocaleString()}</span>
                       </div>
                       <div style={{ 

@@ -21,8 +21,8 @@ async function main() {
     data: {
       title: 'Where Fashion Finds Its Nerve',
       slug: 'where-fashion-finds-its-nerve',
-      author: 'Noeve Studio',
-      excerpt: "There's a particular kind of quiet before something new breaks through — the pause before a match strikes, the breath before a first step. That's where Noeve lives. Not the loud middle of the fashion conversation, but the electric edge of it.",
+      author: 'Sarangi Jewels Studio',
+      excerpt: "There's a particular kind of quiet before something new breaks through — the pause before a match strikes, the breath before a first step. That's where Sarangi Jewels lives. Not the loud middle of the fashion conversation, but the electric edge of it.",
       content: finalHtml,
       published: true,
       imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop',

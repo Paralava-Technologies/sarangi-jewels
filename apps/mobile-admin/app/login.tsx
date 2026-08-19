@@ -47,7 +47,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Noeve Admin</Text>
+      <Text style={styles.title}>Sarangi Jewels Admin</Text>
       <Text style={styles.subtitle}>Sign in to access fulfillment and inventory management.</Text>
 
       <View style={styles.form}>

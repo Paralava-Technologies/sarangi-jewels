@@ -1,6 +1,6 @@
 # Delivery Partner Integration Guide
 
-This document outlines the steps to set up accounts with major delivery partners (Delhivery, BlueDart, Porter) in India and how to integrate their COD (Cash on Delivery) settlement reports into the Noeve platform.
+This document outlines the steps to set up accounts with major delivery partners (Delhivery, BlueDart, Porter) in India and how to integrate their COD (Cash on Delivery) settlement reports into the Sarangi Jewels platform.
 
 ## 1. Setting Up Partner Accounts
 
@@ -44,15 +44,15 @@ This document outlines the steps to set up accounts with major delivery partners
 
 ---
 
-## 2. Integrating with Noeve
+## 2. Integrating with Sarangi Jewels
 
-Noeve currently supports a robust **CSV Batch Upload** method for reconciling COD payments collected by these partners.
+Sarangi Jewels currently supports a robust **CSV Batch Upload** method for reconciling COD payments collected by these partners.
 
 ### Step 1: Prepare the CSV File
-Before uploading the file to Noeve, ensure it contains the required columns. You may need to slightly modify the headers exported from the partners to match Noeve's expectations:
+Before uploading the file to Sarangi Jewels, ensure it contains the required columns. You may need to slightly modify the headers exported from the partners to match Sarangi Jewels's expectations:
 
 **Required Columns:**
-- **Order ID** (or `Order Number`, `AWB`): The unique identifier for the order in Noeve.
+- **Order ID** (or `Order Number`, `AWB`): The unique identifier for the order in Sarangi Jewels.
 - **Settled Amount** (or `Amount`): The actual cash amount deposited by the partner.
 
 **Optional (but recommended) Columns:**
@@ -66,8 +66,8 @@ NV-10042,1500,Delhivery,UTR998811223
 NV-10043,2999,BlueDart,BD-UTR-443321
 ```
 
-### Step 2: Upload and Reconcile in Noeve Admin
-1. Log in to the Noeve Web Admin Dashboard (`http://localhost:3002`).
+### Step 2: Upload and Reconcile in Sarangi Jewels Admin
+1. Log in to the Sarangi Jewels Web Admin Dashboard (`http://localhost:3002`).
 2. Navigate to **Reconciliation** on the sidebar (`/dashboard/reconciliation`).
 3. Drag and drop the prepared CSV file into the upload zone.
 4. Click **Process Report**.

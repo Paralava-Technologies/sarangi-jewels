@@ -7,7 +7,7 @@ export interface ApiClientConfig {
   onUnauthorized?: () => void;
 }
 
-export class NoeveApiClient {
+export class SarangiJewelsApiClient {
   constructor(public readonly config: ApiClientConfig) {}
 
   private async request<T>(

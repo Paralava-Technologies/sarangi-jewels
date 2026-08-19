@@ -1,6 +1,6 @@
 # Security and Deployment Guidelines
 
-This document outlines the security considerations for the Noeve platform, detailing how to enforce industry-standard security and addressing the safety of deploying on a local machine.
+This document outlines the security considerations for the Sarangi Jewels platform, detailing how to enforce industry-standard security and addressing the safety of deploying on a local machine.
 
 ## Is it safe to deploy on a local machine?
 
@@ -20,7 +20,7 @@ Deploying a production application on a personal or local office machine (like a
 
 ## Enforcing Industry-Standard Security
 
-To elevate the Noeve platform to enterprise-grade security, whether deployed locally (for staging) or on a cloud VPS (for production), the following layers of security must be implemented.
+To elevate the Sarangi Jewels platform to enterprise-grade security, whether deployed locally (for staging) or on a cloud VPS (for production), the following layers of security must be implemented.
 
 ### 1. Network & Infrastructure Security
 
@@ -76,9 +76,9 @@ To elevate the Noeve platform to enterprise-grade security, whether deployed loc
 
 ---
 
-## Step-by-Step: Deploying/Testing `noeve.store` Locally
+## Step-by-Step: Deploying/Testing `sarangijewels.com` Locally
 
-Since `noeve.store` is already deployed live on BigRock, you must trick your local machine into resolving the domain to your local IP (`127.0.0.1`) instead of the live BigRock server. This allows you to test the production domain names locally without affecting the actual live site.
+Since `sarangijewels.com` is already deployed live on BigRock, you must trick your local machine into resolving the domain to your local IP (`127.0.0.1`) instead of the live BigRock server. This allows you to test the production domain names locally without affecting the actual live site.
 
 ### Step 1: Override DNS Locally via `/etc/hosts`
 
@@ -89,23 +89,23 @@ Since `noeve.store` is already deployed live on BigRock, you must trick your loc
    ```
 3. Add the following line at the very bottom of the file:
    ```text
-   127.0.0.1   noeve.store www.noeve.store api.noeve.store admin.noeve.store
+   127.0.0.1   sarangijewels.com www.sarangijewels.com api.sarangijewels.com admin.sarangijewels.com
    ```
 4. Save the file (`Ctrl+O`, then `Enter`) and exit nano (`Ctrl+X`).
 
-*From this point forward, opening `noeve.store` in your local browser will point to your local development environment rather than BigRock. To view the live site again, simply comment out or delete this line.*
+*From this point forward, opening `sarangijewels.com` in your local browser will point to your local development environment rather than BigRock. To view the live site again, simply comment out or delete this line.*
 
 ### Step 2: Accessing via Currently Running Dev Servers
 
 If you are running the applications in development mode via terminal (e.g., `pnpm run dev`), you must append the development port to the domain in your browser:
 
-*   **Web Store:** `http://noeve.store:3000`
-*   **NestJS API:** `http://api.noeve.store:3001`
-*   **Web Admin:** `http://admin.noeve.store:3002`
+*   **Web Store:** `http://sarangijewels.com:3000`
+*   **NestJS API:** `http://api.sarangijewels.com:3001`
+*   **Web Admin:** `http://admin.sarangijewels.com:3002`
 
 ### Step 3 (Optional): Simulating Production Ports (80/443) locally via Docker
 
-If you want to access `http://noeve.store` directly without specifying the `:3000` port (simulating exactly how it behaves on BigRock):
+If you want to access `http://sarangijewels.com` directly without specifying the `:3000` port (simulating exactly how it behaves on BigRock):
 
 1. **Stop your active `pnpm run dev` servers** to free up the ports.
 2. Ensure you have copied your `.env` configuration:
@@ -117,4 +117,4 @@ If you want to access `http://noeve.store` directly without specifying the `:300
    docker compose -f infrastructure/docker/docker-compose.yml up -d
    ```
    *(Note: For local testing without SSL, use the standard `docker-compose.yml` instead of the `.prod.yml` variant to bypass Let's Encrypt requirements).*
-4. You can now visit `http://noeve.store` in your browser. Nginx will automatically route the traffic to the correct local Docker container.
+4. You can now visit `http://sarangijewels.com` in your browser. Nginx will automatically route the traffic to the correct local Docker container.

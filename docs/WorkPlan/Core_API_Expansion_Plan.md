@@ -1,7 +1,7 @@
 # Core API Expansion Plan
 
 ## Overview
-This document outlines the implementation plan for Phase 3: Core API Expansion of the Noeve project, addressing pending tasks 25 through 29 from the Active Work Tracker.
+This document outlines the implementation plan for Phase 3: Core API Expansion of the Sarangi Jewels project, addressing pending tasks 25 through 29 from the Active Work Tracker.
 
 ## Task Breakdown & Implementation Strategy
 

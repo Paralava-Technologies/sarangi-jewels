@@ -1,6 +1,6 @@
-# Noeve
+# Sarangi Jewels
 
-Monorepo for the Noeve brand store: customer web/mobile, admin web/mobile, and a central API.
+Monorepo for the Sarangi Jewels brand store: customer web/mobile, admin web/mobile, and a central API.
 
 ## Prerequisites
 

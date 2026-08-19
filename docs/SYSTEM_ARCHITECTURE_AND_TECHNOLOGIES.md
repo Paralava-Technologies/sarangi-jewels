@@ -1,8 +1,8 @@
-# Noeve System Architecture & Technologies
+# Sarangi Jewels System Architecture & Technologies
 
 ## 1. System Overview
 
-Noeve is a unified platform comprising multiple front-end applications powered by a single, centralized backend API. The system is designed to provide a seamless shopping experience for customers across web and mobile platforms, while offering robust management tools for administrators. 
+Sarangi Jewels is a unified platform comprising multiple front-end applications powered by a single, centralized backend API. The system is designed to provide a seamless shopping experience for customers across web and mobile platforms, while offering robust management tools for administrators. 
 
 The repository is structured as a **Monorepo** using **pnpm workspaces** and **Turborepo** to ensure code reusability (shared types, UI tokens, API clients) and optimized build pipelines.
 

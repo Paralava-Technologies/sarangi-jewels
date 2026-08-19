@@ -48,8 +48,8 @@ async function bootstrap() {
   expressAppStatic.use('/public', require('express').static(path.join(__dirname, '..', 'public')));
 
   const config = new DocumentBuilder()
-    .setTitle('Noeve API')
-    .setDescription('The Noeve E-commerce Core API')
+    .setTitle('Sarangi Jewels API')
+    .setDescription('The Sarangi Jewels E-commerce Core API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -59,7 +59,7 @@ async function bootstrap() {
   const port = process.env.API_PORT ?? 3001;
   const publicUrl = process.env.API_URL ?? `http://localhost:${port}`;
   await app.listen(port);
-  console.log(`Noeve API running at ${publicUrl}/v1`);
+  console.log(`Sarangi Jewels API running at ${publicUrl}/v1`);
 }
 
 bootstrap();

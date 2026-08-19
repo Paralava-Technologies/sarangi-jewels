@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Noeve",
-    "slug": "noeve-store",
+    "name": "Sarangi Jewels",
+    "slug": "sarangijewels.com",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "noeve",
@@ -15,14 +15,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.noeve.store"
+      "bundleIdentifier": "com.sarangijewels.com"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.noeve.store"
+      "package": "com.sarangijewels.com"
     },
     "plugins": ["expo-router"],
     "experiments": {

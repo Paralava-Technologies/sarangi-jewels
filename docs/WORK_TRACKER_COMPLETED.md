@@ -14,7 +14,7 @@
 *(Logs of works completed that are moved from the active work tracker will be placed here)*
 
 - [x] 1. Organize the Menu in admin panel to a more organized format.
-- [x] 2. Add a analytics report in the admin panel that reflect the analysis of the current state of Noeve.store.
+- [x] 2. Add a analytics report in the admin panel that reflect the analysis of the current state of Sarangi Jewels.store.
 - [x] 3. Can the menu be styled better for admin module?
     - **Issue**: The original admin menu felt plain, lacked visual hierarchy, and only utilized text with flat active layouts.
     - **Resolution**: Implemented the `MENU_STYLING_PLAN.md` by installing `lucide-react` for icons, adding modernized group layout styling, active state micro-animations (e.g. left active border accent), and updating the logout button to seamlessly align with the new design language.
@@ -31,7 +31,7 @@
     - **Issue**: The new user registration journey felt abrupt, lacking a premium touch or proper welcoming correspondence.
     - **Resolution**: 
         - Created a `sendWelcomeEmail` method in `mail.service.ts` featuring a well-crafted HTML email design, and invoked it in `auth.service.ts` upon successful `registerStore`. Ethereal is automatically utilized for test capturing.
-        - Redesigned the success state of `web-store`'s `register/page.tsx` to display an elegant, personalized welcome note thanking the user for joining Noeve. The redirect timeout was extended to 5 seconds to ensure the user has sufficient time to enjoy the welcome note before navigating away.
+        - Redesigned the success state of `web-store`'s `register/page.tsx` to display an elegant, personalized welcome note thanking the user for joining Sarangi Jewels. The redirect timeout was extended to 5 seconds to ensure the user has sufficient time to enjoy the welcome note before navigating away.
 - [x] 9. Analytic is showing dummy data and dummy charts. Instead show the real data from the database.
     - **Issue**: The charts in `analytics/page.tsx` were hardcoded.
     - **Resolution**: Updated `analytics/page.tsx` to asynchronously `fetchReportsData` on mount and properly format the data for `recharts`. Implemented `getUserAcquisition` endpoint in the backend for the area chart.
@@ -41,9 +41,9 @@
 - [x] 11. Progress spinners for store and admin are slow/non-existent.
     - **Issue**: The custom `NavigationProgress` in Admin used a heavy `setInterval` React state that slowed down the browser. The Store lacked a spinner entirely.
     - **Resolution**: Installed `nextjs-toploader` across both apps. Replaced the custom admin bar with the highly optimized, lightweight NextTopLoader, and added it to the root layout in `web-store` to give users instant visual navigation feedback.
-- [x] 12. Welcome note is not very pleasing. Improve the welcome note and let the customer feel how excited we are about Noeve and having them as our customer.
+- [x] 12. Welcome note is not very pleasing. Improve the welcome note and let the customer feel how excited we are about Sarangi Jewels and having them as our customer.
     - **Issue**: The previous welcome note was an ordinary card in the center of the screen that did not match the premium vibe of the application store.
-    - **Resolution**: Redesigned the success state of `web-store`'s `register/page.tsx` into a deeply elegant, full-screen overlay featuring a beautiful serif typography, a smooth fade-in-up animation, and a heartfelt message welcoming the user to the Noeve community of mindful collectors.
+    - **Resolution**: Redesigned the success state of `web-store`'s `register/page.tsx` into a deeply elegant, full-screen overlay featuring a beautiful serif typography, a smooth fade-in-up animation, and a heartfelt message welcoming the user to the Sarangi Jewels community of mindful collectors.
 - [x] 13. http://localhost:3002/dashboard/reports gives error `topProducts.map is not a function`
     - **Issue**: The reports page threw a runtime error when `topProducts` was fetched. Initially, it was set to `null` and not safely validated as an array when data returned.
     - **Resolution**: Updated `reports/page.tsx` state to properly initialize with empty arrays `[]` and to validate `Array.isArray()` before calling `setTopProducts` and `setTransactions`.

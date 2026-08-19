@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class StoreHealthController {
   @Get()
   check() {
-    return { data: { status: 'ok', service: 'noeve-store' } };
+    return { data: { status: 'ok', service: 'sarangijewels.com' } };
   }
 }

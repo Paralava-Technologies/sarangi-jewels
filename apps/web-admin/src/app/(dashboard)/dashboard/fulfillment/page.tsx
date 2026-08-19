@@ -186,7 +186,7 @@ export default function FulfillmentPage(): React.JSX.Element {
       <p>${order.carrier ? `${order.carrier} — ` : ''}${order.trackingNumber}</p>
     </div>` : ''}
 
-    <div class="footer">Noeve © ${new Date().getFullYear()} · noeve.store</div>
+    <div class="footer">Sarangi Jewels © ${new Date().getFullYear()} · sarangijewels.com</div>
   </div>
   <script>window.onload = () => { window.print(); window.onafterprint = () => window.close(); };</script>
 </body>

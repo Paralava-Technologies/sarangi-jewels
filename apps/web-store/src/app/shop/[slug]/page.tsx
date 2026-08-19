@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
-  const image = product.images?.[0]?.url || 'https://noeve.store/images/logo.png';
+  const image = product.images?.[0]?.url || 'https://sarangijewels.com/images/logo.png';
   
   return {
     title: `${product.name} | NOEVE`,

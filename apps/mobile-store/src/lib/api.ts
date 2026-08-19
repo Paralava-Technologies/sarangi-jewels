@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import { NoeveApiClient } from '@noeve/api-client';
+import { SarangiJewelsApiClient } from '@noeve/api-client';
 import type { Category, Product, WishlistItem } from '@noeve/shared-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,7 +18,7 @@ export function getApiUrl() {
   );
 }
 
-export const apiClient = new NoeveApiClient({
+export const apiClient = new SarangiJewelsApiClient({
   baseUrl: getApiUrl(),
   getSessionId: () => currentSessionId,
   getAccessToken: () => currentAccessToken,

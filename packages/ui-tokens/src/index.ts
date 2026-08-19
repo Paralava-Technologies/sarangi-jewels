@@ -1,4 +1,4 @@
-/** Noeve brand design tokens — reference design theme */
+/** Sarangi Jewels brand design tokens — reference design theme */
 export const colors = {
   brand: {
     primary: '#6B2230',       // oxblood

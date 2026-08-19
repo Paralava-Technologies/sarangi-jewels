@@ -81,8 +81,8 @@ Based on the unchecked items, the focus areas currently pending are:
   - **Resolution**: Replaced the dustbin SVG path with a standard, premium shopping bag SVG in `cart-badge.tsx`.
 - [x] 17. There is no active logout button in the header. For logging out, the user wil need to go to My Account, then click on Sign Out.
   - **Resolution**: Updated `site-header.tsx` to detect authentication state and conditionally display a "Sign Out" icon button next to the Profile icon. Wired it to the `logout()` function.
-- [x] 18. In the welcome note, instead of smiley, Show the Logo of Noeve store.
-  - **Resolution**: Modified the registration success page (`register/page.tsx`) to replace the smiley SVG with the Noeve logo (`/images/logo.png`).
+- [x] 18. In the welcome note, instead of smiley, Show the Logo of Sarangi Jewels store.
+  - **Resolution**: Modified the registration success page (`register/page.tsx`) to replace the smiley SVG with the Sarangi Jewels logo (`/images/logo.png`).
 
 - [x] 50. Error in http://localhost:3002/dashboard/inventory
       lowStockProducts.map is not a function

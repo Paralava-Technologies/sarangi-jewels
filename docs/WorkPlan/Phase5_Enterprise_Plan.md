@@ -1,7 +1,7 @@
 # Phase 5: Enterprise & B2B (Storefront & Checkout)
 
 ## Overview
-This document outlines the implementation strategy for the final phase of the Noeve project. The goal is to elevate the storefront to an enterprise-grade experience by introducing robust content management, advanced navigation, dynamic filtering, and a comprehensive customer portal.
+This document outlines the implementation strategy for the final phase of the Sarangi Jewels project. The goal is to elevate the storefront to an enterprise-grade experience by introducing robust content management, advanced navigation, dynamic filtering, and a comprehensive customer portal.
 
 ## Task Breakdown & Implementation Strategy
 

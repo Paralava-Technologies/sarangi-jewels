@@ -51,7 +51,7 @@ export default function CheckoutScreen() {
           currency: session.currency,
           key: session.keyId,
           amount: session.amount,
-          name: 'Noeve',
+          name: 'Sarangi Jewels',
           order_id: session.providerOrderId,
           theme: { color: '#6B2230' }
         };
@@ -190,7 +190,7 @@ export default function CheckoutScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalIcon}>💳</Text>
-            <Text style={styles.modalTitle}>Noeve Sandbox Payment</Text>
+            <Text style={styles.modalTitle}>Sarangi Jewels Sandbox Payment</Text>
             <Text style={styles.modalText}>
               You are running in development mode. Press below to simulate a successful transaction for order{' '}
               <Text style={{ fontWeight: 'bold' }}>{currentOrder?.orderNumber}</Text>.

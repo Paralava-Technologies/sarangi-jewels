@@ -1,11 +1,11 @@
-import { NoeveApiClient } from '@noeve/api-client';
+import { SarangiJewelsApiClient } from '@noeve/api-client';
 import { getCartSessionId } from './cart';
 import { getAccessToken } from './auth';
 import type { Category, Product } from '@noeve/shared-types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
 
-export const apiClient = new NoeveApiClient({
+export const apiClient = new SarangiJewelsApiClient({
   baseUrl: API_URL,
   getSessionId: () => {
     if (typeof window === 'undefined') return null;

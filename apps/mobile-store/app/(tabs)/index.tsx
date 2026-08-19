@@ -54,7 +54,7 @@ export default function HomeScreen() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       <View style={styles.brandRow}>
-        <Text style={styles.logo}>Noeve</Text>
+        <Text style={styles.logo}>Sarangi Jewels</Text>
         <Link href="/(tabs)/cart">
           <Text style={styles.bagLink}>Bag</Text>
         </Link>

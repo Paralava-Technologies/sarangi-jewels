@@ -1,19 +1,19 @@
-# Noeve — Bigrock Shared Linux Hosting Deployment Guide
+# Sarangi Jewels — Bigrock Shared Linux Hosting Deployment Guide
 
-This document provides a step-by-step guide to deploying the Noeve application (API, Web Store, and Web Admin) onto a **Bigrock.in Shared Linux Hosting** environment using cPanel.
+This document provides a step-by-step guide to deploying the Sarangi Jewels application (API, Web Store, and Web Admin) onto a **Bigrock.in Shared Linux Hosting** environment using cPanel.
 
 Since Bigrock Shared Hosting does not support Docker, you will deploy the Next.js and NestJS applications natively using cPanel's **"Setup Node.js App"** feature. 
 
 ## Prerequisites on Bigrock
 1. **cPanel Access:** Ensure your Bigrock plan includes cPanel with the **"Setup Node.js App"** (Phusion Passenger) feature enabled.
-2. **Domain Configuration:** `noeve.store` must be mapped to your hosting account.
+2. **Domain Configuration:** `sarangijewels.com` must be mapped to your hosting account.
 3. **Subdomains:** Create the following subdomains in cPanel:
-   - `api.noeve.store` (for the NestJS backend)
-   - `admin.noeve.store` (for the Web Admin portal)
-4. **Database:** Bigrock typically provides **MySQL**. Since Noeve is configured for **PostgreSQL**, you must either:
+   - `api.sarangijewels.com` (for the NestJS backend)
+   - `admin.sarangijewels.com` (for the Web Admin portal)
+4. **Database:** Bigrock typically provides **MySQL**. Since Sarangi Jewels is configured for **PostgreSQL**, you must either:
    - Verify if Bigrock offers PostgreSQL on your specific plan.
    - Or, use a free/managed external PostgreSQL database like [Supabase](https://supabase.com) or [Neon.tech](https://neon.tech), and connect to it using the connection string.
-5. **SSL Certificates:** Install Let's Encrypt SSL for `noeve.store`, `api.noeve.store`, and `admin.noeve.store` via cPanel's SSL/TLS Status module.
+5. **SSL Certificates:** Install Let's Encrypt SSL for `sarangijewels.com`, `api.sarangijewels.com`, and `admin.sarangijewels.com` via cPanel's SSL/TLS Status module.
 
 ---
 
@@ -33,13 +33,13 @@ pnpm --filter @noeve/api build
 ### 2. Build the Web Store (Next.js)
 The Web Store is configured to use Next.js `standalone` mode, which creates a highly optimized, self-contained server ideal for shared hosting.
 ```bash
-export NEXT_PUBLIC_API_URL=https://api.noeve.store
+export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com
 pnpm --filter @noeve/web-store build
 ```
 
 ### 3. Build the Web Admin (Next.js)
 ```bash
-export NEXT_PUBLIC_API_URL=https://api.noeve.store
+export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com
 pnpm --filter @noeve/web-admin build
 ```
 
@@ -62,17 +62,17 @@ Create a local folder named `noeve-api` and copy the following into it:
    ```
 *Zip this folder into `noeve-api.zip`.*
 
-### Prepare the Web Store Folder (`noeve-store.zip`)
-1. Create a local folder named `noeve-store`.
-2. Copy all contents from `apps/web-store/.next/standalone/` into `noeve-store/`.
-3. Copy the `apps/web-store/public/` folder into `noeve-store/public/`.
-4. Copy the `apps/web-store/.next/static/` folder into `noeve-store/.next/static/`.
+### Prepare the Web Store Folder (`sarangijewels.com.zip`)
+1. Create a local folder named `sarangijewels.com`.
+2. Copy all contents from `apps/web-store/.next/standalone/` into `sarangijewels.com/`.
+3. Copy the `apps/web-store/public/` folder into `sarangijewels.com/public/`.
+4. Copy the `apps/web-store/.next/static/` folder into `sarangijewels.com/.next/static/`.
 5. Create a `.env.production` file:
    ```env
-   NEXT_PUBLIC_API_URL=https://api.noeve.store
+   NEXT_PUBLIC_API_URL=https://api.sarangijewels.com
    PORT=3000
    ```
-*Zip this folder into `noeve-store.zip`.*
+*Zip this folder into `sarangijewels.com.zip`.*
 
 ### Prepare the Web Admin Folder (`noeve-admin.zip`)
 Repeat the exact same process as the Web Store, but using files from `apps/web-admin/`.
@@ -86,7 +86,7 @@ Repeat the exact same process as the Web Store, but using files from `apps/web-a
 2. Go to **File Manager**.
 3. Create three new directories in your home root (outside of `public_html` for better security):
    - `/home/username/noeve-api`
-   - `/home/username/noeve-store`
+   - `/home/username/sarangijewels.com`
    - `/home/username/noeve-admin`
 4. Upload and extract your zip files into their respective directories.
 
@@ -100,7 +100,7 @@ In your cPanel dashboard, navigate to **Software > Setup Node.js App**. You will
 - **Node.js Version:** 20.x
 - **Application Mode:** Production
 - **Application Root:** `noeve-api`
-- **Application URL:** `api.noeve.store`
+- **Application URL:** `api.sarangijewels.com`
 - **Application Startup File:** `dist/main.js`
 - **Action:** Click "Create". 
 - **Action:** Once created, scroll down to the "Run NPM Install" button and click it to install the production `node_modules` for the NestJS API.
@@ -108,8 +108,8 @@ In your cPanel dashboard, navigate to **Software > Setup Node.js App**. You will
 ### 2. Configure the Web Store
 - **Node.js Version:** 20.x
 - **Application Mode:** Production
-- **Application Root:** `noeve-store`
-- **Application URL:** `noeve.store`
+- **Application Root:** `sarangijewels.com`
+- **Application URL:** `sarangijewels.com`
 - **Application Startup File:** `server.js`
 - **Action:** Click "Create". (Next.js standalone already includes its required modules, so you do not need to run NPM install).
 
@@ -117,7 +117,7 @@ In your cPanel dashboard, navigate to **Software > Setup Node.js App**. You will
 - **Node.js Version:** 20.x
 - **Application Mode:** Production
 - **Application Root:** `noeve-admin`
-- **Application URL:** `admin.noeve.store`
+- **Application URL:** `admin.sarangijewels.com`
 - **Application Startup File:** `server.js`
 - **Action:** Click "Create".
 
@@ -136,7 +136,7 @@ npx prisma migrate deploy
 
 If you have SSH access to your Bigrock cPanel account:
 ```bash
-ssh username@noeve.store
+ssh username@sarangijewels.com
 cd ~/noeve-api
 npx prisma migrate deploy
 ```
@@ -144,6 +144,6 @@ npx prisma migrate deploy
 ## Step 6: Start and Restart Applications
 
 Go back to the **Setup Node.js App** page in cPanel. 
-Ensure the status icon is green for all three applications (`noeve.store`, `admin.noeve.store`, and `api.noeve.store`). If they are stopped, click the **Start** button. If you ever update environment variables or upload new code, click the **Restart** button to apply changes.
+Ensure the status icon is green for all three applications (`sarangijewels.com`, `admin.sarangijewels.com`, and `api.sarangijewels.com`). If they are stopped, click the **Start** button. If you ever update environment variables or upload new code, click the **Restart** button to apply changes.
 
 Your application is now live on Bigrock Shared Hosting!

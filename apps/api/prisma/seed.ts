@@ -127,7 +127,7 @@ const PRODUCTS: ProductSeed[] = [
   },
   {
     slug: 'jewellery-care-kit',
-    name: 'Noeve Jewellery Care Kit',
+    name: 'Sarangi Jewels Jewellery Care Kit',
     description:
       'Polishing cloth, gentle cleaning solution, and soft brush — everything to maintain your pieces.',
     categorySlug: 'care-accessories',
@@ -175,7 +175,7 @@ async function main() {
     create: {
       email: 'admin@noeve.local',
       passwordHash: adminPassword,
-      firstName: 'Noeve',
+      firstName: 'Sarangi Jewels',
       lastName: 'Admin',
       role: UserRole.ADMIN,
     },

@@ -13,7 +13,7 @@ export default function AdminHome() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Noeve Admin</Text>
+      <Text style={styles.title}>Sarangi Jewels Admin</Text>
       <Text style={styles.sub}>
         Manage fulfillment pipelines and scan tracking codes on the go.
       </Text>

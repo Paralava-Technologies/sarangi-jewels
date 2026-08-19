@@ -173,7 +173,7 @@ export class OrdersService {
       .fontSize(10)
       .font('Helvetica')
       .text(storeName, 200, 50, { align: 'right' })
-      .text('123 Noeve Street, Design District', 200, 65, { align: 'right' })
+      .text('123 Sarangi Jewels Street, Design District', 200, 65, { align: 'right' })
       .text('Kerala, India 682001', 200, 80, { align: 'right' })
       .text(`Email: ${supportEmail} | Phone: ${supportPhone}`, 200, 95, { align: 'right' })
       .text('GSTIN: 32AABCU9603R1ZM', 200, 110, { align: 'right' })

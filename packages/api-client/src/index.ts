@@ -1,2 +1,2 @@
-export { NoeveApiClient, type ApiClientConfig } from './client';
+export { SarangiJewelsApiClient, type ApiClientConfig } from './client';
 export * from './endpoints';

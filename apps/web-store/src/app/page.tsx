@@ -114,7 +114,7 @@ export default async function HomePage(): Promise<React.JSX.Element> {
         <div className="wrap">
           <div className="quote__hairline" />
           <p className="quote__text">We don&apos;t chase seasons. We build the pieces that outlast them.</p>
-          <p className="quote__byline">— The Noeve Studio</p>
+          <p className="quote__byline">— The Sarangi Jewels Studio</p>
         </div>
       </section>
 

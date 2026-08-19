@@ -2,7 +2,7 @@
 
 ## 1. Research: Best Payment Gateways for E-commerce in India (Kerala)
 
-When selecting a payment gateway for `noeve.store` in Kerala, it's crucial to consider local payment preferences (UPI, net banking via local banks like Federal Bank/South Indian Bank, cards), settlement cycles, and ease of integration.
+When selecting a payment gateway for `sarangijewels.com` in Kerala, it's crucial to consider local payment preferences (UPI, net banking via local banks like Federal Bank/South Indian Bank, cards), settlement cycles, and ease of integration.
 
 Here are the top contenders:
 
@@ -17,7 +17,7 @@ Here are the top contenders:
 *   **Verdict:** Great alternative if instant settlement or complex vendor payouts are a priority.
 
 ### C. PayU
-*   **Pros:** Long-standing, highly reliable, high transaction success rates. Great support for international cards if `noeve.store` plans to sell outside India.
+*   **Pros:** Long-standing, highly reliable, high transaction success rates. Great support for international cards if `sarangijewels.com` plans to sell outside India.
 *   **Cons:** Documentation and developer experience are not as modern as Razorpay.
 
 ### D. PhonePe Payment Gateway
@@ -25,13 +25,13 @@ Here are the top contenders:
 *   **Cons:** Newer as a standalone PG for merchants compared to Razorpay/PayU, meaning fewer third-party plugins out of the box.
 
 ### Recommendation: Razorpay
-Given our modern web stack, requirement for a seamless checkout experience, and previous context indicating a preference for Razorpay, **Razorpay** is the clear winner for `noeve.store`.
+Given our modern web stack, requirement for a seamless checkout experience, and previous context indicating a preference for Razorpay, **Razorpay** is the clear winner for `sarangijewels.com`.
 
 ---
 
 ## 2. Integration Plan (Razorpay)
 
-Here is the step-by-step implementation plan for integrating Razorpay into the `noeve.store` application.
+Here is the step-by-step implementation plan for integrating Razorpay into the `sarangijewels.com` application.
 
 ### Phase 1: Preparation & Account Setup
 1.  **Create Razorpay Account:** Sign up on Razorpay, submit KYC documents (GST, PAN, Bank Details of the Kerala business).
@@ -59,7 +59,7 @@ Here is the step-by-step implementation plan for integrating Razorpay into the `
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: amountInPaise,
             currency: "INR",
-            name: "Noeve Store",
+            name: "Sarangi Jewels Store",
             description: "Order Payment",
             order_id: razorpay_order_id,
             handler: function (response) {
@@ -70,7 +70,7 @@ Here is the step-by-step implementation plan for integrating Razorpay into the `
                 email: customer.email,
                 contact: customer.phone // Crucial for Indian customers
             },
-            theme: { color: "#3399cc" } // Match Noeve branding
+            theme: { color: "#3399cc" } // Match Sarangi Jewels branding
         };
         const rzp = new window.Razorpay(options);
         rzp.open();
@@ -86,7 +86,7 @@ Here is the step-by-step implementation plan for integrating Razorpay into the `
 
 ## 3. Webhook Generation & Configuration Guide
 
-Webhooks are crucial for ensuring your backend (`noeve.store` API) stays in sync with the actual payment status on Razorpay's end, especially in cases where the user's browser closes before redirecting back to the storefront.
+Webhooks are crucial for ensuring your backend (`sarangijewels.com` API) stays in sync with the actual payment status on Razorpay's end, especially in cases where the user's browser closes before redirecting back to the storefront.
 
 ### Steps to Generate & Configure the Webhook:
 
@@ -101,7 +101,7 @@ Webhooks are crucial for ensuring your backend (`noeve.store` API) stays in sync
 
 3. **Fill in the Webhook Details:**
    * **Webhook URL:** Enter your backend endpoint URL. 
-     * For production, it will be something like: `https://api.noeve.store/v1/store/payments/webhook`
+     * For production, it will be something like: `https://api.sarangijewels.com/v1/store/payments/webhook`
      * **For Local Development (using Ngrok):**
        Since Razorpay cannot send requests to `localhost`, you need to expose your local API port (3001) to the internet.
        1. Download and install [Ngrok](https://ngrok.com/download).

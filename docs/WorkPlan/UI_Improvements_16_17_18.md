@@ -15,7 +15,7 @@ This document outlines the proposed changes to address the active items 16, 17, 
 
 ## Task 18: Welcome Note Logo Update
 - **Current State:** After successful registration, the welcome screen in `apps/web-store/src/app/register/page.tsx` displays a smiley face SVG.
-- **Proposed Change:** Replace the smiley face SVG (lines 54-58) with the Noeve brand logo (`<img src="/images/logo.png" />`), styled consistently with the welcome message aesthetic.
+- **Proposed Change:** Replace the smiley face SVG (lines 54-58) with the Sarangi Jewels brand logo (`<img src="/images/logo.png" />`), styled consistently with the welcome message aesthetic.
 
 ## Next Steps
 Please review this plan. If you are satisfied with these approaches, let me know, and I will proceed with implementing the changes!

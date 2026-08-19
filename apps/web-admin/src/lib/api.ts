@@ -1,7 +1,7 @@
 'use client';
 
 import { getAccessToken, clearAccessToken } from './auth';
-import { NoeveApiClient } from '@noeve/api-client';
+import { SarangiJewelsApiClient } from '@noeve/api-client';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
 
@@ -14,7 +14,7 @@ async function fetchWithAuth(url: string, options?: RequestInit) {
   return res;
 }
 
-export const apiClient = new NoeveApiClient({
+export const apiClient = new SarangiJewelsApiClient({
   baseUrl: API_URL,
   getAccessToken: () => getAccessToken(),
   onUnauthorized: () => {

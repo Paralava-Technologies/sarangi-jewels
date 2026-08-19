@@ -61,8 +61,8 @@ export default function RegisterPage(): React.JSX.Element {
           
           <div className="mx-auto max-w-2xl text-left text-base leading-relaxed text-stone-600 md:text-lg space-y-4">
             <p>I am incredibly excited to share something very close to my heart. For the past few months, we’ve been working on a passion project to bring true, mindful curation right to you.</p>
-            <p>Today, I’m thrilled to invite you to take a first look at our brand-new platform: Noeve.</p>
-            <p>Whether you are looking for considered apparel, timeless beauty essentials, or lifestyle objects designed to outlast the season, Noeve is built to be your go-to destination. We believe that style isn’t just about clothing; it’s about intentionality, longevity, and embracing fewer, finer pieces.</p>
+            <p>Today, I’m thrilled to invite you to take a first look at our brand-new platform: Sarangi Jewels.</p>
+            <p>Whether you are looking for considered apparel, timeless beauty essentials, or lifestyle objects designed to outlast the season, Sarangi Jewels is built to be your go-to destination. We believe that style isn’t just about clothing; it’s about intentionality, longevity, and embracing fewer, finer pieces.</p>
             <p>This is just the beginning of our journey together, and your support means the world to us. Take a look around, explore our curated pieces, and get ready to experience the ultimate celebration of considered living!</p>
             <p className="font-medium text-stone-800 pt-2">Thank you so much for your love and encouragement. Let the journey begin!</p>
           </div>
@@ -118,7 +118,7 @@ export default function RegisterPage(): React.JSX.Element {
             />
           </svg>
           <div className="auth__visual-top">
-            <span className="tag">Join Noeve</span>
+            <span className="tag">Join Sarangi Jewels</span>
           </div>
           <div>
             <div className="auth__visual-hairline" />

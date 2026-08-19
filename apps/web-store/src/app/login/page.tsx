@@ -87,7 +87,7 @@ function LoginForm(): React.JSX.Element {
           <div>
             <div className="auth__visual-hairline" />
             <h2>&quot;We don&apos;t chase seasons. We build the pieces that outlast them.&quot;</h2>
-            <span className="quote-byline">— The Noeve Studio</span>
+            <span className="quote-byline">— The Sarangi Jewels Studio</span>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ function LoginForm(): React.JSX.Element {
           </Link>
 
           <p className="auth__switch">
-            New to Noeve? <Link href="/register">Create an account</Link>
+            New to Sarangi Jewels? <Link href="/register">Create an account</Link>
           </p>
           <p style={{ textAlign: 'center', marginTop: '0.8rem', fontSize: '0.72rem', color: 'rgba(33,29,25,0.4)' }}>
             Demo: customer@noeve.local / Customer123!

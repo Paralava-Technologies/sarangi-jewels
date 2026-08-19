@@ -16,7 +16,7 @@ const supportLinks = [
   { href: '/faqs', label: 'FAQs' },
 ];
 const studioLinks = [
-  { href: '/about', label: 'About Noeve' },
+  { href: '/about', label: 'About Sarangi Jewels' },
   { href: '/vision', label: 'Vision' },
   { href: '/mission', label: 'Mission' },
   { href: '/sustainability', label: 'Sustainability' },
@@ -103,7 +103,7 @@ export async function SiteFooter() {
         </div>
 
         <div className="footer__bottom">
-          <p>© {new Date().getFullYear()} {settings?.storeName || 'NOEVE'}. All rights reserved. — www.noeve.store</p>
+          <p>© {new Date().getFullYear()} {settings?.storeName || 'NOEVE'}. All rights reserved. — www.sarangijewels.com</p>
           <div className="footer__legal">
             <Link href="/payment-security">Payment Security</Link>
             <Link href="/e-waste-compliance">E-Waste</Link>

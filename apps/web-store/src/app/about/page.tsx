@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Noeve | NOEVE',
+  title: 'About Sarangi Jewels | NOEVE',
   description: 'About the NOEVE brand.',
 };
 
@@ -11,7 +11,7 @@ export default function AboutPage() {
     <main className="wrap pb-20">
       <div className="page-head">
         <div className="eyebrow">Studio</div>
-        <h1>About Noeve</h1>
+        <h1>About Sarangi Jewels</h1>
       </div>
       <div className="max-w-3xl">
         <p className="text-[rgba(33,29,25,0.78)] mb-4">

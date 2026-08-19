@@ -6,20 +6,20 @@ import './globals.css';
 import React from 'react';
 
 export const metadata: Metadata = {
-  title: 'NOEVE — Considered Fashion, Beauty & Lifestyle',
-  description: 'NOEVE — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
-  keywords: 'luxury, fashion, beauty, lifestyle, apparel, jewelry, noeve, noeve store',
+  title: 'Sarangi Jewels — Considered Fashion, Beauty & Lifestyle',
+  description: 'Sarangi Jewels — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
+  keywords: 'luxury, fashion, beauty, lifestyle, apparel, jewelry, sarangi jewels, sarangijewels.com',
   openGraph: {
-    title: 'NOEVE — Considered Fashion, Beauty & Lifestyle',
-    description: 'NOEVE — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
-    url: 'https://noeve.store',
-    siteName: 'NOEVE',
+    title: 'Sarangi Jewels — Considered Fashion, Beauty & Lifestyle',
+    description: 'Sarangi Jewels — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
+    url: 'https://sarangijewels.com',
+    siteName: 'Sarangi Jewels',
     images: [
       {
-        url: 'https://noeve.store/images/logo.png',
+        url: 'https://sarangijewels.com/images/logo.png',
         width: 1200,
         height: 630,
-        alt: 'NOEVE Store',
+        alt: 'Sarangi Jewels Store',
       },
     ],
     locale: 'en_US',
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NOEVE — Considered Fashion, Beauty & Lifestyle',
-    description: 'NOEVE — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
-    images: ['https://noeve.store/images/logo.png'],
+    title: 'Sarangi Jewels — Considered Fashion, Beauty & Lifestyle',
+    description: 'Sarangi Jewels — fewer pieces, finer ones. Considered apparel, beauty and lifestyle objects designed to outlast the season.',
+    images: ['https://sarangijewels.com/images/logo.png'],
   },
   robots: {
     index: true,

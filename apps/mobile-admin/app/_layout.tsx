@@ -36,7 +36,7 @@ export default function RootLayout() {
     <>
       <StatusBar style="light" />
       <Stack screenOptions={{ headerStyle: { backgroundColor: '#4A148C' }, headerTintColor: '#fff' }}>
-        <Stack.Screen name="index" options={{ title: 'Noeve Admin' }} />
+        <Stack.Screen name="index" options={{ title: 'Sarangi Jewels Admin' }} />
         <Stack.Screen name="orders" options={{ title: 'Orders' }} />
         <Stack.Screen name="fulfillment" options={{ title: 'Fulfillment' }} />
         <Stack.Screen name="scanner" options={{ title: 'Scan Label' }} />

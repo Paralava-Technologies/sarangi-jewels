@@ -1,8 +1,8 @@
-# Ruchikooth & Noeve.store — Dual Deployment Guide
+# Ruchikooth & Sarangi Jewels.store — Dual Deployment Guide
 
 This comprehensive guide outlines the complete step-by-step deployment procedure for hosting:
 1. **Ruchikooth** (`ruchikooth.com` & `admin.ruchikooth.com`) on **Firebase Hosting** (Zero server cost / Global CDN).
-2. **noeve.store** (`noeve.store`, `admin.noeve.store`, `api.noeve.store`) on a **VPS** using **Docker Compose** and **Nginx**.
+2. **sarangijewels.com** (`sarangijewels.com`, `admin.sarangijewels.com`, `api.sarangijewels.com`) on a **VPS** using **Docker Compose** and **Nginx**.
 
 ---
 
@@ -12,16 +12,16 @@ This comprehensive guide outlines the complete step-by-step deployment procedure
 | :--- | :--- | :--- | :--- |
 | **Ruchikooth Storefront** | `ruchikooth.com`<br>`www.ruchikooth.com` | Firebase Hosting | React / Next.js (Static/SSG/SPA) |
 | **Ruchikooth Admin** | `admin.ruchikooth.com` | Firebase Hosting | React / Next.js (Static/SPA) |
-| **noeve.store** | `noeve.store`<br>`www.noeve.store` | VPS (BigRock / Hostinger / etc.) | Docker Container (Next.js 15) |
-| **noeve.store Admin** | `admin.noeve.store` | VPS | Docker Container (Next.js 15) |
-| **noeve.store API** | `api.noeve.store` | VPS | Docker Container (NestJS) |
-| **noeve.store DB & Services** | Internal | VPS | PostgreSQL 16, Redis 7, MinIO, Nginx |
+| **sarangijewels.com** | `sarangijewels.com`<br>`www.sarangijewels.com` | VPS (BigRock / Hostinger / etc.) | Docker Container (Next.js 15) |
+| **sarangijewels.com Admin** | `admin.sarangijewels.com` | VPS | Docker Container (Next.js 15) |
+| **sarangijewels.com API** | `api.sarangijewels.com` | VPS | Docker Container (NestJS) |
+| **sarangijewels.com DB & Services** | Internal | VPS | PostgreSQL 16, Redis 7, MinIO, Nginx |
 
 ---
 
 # Part 1: Ruchikooth Deployment (Firebase Hosting)
 
-Since **Ruchikooth** utilizes **Firebase** as its backend (Firestore, Firebase Auth, Storage), hosting its frontends directly on **Firebase Hosting** eliminates all server compute costs and preserves 100% of your VPS memory for `noeve.store`.
+Since **Ruchikooth** utilizes **Firebase** as its backend (Firestore, Firebase Auth, Storage), hosting its frontends directly on **Firebase Hosting** eliminates all server compute costs and preserves 100% of your VPS memory for `sarangijewels.com`.
 
 ---
 
@@ -122,19 +122,19 @@ firebase deploy --only hosting
 
 ---
 
-# Part 2: noeve.store Deployment (VPS Docker Stack)
+# Part 2: sarangijewels.com Deployment (VPS Docker Stack)
 
-`noeve.store` runs a **6-container Docker stack** + Nginx on your VPS (PostgreSQL, Redis, MinIO, NestJS API, Storefront Next.js, Admin Next.js).
+`sarangijewels.com` runs a **6-container Docker stack** + Nginx on your VPS (PostgreSQL, Redis, MinIO, NestJS API, Storefront Next.js, Admin Next.js).
 
 ---
 
 ## Step 1: DNS Records Setup
 
-Log into your domain registrar for `noeve.store` and create four **A Records** pointing to your VPS public IP address:
+Log into your domain registrar for `sarangijewels.com` and create four **A Records** pointing to your VPS public IP address:
 
 | Host / Subdomain | Type | Target IP |
 | :--- | :--- | :--- |
-| `@` (`noeve.store`) | A | `<YOUR_VPS_IP>` |
+| `@` (`sarangijewels.com`) | A | `<YOUR_VPS_IP>` |
 | `www` | A | `<YOUR_VPS_IP>` |
 | `api` | A | `<YOUR_VPS_IP>` |
 | `admin` | A | `<YOUR_VPS_IP>` |
@@ -177,7 +177,7 @@ Log into your domain registrar for `noeve.store` and create four **A Records** p
 
 2. Clone the repository:
    ```bash
-   git clone https://github.com/digeesh09/noeve-store.git .
+   git clone https://github.com/digeesh09/sarangijewels.com.git .
    ```
 
 3. Create the production environment file:
@@ -192,7 +192,7 @@ Log into your domain registrar for `noeve.store` and create four **A Records** p
    REDIS_PASSWORD=generate_secure_random_password
    JWT_SECRET=generate_long_random_jwt_secret_key
    MINIO_ROOT_PASSWORD=generate_secure_minio_password
-   NEXT_PUBLIC_API_URL=https://api.noeve.store/v1
+   NEXT_PUBLIC_API_URL=https://api.sarangijewels.com/v1
    ```
 
 ---
@@ -202,15 +202,15 @@ Log into your domain registrar for `noeve.store` and create four **A Records** p
 1. Stop any service using port 80 and issue certificates:
    ```bash
    certbot certonly --standalone \
-     -d noeve.store \
-     -d www.noeve.store \
-     -d api.noeve.store \
-     -d admin.noeve.store
+     -d sarangijewels.com \
+     -d www.sarangijewels.com \
+     -d api.sarangijewels.com \
+     -d admin.sarangijewels.com
    ```
 
 2. Copy certificates into the expected infrastructure folder:
    ```bash
-   cp -r /etc/letsencrypt/live/noeve.store/* /opt/noeve/infrastructure/certs/
+   cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/noeve/infrastructure/certs/
    ```
 
 ---
@@ -238,9 +238,9 @@ Log into your domain registrar for `noeve.store` and create four **A Records** p
    ```
 
 2. Verify endpoint accessibility:
-   - **Web Storefront:** `https://noeve.store`
-   - **Admin Dashboard:** `https://admin.noeve.store`
-   - **API Health Check:** `https://api.noeve.store/v1/store/health`
+   - **Web Storefront:** `https://sarangijewels.com`
+   - **Admin Dashboard:** `https://admin.sarangijewels.com`
+   - **API Health Check:** `https://api.sarangijewels.com/v1/store/health`
 
 ---
 
