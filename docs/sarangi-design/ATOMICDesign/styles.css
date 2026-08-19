@@ -432,7 +432,7 @@ footer ul a:hover{ color:var(--gold-light); }
    ============================================================ */
 
 /* ===== TEMPLATE: Auth (login/register) ===== */
-.auth-wrap{ display:grid; grid-template-columns:1fr 1fr; min-height:640px; }
+.auth-wrap{ display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 80px); }
 .auth-visual{
   background:
     radial-gradient(ellipse at 30% 20%, rgba(201,153,61,.25), transparent 55%),
@@ -722,9 +722,9 @@ footer ul a:hover{ color:var(--gold-light); }
   .chat-composer button[type="submit"]{ width:100%; justify-content:center; }
 }
 
-sj-header, sj-footer, sj-utility-bar, sj-newsletter, sj-trust-strip, sj-jewel-drip, sj-section-head, sj-home-hero {
+sj-header, sj-footer, sj-utility-bar, sj-newsletter, sj-trust-strip, sj-jewel-drip, sj-section-head, sj-home-hero, sj-page-banner, sj-accordion-item, sj-minimal-header, sj-product-detail {
   display: block;
 }
-sj-product-card, sj-cat-card, sj-testi-card, sj-rent-step, sj-split-card, sj-stat {
+sj-product-card, sj-cat-card, sj-testi-card, sj-rent-step, sj-split-card, sj-stat, sj-cart-row {
   display: contents;
 }

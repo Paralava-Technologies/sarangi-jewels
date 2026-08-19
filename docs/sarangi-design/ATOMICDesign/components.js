@@ -392,3 +392,136 @@ class SJHomeHero extends HTMLElement {
   }
 }
 customElements.define("sj-home-hero", SJHomeHero);
+
+class SJPageBanner extends HTMLElement {
+  connectedCallback() {
+    const crumbs = this.getAttribute("crumbs") || "";
+    const title = this.getAttribute("title") || "";
+    const desc = this.getAttribute("desc") || "";
+    
+    this.innerHTML = `
+      <div class="page-banner">
+        ${crumbs ? `<div class="crumbs">${crumbs}</div>` : ''}
+        <h1>${title}</h1>
+        ${desc ? `<p style="color:var(--ivory-deep); font-size:.9rem;">${desc}</p>` : ''}
+      </div>`;
+  }
+}
+customElements.define("sj-page-banner", SJPageBanner);
+
+class SJAccordionItem extends HTMLElement {
+  connectedCallback() {
+    const summary = this.getAttribute("summary") || "";
+    const open = this.hasAttribute("open") ? "open" : "";
+    const content = this.innerHTML;
+    
+    this.innerHTML = `
+      <details class="accordion-item" ${open}>
+        <summary>${summary}</summary>
+        <p>${content}</p>
+      </details>`;
+  }
+}
+customElements.define("sj-accordion-item", SJAccordionItem);
+
+class SJCartRow extends HTMLElement {
+  connectedCallback() {
+    const thumb = this.getAttribute("thumb") || "";
+    const title = this.getAttribute("title") || "";
+    const meta = this.getAttribute("meta") || "";
+    const qty = this.getAttribute("qty") || "1";
+    const price = this.getAttribute("price") || "";
+    const actions = this.innerHTML;
+    
+    this.innerHTML = `
+      <div class="cart-row">
+        <div class="thumb">${thumb}</div>
+        <div><h5>${title}</h5><div class="meta">${meta}</div></div>
+        <div class="qty-stepper"><button>−</button><span>${qty}</span><button>+</button></div>
+        <div class="price" style="font-size:1rem;">${price}</div>
+        <div>${actions}</div>
+        <div><a href="#" class="remove-link">Remove</a></div>
+      </div>`;
+  }
+}
+customElements.define("sj-cart-row", SJCartRow);
+
+class SJMinimalHeader extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <nav class="nav" style="display: flex; align-items: center; justify-content: center; height: 80px;">
+        <a href="index.html" class="nav-brand" style="text-decoration:none;"><img src="assets/sarangi-logo-mark.png" alt="Sarangi Jewels" style="height:40px;"></a>
+      </nav>
+    `;
+  }
+}
+customElements.define("sj-minimal-header", SJMinimalHeader);
+
+
+class SJProductDetail extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <div class="pd-layout">
+        <div>
+          <div class="pd-gallery-main frame"><span style="font-size:5rem; color:rgba(74,14,30,.3)">&#128142;</span></div>
+          <div class="pd-thumbs"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div>
+          <p class="eyebrow">Bridal Necklace · Kemp &amp; Temple</p>
+          <h1 style="font-size:2.3rem; margin:12px 0 10px;">Lotus Kemp Choker Set</h1>
+          <div class="stars" style="color:var(--gold); margin-bottom:16px;">★★★★★ <span style="color:#8a7a6a; font-size:.8rem; font-family:'Jost';">(214 reviews)</span></div>
+
+          <div class="pd-mode-toggle">
+            <button class="active" id="buyBtn">Buy — Own It</button>
+            <button id="rentBtn">Rent — Wear It</button>
+          </div>
+
+          <div id="buyPanel">
+            <div class="price-row"><span class="price" style="font-size:2rem;">₹6,499</span><span class="price strike" style="font-size:1.2rem;">₹8,900</span></div>
+            <p style="color:#6b5a4d; margin:16px 0; line-height:1.8; font-size:.92rem;">A lotus-motif kemp choker inspired by temple carvings, finished in antique gold-tone with hand-set stones. Comes with matching jhumkas and a maang tikka. Nickel-free, skin-safe base.</p>
+            <a href="#" class="btn btn-gold" style="width:100%; justify-content:center;">Add To Bag</a>
+          </div>
+
+          <div id="rentPanel" style="display:none;">
+            <div class="price-row"><span class="price" style="font-size:2rem;">₹1,899</span><span style="color:#8a7a6a; font-size:.9rem;">/ day</span></div>
+            <div class="pd-meta">
+              <div><strong>Deposit</strong><br>₹5,000 (refundable)</div>
+              <div><strong>Min. Rental</strong><br>2 days</div>
+              <div><strong>Cleaning</strong><br>Included</div>
+            </div>
+            <label style="font-size:.8rem; color:#6b5a4d; display:block; margin-bottom:6px;">Select your dates</label>
+            <div style="display:flex; gap:10px; margin-bottom:18px;">
+              <input type="date" style="flex:1; padding:12px; border:1px solid var(--line); font-family:'Jost';">
+              <input type="date" style="flex:1; padding:12px; border:1px solid var(--line); font-family:'Jost';">
+            </div>
+            <a href="#" class="btn btn-peacock" style="width:100%; justify-content:center;">Reserve This Set</a>
+          </div>
+
+          <div class="accordion" style="margin-top:34px;">
+            <sj-accordion-item summary="Details &amp; Care" open>Antique gold-tone alloy, hand-set kemp stones, nickel-free coating. Store in a dry pouch, avoid perfume contact.</sj-accordion-item>
+            <sj-accordion-item summary="Size &amp; Fit">Adjustable thread closure, fits neck sizes 12"–16". Comes with matching jhumka and maang tikka.</sj-accordion-item>
+            <sj-accordion-item summary="Delivery &amp; Rental Terms">Free store pickup in Kochi. Delivery across Kerala in 2–4 days. Rental deposit refunded within 48 hours of return, subject to condition check.</sj-accordion-item>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    const buyBtn = this.querySelector("#buyBtn");
+    const rentBtn = this.querySelector("#rentBtn");
+    const buyPanel = this.querySelector("#buyPanel");
+    const rentPanel = this.querySelector("#rentPanel");
+    
+    if (buyBtn && rentBtn && buyPanel && rentPanel) {
+      const setMode = (mode) => {
+        buyPanel.style.display = mode === "buy" ? "block" : "none";
+        rentPanel.style.display = mode === "rent" ? "block" : "none";
+        buyBtn.classList.toggle("active", mode === "buy");
+        rentBtn.classList.toggle("active", mode === "rent");
+      };
+      
+      buyBtn.addEventListener("click", () => setMode("buy"));
+      rentBtn.addEventListener("click", () => setMode("rent"));
+    }
+  }
+}
+customElements.define("sj-product-detail", SJProductDetail);

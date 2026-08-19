@@ -13,33 +13,23 @@
 
 
 
-<div class="page-banner">
-  <div class="crumbs">Home / Rentals / Makeup</div>
-  <h1>Makeup Kits &amp; Artist Booking</h1>
-  <p style="color:var(--ivory-deep); font-size:.9rem;">Complete the look — in studio or at your doorstep</p>
-</div>
+<sj-page-banner crumbs="Home / Rentals / Makeup" title="Makeup Kits &amp; Artist Booking" desc="Complete the look — in studio or at your doorstep"></sj-page-banner>
 
 <section class="section">
   <div class="container">
-    <div class="section-head">
-      <p class="eyebrow">Choose A Service</p>
-      <h2>Makeup For Every Occasion</h2>
-    </div>
+    <sj-section-head eyebrow="Choose A Service" title="Makeup For Every Occasion"></sj-section-head>
     <div class="product-grid">
-      <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge rent">For Rent</span><span class="wish">&#9825;</span><span class="glyph">&#128132;</span></div><div class="product-info"><div class="cat">Makeup</div><h4>Bridal Makeup Artist + Kit</h4><div class="price-row"><span class="price">₹3,500/session</span></div><div class="rent-note">Home visit available</div></div></a></div>
-      <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge rent">For Rent</span><span class="wish">&#9825;</span><span class="glyph">&#128132;</span></div><div class="product-info"><div class="cat">Makeup</div><h4>Dance Stage Makeup Kit</h4><div class="price-row"><span class="price">₹899/day</span></div><div class="rent-note">Includes false lashes &amp; bindi set</div></div></a></div>
-      <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge rent">For Rent</span><span class="wish">&#9825;</span><span class="glyph">&#128132;</span></div><div class="product-info"><div class="cat">Makeup</div><h4>Party Glam Artist Session</h4><div class="price-row"><span class="price">₹2,200/session</span></div><div class="rent-note">Studio or home visit</div></div></a></div>
-      <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge rent">For Rent</span><span class="wish">&#9825;</span><span class="glyph">&#128132;</span></div><div class="product-info"><div class="cat">Makeup</div><h4>Hairstyling + Draping Add-On</h4><div class="price-row"><span class="price">₹1,200/session</span></div><div class="rent-note">Book with any makeup session</div></div></a></div>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128132;" category="Makeup" title="Bridal Makeup Artist + Kit" price="₹3,500/session" rent-note="Home visit available"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128132;" category="Makeup" title="Dance Stage Makeup Kit" price="₹899/day" rent-note="Includes false lashes &amp; bindi set"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128132;" category="Makeup" title="Party Glam Artist Session" price="₹2,200/session" rent-note="Studio or home visit"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128132;" category="Makeup" title="Hairstyling + Draping Add-On" price="₹1,200/session" rent-note="Book with any makeup session"></sj-product-card>
     </div>
   </div>
 </section>
 
 <section class="section section-alt">
   <div class="container" style="max-width:760px;">
-    <div class="section-head">
-      <p class="eyebrow">Book An Artist</p>
-      <h2>Reserve Your Session</h2>
-    </div>
+    <sj-section-head eyebrow="Book An Artist" title="Reserve Your Session"></sj-section-head>
     <div class="card-panel">
       <form onsubmit="return false;">
         <div class="field-row">

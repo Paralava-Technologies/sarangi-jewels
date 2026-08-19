@@ -13,29 +13,15 @@
 
 
 
-<div class="page-banner"><div class="crumbs">Home / My Bag</div><h1>My Bag</h1></div>
+<sj-page-banner crumbs="Home / My Bag" title="My Bag"></sj-page-banner>
 
 <section class="section">
   <div class="container" style="display:grid; grid-template-columns:1fr 380px; gap:44px; align-items:start;">
     <div>
       <p class="eyebrow" style="margin-bottom:10px;">To Buy</p>
       <div class="card-panel">
-        <div class="cart-row">
-          <div class="thumb">&#128142;</div>
-          <div><h5>Lotus Kemp Choker Set</h5><div class="meta">Bridal Necklace · Antique Gold</div></div>
-          <div class="qty-stepper"><button>−</button><span>1</span><button>+</button></div>
-          <div class="price" style="font-size:1rem;">₹6,499</div>
-          <div><a href="#" class="btn" style="padding:8px 14px; font-size:.65rem;">Move to Rent</a></div>
-          <div><a href="#" class="remove-link">Remove</a></div>
-        </div>
-        <div class="cart-row">
-          <div class="thumb">&#9833;</div>
-          <div><h5>Peacock Pearl Drop Earrings</h5><div class="meta">Jhumka · Gold-tone</div></div>
-          <div class="qty-stepper"><button>−</button><span>2</span><button>+</button></div>
-          <div class="price" style="font-size:1rem;">₹2,598</div>
-          <div></div>
-          <div><a href="#" class="remove-link">Remove</a></div>
-        </div>
+        <sj-cart-row thumb="&#128142;" title="Lotus Kemp Choker Set" meta="Bridal Necklace · Antique Gold" qty="1" price="₹6,499"><a href="#" class="btn" style="padding:8px 14px; font-size:.65rem;">Move to Rent</a></sj-cart-row>
+        <sj-cart-row thumb="&#9833;" title="Peacock Pearl Drop Earrings" meta="Jhumka · Gold-tone" qty="2" price="₹2,598"></sj-cart-row>
       </div>
 
       <p class="eyebrow" style="margin:34px 0 10px;">To Rent</p>

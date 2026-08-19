@@ -13,11 +13,7 @@
 
 
 
-<div class="page-banner">
-  <div class="crumbs">Home / Shop</div>
-  <h1>Fine &amp; Imitation Jewellery</h1>
-  <p style="color:var(--ivory-deep); font-size:.9rem;">124 pieces, curated by our Kochi jewellers</p>
-</div>
+<sj-page-banner crumbs="Home / Shop" title="Fine &amp; Imitation Jewellery" desc="124 pieces, curated by our Kochi jewellers"></sj-page-banner>
 
 <section class="section">
   <div class="container shop-layout">
@@ -52,14 +48,14 @@
         <div class="toggle-group"><span class="active">Popular</span><span>Newest</span><span>Price ↑</span><span>Price ↓</span></div>
       </div>
       <div class="product-grid">
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">Bestseller</span><span class="wish">&#9825;</span><span class="glyph">&#128142;</span></div><div class="product-info"><div class="cat">Bridal Necklace</div><h4>Lotus Kemp Choker Set</h4><div class="price-row"><span class="price">₹6,499</span><span class="price strike">₹8,900</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#9833;</span></div><div class="product-info"><div class="cat">Jhumka</div><h4>Peacock Pearl Drop Earrings</h4><div class="price-row"><span class="price">₹1,299</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">Trending</span><span class="wish">&#9825;</span><span class="glyph">&#128081;</span></div><div class="product-info"><div class="cat">Temple Jewellery</div><h4>Nakshi Long Haaram</h4><div class="price-row"><span class="price">₹4,199</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Bangles</div><h4>Antique Gold Kada Set</h4><div class="price-row"><span class="price">₹2,750</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128142;</span></div><div class="product-info"><div class="cat">Bridal Necklace</div><h4>Kasu Mala Layered Set</h4><div class="price-row"><span class="price">₹5,999</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#9833;</span></div><div class="product-info"><div class="cat">Jhumka</div><h4>Ruby Kemp Jhumka</h4><div class="price-row"><span class="price">₹999</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="badge">New</span><span class="wish">&#9825;</span><span class="glyph">&#128081;</span></div><div class="product-info"><div class="cat">Maang Tikka</div><h4>Sun Motif Maang Tikka</h4><div class="price-row"><span class="price">₹899</span></div></a></div></div>
-        <div class="product-card"><a href="product.html"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Anklet</div><h4>Temple Bell Payal Pair</h4><div class="price-row"><span class="price">₹1,450</span></div></a></div></div>
+        <sj-product-card href="product.html" badge="Bestseller" glyph="&#128142;" category="Bridal Necklace" title="Lotus Kemp Choker Set" price="₹6,499" strike="₹8,900"></sj-product-card>
+        <sj-product-card href="product.html" glyph="&#9833;" category="Jhumka" title="Peacock Pearl Drop Earrings" price="₹1,299"></sj-product-card>
+        <sj-product-card href="product.html" badge="Trending" glyph="&#128081;" category="Temple Jewellery" title="Nakshi Long Haaram" price="₹4,199"></sj-product-card>
+        <sj-product-card href="product.html" glyph="&#128141;" category="Bangles" title="Antique Gold Kada Set" price="₹2,750"></sj-product-card>
+        <sj-product-card href="product.html" glyph="&#128142;" category="Bridal Necklace" title="Kasu Mala Layered Set" price="₹5,999"></sj-product-card>
+        <sj-product-card href="product.html" glyph="&#9833;" category="Jhumka" title="Ruby Kemp Jhumka" price="₹999"></sj-product-card>
+        <sj-product-card href="product.html" badge="New" glyph="&#128081;" category="Maang Tikka" title="Sun Motif Maang Tikka" price="₹899"></sj-product-card>
+        <sj-product-card href="product.html" glyph="&#128141;" category="Anklet" title="Temple Bell Payal Pair" price="₹1,450"></sj-product-card>
       </div>
       <div style="text-align:center; margin-top:50px;"><a href="#" class="btn btn-gold">Load More Pieces</a></div>
     </div>

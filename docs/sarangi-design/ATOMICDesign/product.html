@@ -16,73 +16,24 @@
 <section class="section">
   <div class="container">
     <div class="crumbs" style="color:var(--gold); margin-bottom:30px;">Home / Shop / Bridal Necklaces / Lotus Kemp Choker Set</div>
-    <div class="pd-layout">
-      <div>
-        <div class="pd-gallery-main frame"><span style="font-size:5rem; color:rgba(74,14,30,.3)">&#128142;</span></div>
-        <div class="pd-thumbs"><div></div><div></div><div></div><div></div></div>
-      </div>
-      <div>
-        <p class="eyebrow">Bridal Necklace · Kemp &amp; Temple</p>
-        <h1 style="font-size:2.3rem; margin:12px 0 10px;">Lotus Kemp Choker Set</h1>
-        <div class="stars" style="color:var(--gold); margin-bottom:16px;">★★★★★ <span style="color:#8a7a6a; font-size:.8rem; font-family:'Jost';">(214 reviews)</span></div>
-
-        <div class="pd-mode-toggle">
-          <button class="active" id="buyBtn" onclick="setMode('buy')">Buy — Own It</button>
-          <button id="rentBtn" onclick="setMode('rent')">Rent — Wear It</button>
-        </div>
-
-        <div id="buyPanel">
-          <div class="price-row"><span class="price" style="font-size:2rem;">₹6,499</span><span class="price strike" style="font-size:1.2rem;">₹8,900</span></div>
-          <p style="color:#6b5a4d; margin:16px 0; line-height:1.8; font-size:.92rem;">A lotus-motif kemp choker inspired by temple carvings, finished in antique gold-tone with hand-set stones. Comes with matching jhumkas and a maang tikka. Nickel-free, skin-safe base.</p>
-          <a href="#" class="btn btn-gold" style="width:100%; justify-content:center;">Add To Bag</a>
-        </div>
-
-        <div id="rentPanel" style="display:none;">
-          <div class="price-row"><span class="price" style="font-size:2rem;">₹1,899</span><span style="color:#8a7a6a; font-size:.9rem;">/ day</span></div>
-          <div class="pd-meta">
-            <div><strong>Deposit</strong><br>₹5,000 (refundable)</div>
-            <div><strong>Min. Rental</strong><br>2 days</div>
-            <div><strong>Cleaning</strong><br>Included</div>
-          </div>
-          <label style="font-size:.8rem; color:#6b5a4d; display:block; margin-bottom:6px;">Select your dates</label>
-          <div style="display:flex; gap:10px; margin-bottom:18px;">
-            <input type="date" style="flex:1; padding:12px; border:1px solid var(--line); font-family:'Jost';">
-            <input type="date" style="flex:1; padding:12px; border:1px solid var(--line); font-family:'Jost';">
-          </div>
-          <a href="#" class="btn btn-peacock" style="width:100%; justify-content:center;">Reserve This Set</a>
-        </div>
-
-        <div class="accordion" style="margin-top:34px;">
-          <details class="accordion-item" open><summary>Details &amp; Care</summary><p>Antique gold-tone alloy, hand-set kemp stones, nickel-free coating. Store in a dry pouch, avoid perfume contact.</p></details>
-          <details class="accordion-item"><summary>Size &amp; Fit</summary><p>Adjustable thread closure, fits neck sizes 12"–16". Comes with matching jhumka and maang tikka.</p></details>
-          <details class="accordion-item"><summary>Delivery &amp; Rental Terms</summary><p>Free store pickup in Kochi. Delivery across Kerala in 2–4 days. Rental deposit refunded within 48 hours of return, subject to condition check.</p></details>
-        </div>
-      </div>
-    </div>
+    <sj-product-detail></sj-product-detail>
   </div>
 </section>
 
 <section class="section section-alt">
   <div class="container">
-    <div class="section-head"><p class="eyebrow">Complete The Set</p><h2>You May Also Like</h2></div>
+    <sj-section-head eyebrow="Complete The Set" title="You May Also Like"></sj-section-head>
     <div class="product-grid">
-      <div class="product-card"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#9833;</span></div><div class="product-info"><div class="cat">Jhumka</div><h4>Peacock Pearl Drop Earrings</h4><div class="price-row"><span class="price">₹1,299</span></div></div></div>
-      <div class="product-card"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128081;</span></div><div class="product-info"><div class="cat">Maang Tikka</div><h4>Sun Motif Maang Tikka</h4><div class="price-row"><span class="price">₹899</span></div></div></div>
-      <div class="product-card"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Bangles</div><h4>Antique Gold Kada Set</h4><div class="price-row"><span class="price">₹2,750</span></div></div></div>
-      <div class="product-card"><div class="product-media"><span class="wish">&#9825;</span><span class="glyph">&#128141;</span></div><div class="product-info"><div class="cat">Anklet</div><h4>Temple Bell Payal Pair</h4><div class="price-row"><span class="price">₹1,450</span></div></div></div>
+      <sj-product-card glyph="&#9833;" category="Jhumka" title="Peacock Pearl Drop Earrings" price="₹1,299"></sj-product-card>
+      <sj-product-card glyph="&#128081;" category="Maang Tikka" title="Sun Motif Maang Tikka" price="₹899"></sj-product-card>
+      <sj-product-card glyph="&#128141;" category="Bangles" title="Antique Gold Kada Set" price="₹2,750"></sj-product-card>
+      <sj-product-card glyph="&#128141;" category="Anklet" title="Temple Bell Payal Pair" price="₹1,450"></sj-product-card>
     </div>
   </div>
 </section>
 
 <sj-footer></sj-footer>
 
-<script>
-function setMode(mode){
-  document.getElementById('buyPanel').style.display = mode==='buy' ? 'block':'none';
-  document.getElementById('rentPanel').style.display = mode==='rent' ? 'block':'none';
-  document.getElementById('buyBtn').classList.toggle('active', mode==='buy');
-  document.getElementById('rentBtn').classList.toggle('active', mode==='rent');
-}
-</script>
+
 </body>
 </html>
