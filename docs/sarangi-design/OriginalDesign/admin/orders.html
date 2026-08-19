@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders & Bookings — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="orders"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Orders &amp; Bookings" subtitle="Unified queue — sales and rentals together">
+      <button class="btn btn-outline btn-sm">Export CSV</button>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="stat-grid">
+        <sj-stat-card icon="&#9203;" label="Awaiting Confirmation" value="5"></sj-stat-card>
+        <sj-stat-card icon="&#128230;" label="Out For Delivery" value="9"></sj-stat-card>
+        <sj-stat-card icon="&#128142;" label="Active Rentals" value="34"></sj-stat-card>
+        <sj-stat-card icon="&#9989;" label="Completed Today" value="14"></sj-stat-card>
+      </div>
+
+      <sj-panel flush>
+        <div class="table-toolbar">
+          <div class="search-box">&#128269;<input type="text" placeholder="Search by order ID, customer or item..."></div>
+          <div class="chip-row">
+            <span class="chip active">All</span>
+            <span class="chip">Sales</span>
+            <span class="chip">Rentals</span>
+            <span class="chip">Needs Action</span>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr><th>Order</th><th>Customer</th><th>Type</th><th>Amount</th><th>Date</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>Lotus Kemp Choker Set</h5><div class="sub">#SJ-10482</div></div></div></td>
+              <td>Divya Krishnan</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹6,499</td>
+              <td>12 Aug 2026</td>
+              <td><sj-badge status="out">Out For Delivery</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Manage</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>Bharatanatyam Arangetram Set</h5><div class="sub">#SJ-R-2291</div></div></div></td>
+              <td>Divya Krishnan</td>
+              <td><span class="badge badge-neutral">Rental</span></td>
+              <td>₹5,397 + ₹6,000 dep.</td>
+              <td>24–26 Aug 2026</td>
+              <td><sj-badge status="confirmed">Confirmed</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Manage</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>Kanjivaram Bridal Set</h5><div class="sub">#SJ-R-2140</div></div></div></td>
+              <td>Meera Suresh</td>
+              <td><span class="badge badge-neutral">Rental</span></td>
+              <td>₹3,798 + ₹5,000 dep.</td>
+              <td>21–23 Aug 2026</td>
+              <td><sj-badge status="pending">Awaiting Return</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-primary">Check In</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128081;</div><div><h5>Nakshi Long Haaram</h5><div class="sub">#SJ-10310</div></div></div></td>
+              <td>Anjali R.</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹4,199</td>
+              <td>30 Jul 2026</td>
+              <td><sj-badge status="closed">Delivered</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Manage</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>Mohiniyattam Performance Set</h5><div class="sub">#SJ-R-2288</div></div></div></td>
+              <td>Kavya Nair</td>
+              <td><span class="badge badge-neutral">Rental</span></td>
+              <td>₹2,598 + ₹4,000 dep.</td>
+              <td>19–20 Aug 2026</td>
+              <td><sj-badge status="pending">Awaiting Pickup</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-primary">Check Out</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#128132;</div><div><h5>Bridal Makeup Artist + Kit</h5><div class="sub">#SJ-MK-1187</div></div></div></td>
+              <td>Kavya Nair</td>
+              <td><span class="badge badge-neutral">Service</span></td>
+              <td>₹3,500</td>
+              <td>19 Aug 2026, 8:00 AM</td>
+              <td><sj-badge status="confirmed">Confirmed</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Manage</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="thumb">&#9833;</div><div><h5>Ruby Kemp Jhumka</h5><div class="sub">#SJ-09980</div></div></div></td>
+              <td>Pooja Varma</td>
+              <td><span class="badge badge-neutral">Sale</span></td>
+              <td>₹999</td>
+              <td>18 Jun 2026</td>
+              <td><sj-badge status="cancelled">Cancelled</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Manage</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="pagination">
+          <span>Showing 1–7 of 342 orders &amp; bookings</span>
+          <div class="pages"><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">…</a><a href="#">49</a></div>
+        </div>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

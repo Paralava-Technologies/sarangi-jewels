@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Sarangi Jewels</title>
+<link rel="stylesheet" href="styles.css">
+<script src="components.js"></script>
+</head>
+<body>
+
+<sj-utility-bar></sj-utility-bar>
+<sj-header active="my-account"></sj-header>
+
+
+
+<div class="page-banner"><div class="crumbs">Home / My Account</div><h1>My Account</h1></div>
+
+<section class="section">
+  <div class="container account-layout">
+    <aside class="account-nav">
+      <div class="who">
+        <div class="name">Divya Krishnan</div>
+        <div class="email">divya.k@example.com</div>
+      </div>
+      <ul>
+        <li><a href="my-account.html" class="active">&#128100; Dashboard</a></li>
+        <li><a href="my-orders.html">&#128230; My Orders</a></li>
+        <li><a href="my-orders.html#rentals">&#128142; My Rentals</a></li>
+        <li><a href="track-order.html">&#128269; Track Order</a></li>
+        <li><a href="#">&#9825; Wishlist</a></li>
+        <li><a href="#">&#127968; Saved Addresses</a></li>
+        <li><a href="support.html">&#128172; Support Tickets</a></li>
+        <li><a href="#">&#9881; Account Settings</a></li>
+        <li><a href="index.html" class="logout">&#8628; Sign Out</a></li>
+      </ul>
+    </aside>
+
+    <div>
+      <div class="stat-tiles">
+        <div class="stat-tile"><h3>7</h3><span>Total Orders</span></div>
+        <div class="stat-tile"><h3>3</h3><span>Active Rentals</span></div>
+        <div class="stat-tile"><h3>1,240</h3><span>Loyalty Points</span></div>
+        <div class="stat-tile"><h3>1</h3><span>Open Ticket</span></div>
+      </div>
+
+      <div class="card-panel">
+        <h3>Welcome back, Divya</h3>
+        <p class="desc">Here's a quick look at what's happening with your orders and rentals.</p>
+
+        <div class="order-row">
+          <div class="thumb">&#128142;</div>
+          <div><div class="id">#SJ-10482</div><h5>Lotus Kemp Choker Set</h5><div class="meta">Placed 12 Aug 2026</div></div>
+          <div class="status transit">In Transit</div>
+          <div class="price">₹6,499</div>
+          <div><a href="track-order.html" class="btn" style="padding:8px 16px; font-size:.68rem;">Track</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#127917;</div>
+          <div><div class="id">#SJ-R-2291</div><h5>Bharatanatyam Arangetram Set</h5><div class="meta">Rental · 24–26 Aug 2026</div></div>
+          <div class="status confirmed">Confirmed</div>
+          <div class="price">₹1,799/day</div>
+          <div><a href="my-orders.html" class="btn" style="padding:8px 16px; font-size:.68rem;">Details</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#128081;</div>
+          <div><div class="id">#SJ-10310</div><h5>Nakshi Long Haaram</h5><div class="meta">Placed 30 Jul 2026</div></div>
+          <div class="status delivered">Delivered</div>
+          <div class="price">₹4,199</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">Review</a></div>
+        </div>
+
+        <div style="text-align:center; margin-top:24px;"><a href="my-orders.html" class="btn btn-gold">View All Orders &amp; Rentals</a></div>
+      </div>
+
+      <div class="card-panel">
+        <h3>Saved Address</h3>
+        <p class="desc">Used for delivery and rental pickup scheduling.</p>
+        <p style="font-size:.9rem; color:#5b4a3d; line-height:1.8;">
+          Divya Krishnan<br>
+          4th Floor, Lotus Residency, Kadavanthra<br>
+          Kochi, Kerala 682020<br>
+          +91 98XXX XXXXX
+        </p>
+        <a href="#" class="btn" style="margin-top:14px; padding:10px 20px; font-size:.68rem;">Manage Addresses</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<sj-footer></sj-footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="dashboard"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Dashboard" subtitle="Wednesday, 19 August 2026">
+      <a href="products.html" class="btn btn-gold btn-sm">+ New Product</a>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="stat-grid">
+        <sj-stat-card icon="&#128230;" label="Orders Today" value="18" trend="+12% vs yesterday" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#128142;" label="Active Rentals" value="34" trend="+4 this week" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#128176;" label="Revenue (MTD)" value="₹4.2L" trend="+18% vs last month" trend-dir="up"></sj-stat-card>
+        <sj-stat-card icon="&#9888;" label="Low Stock Items" value="6" trend="Needs attention" trend-dir="down"></sj-stat-card>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <sj-panel heading="Today's Pickups & Returns" subtext="Rental items due out or back today" flush>
+            <table class="data-table">
+              <thead><tr><th>Item</th><th>Customer</th><th>Type</th><th>Time</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>Bharatanatyam Arangetram Set</h5><div class="sub">#SJ-R-2291</div></div></div></td>
+                  <td>Divya Krishnan</td>
+                  <td>Pickup</td>
+                  <td>11:00 AM</td>
+                  <td><sj-badge status="pending"></sj-badge></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>Kanjivaram Bridal Set</h5><div class="sub">#SJ-R-2140</div></div></div></td>
+                  <td>Meera Suresh</td>
+                  <td>Return</td>
+                  <td>2:30 PM</td>
+                  <td><sj-badge status="out"></sj-badge></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#128081;</div><div><h5>Nakshi Long Haaram</h5><div class="sub">#SJ-10482</div></div></div></td>
+                  <td>Anjali R.</td>
+                  <td>Delivery</td>
+                  <td>4:00 PM</td>
+                  <td><sj-badge status="confirmed"></sj-badge></td>
+                </tr>
+              </tbody>
+            </table>
+          </sj-panel>
+
+          <sj-panel heading="Recent Orders & Bookings" subtext="Latest 5 across sales and rentals" flush>
+            <table class="data-table">
+              <thead><tr><th>Order</th><th>Customer</th><th>Amount</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#128142;</div><div><h5>Lotus Kemp Choker Set</h5><div class="sub">#SJ-10482 · Sale</div></div></div></td>
+                  <td>Divya Krishnan</td>
+                  <td>₹6,499</td>
+                  <td><sj-badge status="out"></sj-badge></td>
+                  <td class="cell-actions"><a href="orders.html" class="btn btn-sm btn-outline">View</a></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#127917;</div><div><h5>Mohiniyattam Performance Set</h5><div class="sub">#SJ-R-2288 · Rental</div></div></div></td>
+                  <td>Kavya Nair</td>
+                  <td>₹1,299/day</td>
+                  <td><sj-badge status="confirmed"></sj-badge></td>
+                  <td class="cell-actions"><a href="orders.html" class="btn btn-sm btn-outline">View</a></td>
+                </tr>
+                <tr>
+                  <td><div class="cell-main"><div class="thumb">&#128141;</div><div><h5>Antique Gold Kada Set</h5><div class="sub">#SJ-10122 · Sale</div></div></div></td>
+                  <td>Meera Suresh</td>
+                  <td>₹2,750</td>
+                  <td><sj-badge status="closed"></sj-badge></td>
+                  <td class="cell-actions"><a href="orders.html" class="btn btn-sm btn-outline">View</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </sj-panel>
+        </div>
+
+        <div>
+          <sj-panel heading="Deposits Held" subtext="Awaiting return &amp; refund">
+            <div style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--wine-deep);">₹1,84,500</div>
+            <div style="font-size:.78rem; color:var(--mute); margin-top:4px;">Across 34 active rentals</div>
+            <a href="payments.html" class="btn btn-outline btn-sm btn-block" style="margin-top:16px;">View Deposits</a>
+          </sj-panel>
+
+          <sj-panel heading="Open Support Tickets" subtext="3 awaiting a reply">
+            <table class="data-table" style="font-size:.8rem;">
+              <tbody>
+                <tr><td style="padding:10px 0; border:none;">#TCK-3381 · Deposit refund</td><td style="padding:10px 0; border:none; text-align:right;"><sj-badge status="pending"></sj-badge></td></tr>
+                <tr><td style="padding:10px 0; border:none;">#TCK-3390 · Sizing question</td><td style="padding:10px 0; border:none; text-align:right;"><sj-badge status="pending"></sj-badge></td></tr>
+                <tr><td style="padding:10px 0; border:none;">#TCK-3392 · Delivery delay</td><td style="padding:10px 0; border:none; text-align:right;"><sj-badge status="pending"></sj-badge></td></tr>
+              </tbody>
+            </table>
+          </sj-panel>
+
+          <sj-panel heading="Low Stock Alerts">
+            <div style="display:flex; flex-direction:column; gap:12px; font-size:.85rem;">
+              <div style="display:flex; justify-content:space-between;"><span>Ruby Kemp Jhumka</span><span class="badge badge-low">2 left</span></div>
+              <div style="display:flex; justify-content:space-between;"><span>Sun Motif Maang Tikka</span><span class="badge badge-low">1 left</span></div>
+              <div style="display:flex; justify-content:space-between;"><span>Temple Bell Payal Pair</span><span class="badge badge-low">3 left</span></div>
+            </div>
+          </sj-panel>
+        </div>
+      </div>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roles &amp; Settings — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="settings"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Roles &amp; Settings" subtitle="Staff access and store configuration">
+      <a href="#" class="btn btn-gold btn-sm">+ Invite Staff</a>
+      <div class="avatar" title="Anu Menon">AN</div>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <sj-panel flush heading="Staff &amp; Roles" subtext="Owner has full access; scope everyone else to what they need">
+        <table class="data-table">
+          <thead><tr><th>Staff Member</th><th>Role</th><th>Access</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">AN</div><div><h5>Anu Menon</h5><div class="sub">anu@sarangijewels.com</div></div></div></td>
+              <td>Owner</td>
+              <td>Full access</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline" disabled>Edit</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">RS</div><div><h5>Ritu Shenoy</h5><div class="sub">ritu@sarangijewels.com</div></div></div></td>
+              <td>Store Staff</td>
+              <td>Orders, bookings, condition checks</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">JM</div><div><h5>Jithin M.</h5><div class="sub">jithin@sarangijewels.com</div></div></div></td>
+              <td>Delivery</td>
+              <td>Status updates only</td>
+              <td><sj-badge status="active">Active</sj-badge></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Edit</button></td>
+            </tr>
+            <tr>
+              <td><div class="cell-main"><div class="avatar">SP</div><div><h5>Sneha Pillai</h5><div class="sub">sneha@sarangijewels.com</div></div></div></td>
+              <td>Store Staff</td>
+              <td>Orders, bookings, condition checks</td>
+              <td><span class="badge badge-neutral">Invited</span></td>
+              <td class="cell-actions"><button class="btn btn-sm btn-outline">Resend</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </sj-panel>
+
+      <div class="form-grid" style="grid-template-columns:1fr 1fr;">
+        <sj-panel heading="Rental Policy Defaults">
+          <div class="field"><label>Cleaning Buffer (days between rentals)</label><input type="number" value="1"></div>
+          <div class="field"><label>Free Cancellation Window (hours before pickup)</label><input type="number" value="48"></div>
+          <div class="field"><label>Deposit Refund SLA (hours after return)</label><input type="number" value="48"></div>
+          <label style="display:flex; align-items:center; gap:10px; font-size:.85rem; margin-top:6px;">
+            <span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span>
+            Require ID proof for bookings above ₹5,000 deposit
+          </label>
+        </sj-panel>
+
+        <sj-panel heading="Store Details">
+          <div class="field"><label>Store Name</label><input type="text" value="Sarangi Jewels — MG Road"></div>
+          <div class="field"><label>Address</label><textarea rows="2">MG Road, Kochi, Kerala 682035</textarea></div>
+          <div class="field-row">
+            <div class="field"><label>Phone</label><input type="text" value="+91 98XXX XXXXX"></div>
+            <div class="field"><label>Support Email</label><input type="text" value="support@sarangijewels.com"></div>
+          </div>
+        </sj-panel>
+      </div>
+
+      <sj-panel heading="Notifications">
+        <label style="display:flex; align-items:center; gap:10px; font-size:.85rem; margin-bottom:14px;"><span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span> WhatsApp order &amp; pickup/return reminders</label>
+        <label style="display:flex; align-items:center; gap:10px; font-size:.85rem; margin-bottom:14px;"><span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span> SMS notifications</label>
+        <label style="display:flex; align-items:center; gap:10px; font-size:.85rem;"><span class="toggle-switch"><input type="checkbox" checked><span class="track"></span></span> Email confirmations</label>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rental Calendar — Sarangi Admin</title>
+<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+
+<div class="admin-shell">
+  <sj-sidebar active="calendar"></sj-sidebar>
+
+  <div class="admin-main">
+    <sj-topbar title="Rental Calendar" subtitle="Availability across all rentable items — 19–30 August 2026">
+      <button class="btn btn-outline btn-sm">&#8592; Prev 12 Days</button>
+      <button class="btn btn-outline btn-sm">Next 12 Days &#8594;</button>
+      <a href="#" class="btn btn-gold btn-sm">+ Block Dates</a>
+    </sj-topbar>
+
+    <div class="admin-content">
+
+      <div class="chip-row" style="margin-bottom:18px;">
+        <span class="chip active">All Categories</span>
+        <span class="chip">Bridal Jewellery</span>
+        <span class="chip">Dance Costumes</span>
+        <span class="chip">Makeup Sessions</span>
+      </div>
+
+      <sj-panel flush>
+        <div style="overflow-x:auto;">
+          <div style="min-width:760px;">
+            <div class="cal-head-row">
+              <div class="cal-item-label"><span>Item</span></div>
+              <div class="cal-days">
+                <div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div>
+                <div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div>
+                <div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div>
+              </div>
+            </div>
+
+            <div class="cal-item-row">
+              <div class="cal-item-label">
+                <div class="thumb icon-chip" style="width:36px; height:36px; font-size:.9rem;">&#128142;</div>
+                <div><h5>Kanjivaram Bridal Set</h5><div class="sub">#SJ-BN-0198</div></div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day booked">DK</div><div class="cal-day booked">DK</div>
+                <div class="cal-day cleaning">&#10226;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day booked">MS</div><div class="cal-day booked">MS</div><div class="cal-day cleaning">&#10226;</div><div class="cal-day available">&#10003;</div>
+              </div>
+            </div>
+
+            <div class="cal-item-row">
+              <div class="cal-item-label">
+                <div class="thumb icon-chip" style="width:36px; height:36px; font-size:.9rem;">&#127917;</div>
+                <div><h5>Bharatanatyam Arangetram Set</h5><div class="sub">#SJ-DC-0033</div></div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day available">&#10003;</div><div class="cal-day booked">DK</div><div class="cal-day booked">DK</div><div class="cal-day booked">DK</div>
+                <div class="cal-day cleaning">&#10226;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+              </div>
+            </div>
+
+            <div class="cal-item-row">
+              <div class="cal-item-label">
+                <div class="thumb icon-chip" style="width:36px; height:36px; font-size:.9rem;">&#127917;</div>
+                <div><h5>Mohiniyattam Performance Set</h5><div class="sub">#SJ-DC-0041</div></div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day booked">KN</div><div class="cal-day booked">KN</div><div class="cal-day cleaning">&#10226;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+              </div>
+            </div>
+
+            <div class="cal-item-row">
+              <div class="cal-item-label">
+                <div class="thumb icon-chip" style="width:36px; height:36px; font-size:.9rem;">&#128081;</div>
+                <div><h5>22k-Finish Kemp Bridal Haaram</h5><div class="sub">#SJ-BN-0201</div></div>
+              </div>
+              <div class="cal-days">
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+                <div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div><div class="cal-day available">&#10003;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cal-legend">
+          <span><i style="background:var(--success-bg); border:1px solid var(--success);"></i> Available</span>
+          <span><i style="background:var(--danger-bg); border:1px solid var(--danger);"></i> Booked (initials = customer)</span>
+          <span><i style="background:var(--warn-bg); border:1px solid var(--warn);"></i> Cleaning buffer (auto-blocked 1 day after return)</span>
+        </div>
+      </sj-panel>
+
+      <sj-panel heading="Selected: Kanjivaram Bridal Set, 21–22 Aug" subtext="Booked by Divya Krishnan · #SJ-R-2140">
+        <div class="field-row" style="align-items:flex-end;">
+          <div class="field" style="flex:2;"><label>Booking</label><div style="font-size:.9rem; padding-top:6px;">Pickup 21 Aug · Return due 23 Aug · Deposit ₹5,000 held</div></div>
+          <a href="orders.html" class="btn btn-outline btn-sm">View Booking</a>
+          <button class="btn btn-danger btn-sm">Cancel Booking</button>
+        </div>
+      </sj-panel>
+
+    </div>
+
+    <sj-footer></sj-footer>
+  </div>
+</div>
+
+<script src="components.js"></script>
+</body>
+</html>

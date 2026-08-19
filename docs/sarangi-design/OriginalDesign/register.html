@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — Sarangi Jewels</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><img src="assets/sarangi-logo-mark.png" alt="Sarangi Jewels"><span class="wordmark">Sarangi<small>Jewels For Sale &amp; Rent</small></span></a>
+    <ul class="nav-links">
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="bridal-jewellery.html">Bridal Jewellery</a></li>
+      <li><a href="rentals.html">Rentals</a></li>
+      <li><a href="dance-costumes.html">Dance Costumes</a></li>
+      <li><a href="makeup.html">Makeup</a></li>
+      <li><a href="about.html">Our Story</a></li>
+      <li><a href="contact.html">Visit Store</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button title="Search">&#128269;</button>
+      <a href="my-account.html" title="Account"><button>&#128100;</button></a>
+      <a href="#" title="Wishlist"><button>&#9825;</button></a>
+      <a href="cart.html" title="Bag"><button>&#128092;<span class="pill">2</span></button></a>
+      <button class="nav-burger" title="Menu" aria-label="Open menu" aria-expanded="false" onclick="toggleMobileNav()"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <ul class="nav-links">
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="bridal-jewellery.html">Bridal Jewellery</a></li>
+      <li><a href="rentals.html">Rentals</a></li>
+      <li><a href="dance-costumes.html">Dance Costumes</a></li>
+      <li><a href="makeup.html">Makeup</a></li>
+      <li><a href="about.html">Our Story</a></li>
+      <li><a href="contact.html">Visit Store</a></li>
+    </ul>
+    <div class="mobile-nav-actions">
+      <a href="my-account.html">&#128100; My Account</a>
+      <a href="cart.html">&#128092; My Bag</a>
+      <a href="track-order.html">&#128269; Track Order</a>
+      <a href="support.html">&#128172; Support</a>
+    </div>
+  </div>
+</nav>
+<script>
+function toggleMobileNav(){
+  var m = document.getElementById('mobileNav');
+  var b = document.querySelector('.nav-burger');
+  var isOpen = m.classList.toggle('is-open');
+  b.classList.toggle('is-open', isOpen);
+  b.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+</script>
+<script>
+function toggleMobileNav(){
+  var m = document.getElementById('mobileNav');
+  var b = document.querySelector('.nav-burger');
+  var isOpen = m.classList.toggle('is-open');
+  b.classList.toggle('is-open', isOpen);
+  b.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+</script>
+
+<div class="auth-wrap">
+  <div class="auth-visual">
+    <div class="inner">
+      <img src="assets/sarangi-logo-mark.png" alt="Sarangi Jewels">
+      <p class="eyebrow" style="color:var(--gold-light)">Join The Circle</p>
+      <h2 style="color:var(--ivory); font-size:1.7rem; margin:10px 0;">Create an account for faster checkout and easier rentals</h2>
+      <p>Save addresses, track every order and booking, and get first access to new arrivals and rental drops.</p>
+    </div>
+  </div>
+  <div class="auth-form-side">
+    <div class="auth-box">
+      <p class="eyebrow">Create Account</p>
+      <h1>Join Sarangi</h1>
+      <p style="font-size:.88rem; color:#8a7a6a; margin-bottom:30px;">Already have an account? <a href="login.html" style="color:var(--wine); border-bottom:1px solid var(--gold);">Sign in</a></p>
+
+      <button class="btn-social">Continue with Google</button>
+      <div class="divider-or"><span class="line"></span>OR REGISTER WITH DETAILS<span class="line"></span></div>
+
+      <form onsubmit="return false;">
+        <div class="field"><label>Full Name</label><input type="text" placeholder="Your name"></div>
+        <div class="field"><label>Email Address</label><input type="email" placeholder="you@example.com"></div>
+        <div class="field"><label>Phone Number</label><input type="tel" placeholder="+91 98XXX XXXXX"></div>
+        <div class="field-row">
+          <div class="field"><label>Password</label><input type="password" placeholder="Min. 8 characters"></div>
+          <div class="field"><label>Confirm Password</label><input type="password" placeholder="Re-enter password"></div>
+        </div>
+        <label style="display:flex; align-items:flex-start; gap:10px; font-size:.8rem; color:#6b5a4d; margin-bottom:22px; line-height:1.6;">
+          <input type="checkbox" style="margin-top:3px;">
+          I agree to the <a href="terms.html" style="color:var(--wine);">Terms &amp; Conditions</a> and <a href="privacy-policy.html" style="color:var(--wine);">Privacy Policy</a>, including how my data is used for rental bookings.
+        </label>
+        <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Create Account</button>
+      </form>
+      <p class="switch">Planning to rent bridal jewellery or dance costumes? You can add ID verification later from your account, before your first rental booking.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

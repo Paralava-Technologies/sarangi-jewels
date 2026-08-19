@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order — Sarangi Jewels</title>
+<link rel="stylesheet" href="styles.css">
+<script src="components.js"></script>
+</head>
+<body>
+
+<sj-utility-bar></sj-utility-bar>
+<sj-header active=""></sj-header>
+
+
+
+<div class="page-banner"><div class="crumbs">Home / Track Order</div><h1>Track Your Order</h1></div>
+
+<section class="section">
+  <div class="container">
+    <div class="track-search">
+      <input type="text" placeholder="Enter Order ID (e.g. SJ-10482) or Phone Number" value="SJ-10482">
+      <button>Track</button>
+    </div>
+
+    <div class="card-panel" style="max-width:900px; margin:0 auto;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:40px; flex-wrap:wrap; gap:16px;">
+        <div>
+          <div class="eyebrow">Order #SJ-10482</div>
+          <h3 style="margin-top:6px;">Lotus Kemp Choker Set</h3>
+          <p style="font-size:.85rem; color:#8a7a6a; margin-top:4px;">Placed on 12 Aug 2026 · Expected delivery 20 Aug 2026</p>
+        </div>
+        <div class="status transit" style="font-size:.75rem; padding:8px 16px;">In Transit</div>
+      </div>
+
+      <div class="tracker">
+        <div class="fill"></div>
+        <div class="track-step"><div class="dot">&#10003;</div><h5>Order Placed</h5><span>12 Aug</span></div>
+        <div class="track-step"><div class="dot">&#10003;</div><h5>Confirmed</h5><span>12 Aug</span></div>
+        <div class="track-step"><div class="dot">&#10003;</div><h5>Packed</h5><span>14 Aug</span></div>
+        <div class="track-step"><div class="dot">&#128666;</div><h5>Out For Delivery</h5><span>Expected 20 Aug</span></div>
+        <div class="track-step pending"><div class="dot">&#128230;</div><h5>Delivered</h5><span>Pending</span></div>
+      </div>
+
+      <div style="border-top:1px solid var(--line); padding-top:26px; margin-top:10px;">
+        <h5 style="font-family:'Marcellus'; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--wine); margin-bottom:14px;">Shipment Details</h5>
+        <p style="font-size:.88rem; color:#5b4a3d; line-height:1.9;">
+          Courier: Bluedart &nbsp;·&nbsp; AWB: BD48213099IN<br>
+          Delivering to: Divya Krishnan, Kadavanthra, Kochi 682020<br>
+          Deliverable in: 2 days
+        </p>
+        <div style="margin-top:18px; display:flex; gap:12px;">
+          <a href="#" class="btn" style="padding:10px 20px; font-size:.68rem;">Download Invoice</a>
+          <a href="support.html" class="btn" style="padding:10px 20px; font-size:.68rem;">Need Help With This Order?</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-panel" style="max-width:900px; margin:26px auto 0;">
+      <h5 style="font-family:'Marcellus'; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--wine); margin-bottom:16px;">Tracking A Rental Booking Instead?</h5>
+      <p style="font-size:.85rem; color:#5b4a3d; line-height:1.8;">Rental bookings show pickup and return status rather than shipment tracking. View them from <a href="my-orders.html#rentals" style="color:var(--wine); border-bottom:1px solid var(--gold);">My Rentals</a>.</p>
+    </div>
+  </div>
+</section>
+
+<sj-footer></sj-footer>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders — Sarangi Jewels</title>
+<link rel="stylesheet" href="styles.css">
+<script src="components.js"></script>
+</head>
+<body>
+
+<sj-utility-bar></sj-utility-bar>
+<sj-header active="my-orders"></sj-header>
+
+
+
+<div class="page-banner"><div class="crumbs">Home / My Account / Orders</div><h1>My Orders &amp; Rentals</h1></div>
+
+<section class="section">
+  <div class="container account-layout">
+    <aside class="account-nav">
+      <div class="who"><div class="name">Divya Krishnan</div><div class="email">divya.k@example.com</div></div>
+      <ul>
+        <li><a href="my-account.html">&#128100; Dashboard</a></li>
+        <li><a href="my-orders.html" class="active">&#128230; My Orders</a></li>
+        <li><a href="my-orders.html#rentals">&#128142; My Rentals</a></li>
+        <li><a href="track-order.html">&#128269; Track Order</a></li>
+        <li><a href="#">&#9825; Wishlist</a></li>
+        <li><a href="#">&#127968; Saved Addresses</a></li>
+        <li><a href="support.html">&#128172; Support Tickets</a></li>
+        <li><a href="#">&#9881; Account Settings</a></li>
+        <li><a href="index.html" class="logout">&#8628; Sign Out</a></li>
+      </ul>
+    </aside>
+
+    <div>
+      <div class="cart-type-tabs">
+        <span class="active">Purchases (5)</span>
+        <span>Rentals (2)</span>
+      </div>
+
+      <div class="card-panel">
+        <div class="table-head">
+          <span>Item</span><span>Order</span><span>Date</span><span>Status</span><span>Total</span><span></span>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#128142;</div>
+          <div><div class="id">#SJ-10482</div><h5>Lotus Kemp Choker Set</h5></div>
+          <div class="meta">12 Aug 2026</div>
+          <div class="status transit">In Transit</div>
+          <div class="price">₹6,499</div>
+          <div><a href="track-order.html" class="btn" style="padding:8px 16px; font-size:.68rem;">Track</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#128081;</div>
+          <div><div class="id">#SJ-10310</div><h5>Nakshi Long Haaram</h5></div>
+          <div class="meta">30 Jul 2026</div>
+          <div class="status delivered">Delivered</div>
+          <div class="price">₹4,199</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">Write Review</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#128141;</div>
+          <div><div class="id">#SJ-10122</div><h5>Antique Gold Kada Set</h5></div>
+          <div class="meta">02 Jul 2026</div>
+          <div class="status delivered">Delivered</div>
+          <div class="price">₹2,750</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">Buy Again</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#9833;</div>
+          <div><div class="id">#SJ-09980</div><h5>Ruby Kemp Jhumka</h5></div>
+          <div class="meta">18 Jun 2026</div>
+          <div class="status cancelled">Cancelled</div>
+          <div class="price">₹999</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">View</a></div>
+        </div>
+      </div>
+
+      <div class="card-panel" id="rentals">
+        <h3 style="font-size:1.15rem; margin-bottom:18px;">My Rentals</h3>
+        <div class="table-head">
+          <span>Item</span><span>Booking</span><span>Dates</span><span>Status</span><span>Deposit</span><span></span>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#127917;</div>
+          <div><div class="id">#SJ-R-2291</div><h5>Bharatanatyam Arangetram Set</h5></div>
+          <div class="meta">24–26 Aug 2026</div>
+          <div class="status confirmed">Confirmed</div>
+          <div class="price">₹6,000 held</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">View</a></div>
+        </div>
+        <div class="order-row">
+          <div class="thumb">&#128142;</div>
+          <div><div class="id">#SJ-R-2140</div><h5>Kanjivaram Bridal Jewellery Set</h5></div>
+          <div class="meta">02–04 Jun 2026</div>
+          <div class="status returned">Deposit Refunded</div>
+          <div class="price">₹5,000 refunded</div>
+          <div><a href="#" class="btn" style="padding:8px 16px; font-size:.68rem;">Rent Again</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<sj-footer></sj-footer>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarangi Jewels — Where Tradition Meets Timeless Grace</title>
+<link rel="stylesheet" href="styles.css">
+<script src="components.js"></script>
+</head>
+<body>
+
+<sj-utility-bar></sj-utility-bar>
+
+<sj-header active=""></sj-header>
+
+
+
+<sj-home-hero></sj-home-hero>
+
+<sj-jewel-drip></sj-jewel-drip>
+
+<!-- BUY vs RENT -->
+<section class="split">
+  <sj-split-card type="buy" tag="Own Forever" title="Buy Fine &amp; Imitation Jewellery" desc="Temple sets, bridal kemp, diamond-finish necklaces and daily-wear gold-tone pieces — crafted for the collection that outlives a trend." link="shop.html" link-text="Explore Collection →"></sj-split-card>
+  <sj-split-card type="rent" tag="Wear For The Day" title="Rent Jewellery, Dance Wear &amp; Makeup" desc="Bridal sets, Bharatanatyam &amp; Mohiniyattam costumes, and professional makeup kits — reserved for your date, delivered ready to wear." link="rentals.html" link-text="Browse Rentals →"></sj-split-card>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <sj-section-head eyebrow="Curated For Every Occasion" title="Shop By Category" desc="From the everyday to the unforgettable — each piece chosen to carry a story."></sj-section-head>
+    <div class="cat-grid">
+      <sj-cat-card href="shop.html#bridal" icon="&#128142;" title="Bridal Sets" subtitle="Necklaces · Kemp · Temple"></sj-cat-card>
+      <sj-cat-card href="shop.html#earrings" icon="&#9833;" title="Earrings &amp; Jhumkas" subtitle="Gold-tone · Pearl · Kundan"></sj-cat-card>
+      <sj-cat-card href="rentals.html#dance" icon="&#127917;" title="Dance Costumes" subtitle="Classical · Semi-classical"></sj-cat-card>
+      <sj-cat-card href="rentals.html#makeup" icon="&#128132;" title="Bridal Makeup" subtitle="Kits · Artist Booking"></sj-cat-card>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED — BUY -->
+<section class="section section-alt">
+  <div class="container">
+    <sj-section-head eyebrow="New This Season" title="Pieces To Keep" desc="Handpicked from our Kochi atelier, finished in 22k gold-tone plating."></sj-section-head>
+    <div class="product-grid">
+      <sj-product-card href="product.html" badge="Bestseller" glyph="&#128142;" category="Bridal Necklace" title="Lotus Kemp Choker Set" price="₹6,499" strike="₹8,900"></sj-product-card>
+      <sj-product-card href="product.html" glyph="&#9833;" category="Jhumka" title="Peacock Pearl Drop Earrings" price="₹1,299"></sj-product-card>
+      <sj-product-card href="product.html" badge="Trending" glyph="&#128081;" category="Temple Jewellery" title="Nakshi Long Haaram" price="₹4,199"></sj-product-card>
+      <sj-product-card href="product.html" glyph="&#128141;" category="Bangles" title="Antique Gold Kada Set" price="₹2,750"></sj-product-card>
+    </div>
+  </div>
+</section>
+
+<sj-trust-strip></sj-trust-strip>
+</div>
+
+<!-- FEATURED — RENT -->
+<section class="section">
+  <div class="container">
+    <sj-section-head eyebrow="Wear It, Return It" title="This Week's Rentals" desc="Reserve online, collect from our Kochi store or get it delivered — cleaned, packed and ready."></sj-section-head>
+    <div class="product-grid">
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128142;" category="Bridal Set" title="Kanjivaram Bridal Jewellery Set" price="₹1,899/day" rent-note="Deposit ₹5,000 · refundable"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#127917;" category="Dance Costume" title="Mohiniyattam Performance Set" price="₹1,299/day" rent-note="Includes jewellery &amp; hair accessories"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#127917;" category="Dance Costume" title="Bharatanatyam Arangetram Set" price="₹1,799/day" rent-note="Includes temple jewellery set"></sj-product-card>
+      <sj-product-card is-rent href="product.html" badge="For Rent" glyph="&#128132;" category="Makeup" title="Bridal Makeup Artist + Kit" price="₹3,500/session" rent-note="Home visit available"></sj-product-card>
+    </div>
+    <div style="text-align:center; margin-top:44px;">
+      <a href="rentals.html" class="btn btn-gold">View All Rentals</a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW RENTAL WORKS -->
+<section class="section section-dark">
+  <div class="container">
+    <sj-section-head eyebrow="Simple &amp; Secure" title="How Renting Works" desc="Four steps between you and the piece you've been eyeing."></sj-section-head>
+    <div class="rent-steps">
+      <sj-rent-step num="01" title="Pick Your Dates" desc="Choose the item and the occasion dates."></sj-rent-step>
+      <sj-rent-step num="02" title="Reserve Online" desc="Pay rental fee + refundable deposit."></sj-rent-step>
+      <sj-rent-step num="03" title="Collect or Get Delivered" desc="Pick up in Kochi or opt for doorstep delivery."></sj-rent-step>
+      <sj-rent-step num="04" title="Return &amp; Relax" desc="We handle the cleaning. Deposit refunded in 48h."></sj-rent-step>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section">
+  <div class="container story">
+    <div class="story-media frame"></div>
+    <div>
+      <p class="eyebrow">Since The Shop On MG Road</p>
+      <h2>A Kochi Storefront, Now Open To Everywhere</h2>
+      <p>Sarangi began as a family jewellery counter in the heart of Kochi, known for temple-inspired kemp work and honest craftsmanship. Today, the same pieces — and the trusted rental wardrobe our regulars have always relied on for weddings and arangetrams — are a click away.</p>
+      <p>Every set is inspected in-house before it reaches you, whether it's leaving our shelves for good or coming home to you for a single, unforgettable evening.</p>
+      <div class="stat-row">
+        <sj-stat num="15+" text="Years In Kochi"></sj-stat>
+        <sj-stat num="4,200+" text="Pieces In Rotation"></sj-stat>
+        <sj-stat num="9,800+" text="Happy Occasions"></sj-stat>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section section-alt">
+  <div class="container">
+    <sj-section-head eyebrow="In Their Words" title="Loved Across Kerala"></sj-section-head>
+    <div class="testi-grid">
+      <sj-testi-card stars="★★★★★" quote="Rented my daughter's Bharatanatyam set for her Arangetram — it looked brand new and fit perfectly. Saved us so much." who="Anjali R. · Ernakulam"></sj-testi-card>
+      <sj-testi-card stars="★★★★★" quote="The kemp choker I bought for my wedding still gets compliments two years later. True heirloom quality." who="Meera S. · Thrissur"></sj-testi-card>
+      <sj-testi-card stars="★★★★★" quote="Booked the bridal makeup artist and jewellery together — the whole look came together beautifully on the day." who="Divya K. · Kochi"></sj-testi-card>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<sj-newsletter></sj-newsletter>
+
+<sj-footer></sj-footer>
+
+</body>
+</html>
