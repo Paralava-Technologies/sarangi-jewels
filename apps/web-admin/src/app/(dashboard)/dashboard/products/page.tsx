@@ -35,6 +35,7 @@ export default function ProductsPage(): React.JSX.Element {
     description: '',
     categoryId: '',
     basePrice: 0,
+    rentPrice: '' as number | '',
     material: '',
     purity: '',
     gemstone: '',
@@ -79,6 +80,7 @@ export default function ProductsPage(): React.JSX.Element {
       description: product.description || '',
       categoryId: product.categoryId,
       basePrice: product.basePriceCents / 100,
+      rentPrice: product.rentPriceCents ? product.rentPriceCents / 100 : '',
       material: product.material || '',
       purity: product.purity || '',
       gemstone: product.gemstone || '',
@@ -89,7 +91,7 @@ export default function ProductsPage(): React.JSX.Element {
       shippingAndReturns: product.shippingAndReturns || '',
       hsnCode: product.hsnCode || '',
     });
-    setVariants(product.variants?.map((v: any) => ({ ...v, price: v.priceCents / 100 })) || []);
+    setVariants(product.variants?.map((v: any) => ({ ...v, price: v.priceCents / 100, rentPrice: v.rentPriceCents ? v.rentPriceCents / 100 : '' })) || []);
     setImages(product.images || []);
     setIsCreating(true);
   };
@@ -100,7 +102,7 @@ export default function ProductsPage(): React.JSX.Element {
     setVariants([]);
     setImages([]);
     setFormData({
-      name: '', slug: '', description: '', categoryId: categories[0]?.id || '', basePrice: 0, material: '', purity: '', gemstone: '', weightGrams: '', composition: '', careInstructions: '', sizeAndFit: '', shippingAndReturns: '', hsnCode: ''
+      name: '', slug: '', description: '', categoryId: categories[0]?.id || '', basePrice: 0, rentPrice: '', material: '', purity: '', gemstone: '', weightGrams: '', composition: '', careInstructions: '', sizeAndFit: '', shippingAndReturns: '', hsnCode: ''
     });
   };
 
@@ -122,8 +124,9 @@ export default function ProductsPage(): React.JSX.Element {
         shippingAndReturns: formData.shippingAndReturns || undefined,
         hsnCode: formData.hsnCode || undefined,
         basePriceCents: Math.round(Number(formData.basePrice) * 100),
+        rentPriceCents: formData.rentPrice !== '' ? Math.round(Number(formData.rentPrice) * 100) : null,
         weightGrams: formData.weightGrams ? Number(formData.weightGrams) : undefined,
-        variants: variants.map(v => ({ ...v, priceCents: Math.round(Number(v.price) * 100), stockQuantity: Number(v.stockQuantity) })),
+        variants: variants.map(v => ({ ...v, priceCents: Math.round(Number(v.price) * 100), rentPriceCents: v.rentPrice !== '' ? Math.round(Number(v.rentPrice) * 100) : null, stockQuantity: Number(v.stockQuantity) })),
         images: images.map((img, idx) => ({ ...img, sortOrder: idx })),
       };
 
@@ -209,8 +212,12 @@ export default function ProductsPage(): React.JSX.Element {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-700">Price</label>
+              <label className="block text-sm font-medium text-neutral-700">Base Price</label>
               <input required type="number" step="0.01" value={formData.basePrice} onChange={e => setFormData({...formData, basePrice: Number(e.target.value)})} className="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-brand-primary focus:ring-brand-primary sm:text-sm" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-700">Rent Price / day (Optional)</label>
+              <input type="number" step="0.01" value={formData.rentPrice} onChange={e => setFormData({...formData, rentPrice: e.target.value === '' ? '' : Number(e.target.value)})} placeholder="Defaults to 10% of base price" className="mt-1 block w-full rounded-md border-neutral-300 shadow-sm focus:border-brand-primary focus:ring-brand-primary sm:text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium text-neutral-700">HSN Code (GST)</label>
@@ -273,16 +280,17 @@ export default function ProductsPage(): React.JSX.Element {
             <div className="md:col-span-2 border-t pt-4">
               <div className="flex justify-between items-center mb-2">
                 <label className="block text-sm font-medium text-neutral-700">Variants (SKU & Inventory)</label>
-                <button type="button" onClick={() => setVariants([...variants, { sku: '', name: '', price: formData.basePrice, stockQuantity: 0 }])} className="text-xs font-medium text-brand-primary">
+                <button type="button" onClick={() => setVariants([...variants, { sku: '', name: '', price: formData.basePrice, rentPrice: '', stockQuantity: 0 }])} className="text-xs font-medium text-brand-primary">
                   + Add Variant
                 </button>
               </div>
               {variants.length > 0 && (
                 <div className="flex gap-2 mb-2 px-1 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-                  <div className="w-1/4">SKU</div>
-                  <div className="w-1/4">Name</div>
-                  <div className="w-1/4">Price</div>
-                  <div className="w-1/4">Stock Qty</div>
+                  <div className="w-1/5">SKU</div>
+                  <div className="w-1/5">Name</div>
+                  <div className="w-1/5">Price</div>
+                  <div className="w-1/5">Rent Price</div>
+                  <div className="w-1/5">Stock</div>
                   <div className="px-2 w-6"></div>
                 </div>
               )}
@@ -290,16 +298,19 @@ export default function ProductsPage(): React.JSX.Element {
                 <div key={idx} className="flex gap-2 mb-2 items-center">
                   <input type="text" placeholder="SKU" required value={v.sku} onChange={e => {
                     const newV = [...variants]; newV[idx].sku = e.target.value; setVariants(newV);
-                  }} className="w-1/4 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
+                  }} className="w-1/5 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
                   <input type="text" placeholder="Name" required value={v.name} onChange={e => {
                     const newV = [...variants]; newV[idx].name = e.target.value; setVariants(newV);
-                  }} className="w-1/4 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
+                  }} className="w-1/5 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
                   <input type="number" step="0.01" placeholder="Price" required value={v.price} onChange={e => {
                     const newV = [...variants]; newV[idx].price = Number(e.target.value); setVariants(newV);
-                  }} className="w-1/4 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
+                  }} className="w-1/5 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
+                  <input type="number" step="0.01" placeholder="Rent Price" value={v.rentPrice} onChange={e => {
+                    const newV = [...variants]; newV[idx].rentPrice = e.target.value === '' ? '' : Number(e.target.value); setVariants(newV);
+                  }} className="w-1/5 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
                   <input type="number" placeholder="Stock Qty" required value={v.stockQuantity} onChange={e => {
                     const newV = [...variants]; newV[idx].stockQuantity = Number(e.target.value); setVariants(newV);
-                  }} className="w-1/4 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
+                  }} className="w-1/5 block rounded-md border-neutral-300 shadow-sm sm:text-sm" />
                   <button type="button" onClick={() => setVariants(variants.filter((_, i) => i !== idx))} className="text-red-500 font-bold px-2">×</button>
                 </div>
               ))}

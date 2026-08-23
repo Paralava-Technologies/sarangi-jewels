@@ -7,6 +7,8 @@ export interface User {
   lastName: string | null;
   role: UserRole;
   createdAt: string;
+  idVerificationStatus?: string | null;
+  idDocumentUrl?: string | null;
 }
 
 export interface Address {
@@ -100,6 +102,9 @@ export interface OrderLine {
   lineTotalCents: number;
   imageUrl?: string | null;
   productSlug?: string;
+  isRental?: boolean;
+  rentStartDate?: string | null;
+  rentEndDate?: string | null;
 }
 
 export interface CartLine {
@@ -114,6 +119,9 @@ export interface CartLine {
   unitPriceCents: number;
   lineTotalCents: number;
   currency: string;
+  isRental?: boolean;
+  rentStartDate?: string | null;
+  rentEndDate?: string | null;
 }
 
 export interface Cart {

@@ -1,101 +1,108 @@
 import React from 'react';
 import Link from 'next/link';
-import { CategoryNav } from '@/components/store/category-nav';
-import { ProductGrid } from '@/components/store/product-grid';
 import { filterByCategory, getCategories, getProducts } from '@/lib/api';
+import { SJPageBanner } from '@/components/atomic/SJHomeComponents';
+import { SJProductCard } from '@/components/atomic/SJProductCard';
 
 interface ShopPageProps {
   searchParams: Promise<{ category?: string; q?: string }>;
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps): Promise<React.JSX.Element> {
-  const { category: categorySlug, q } = await searchParams;
-  const [categories, products, trendingProducts] = await Promise.all([getCategories(), getProducts(), getProducts('popular')]);
+  const searchParamsAwaited = await searchParams;
+  const categoryParam = searchParamsAwaited.category;
+  const qParam = searchParamsAwaited.q;
   
-  let filtered = filterByCategory(products, categorySlug);
+  const categorySlug = Array.isArray(categoryParam) ? categoryParam[0] : categoryParam;
+  const q = Array.isArray(qParam) ? qParam[0] : qParam;
+  
+  const [categories, products] = await Promise.all([getCategories(), getProducts()]);
+  
+  const activeCategory = categories.find((c) => c.slug === categorySlug);
+
+  let filtered = products;
+  if (categorySlug) {
+    if (activeCategory) {
+      filtered = products.filter(p => p.categoryId === activeCategory.id || p.category?.slug === categorySlug);
+    } else {
+      filtered = filterByCategory(products, categorySlug);
+    }
+  }
+
   if (q) {
     const query = q.toLowerCase();
     filtered = filtered.filter((p) => p.name.toLowerCase().includes(query) || p.description?.toLowerCase().includes(query));
   }
-  
-  const activeCategory = categories.find((c) => c.slug === categorySlug);
 
   return (
-    <div className="wrap" style={{ paddingBottom: '5rem' }}>
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        <Link href="/">Home</Link>
-        <span>/</span>
-        <span style={{ color: 'var(--ink)' }}>Shop</span>
-        {activeCategory && (
-          <>
-            <span>/</span>
-            <span style={{ color: 'var(--ink)' }}>{activeCategory.name}</span>
-          </>
-        )}
-      </nav>
+    <>
+      <SJPageBanner 
+        crumbs={activeCategory ? `Home / Shop / ${activeCategory.name}` : 'Home / Shop'} 
+        title={activeCategory ? activeCategory.name : 'Fine & Imitation Jewellery'} 
+        desc={activeCategory?.description || `${filtered.length} pieces, curated by our Kochi jewellers`}
+      />
 
-      {/* Page head */}
-      <div className="page-head">
-        <p className="eyebrow">
-          {filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'}
-        </p>
-        <h1>{activeCategory ? activeCategory.name : 'All Pieces'}</h1>
-        <p className="sub">
-          {activeCategory?.description ?? 'Fine apparel, elegant objects, and organic beauty formulas.'}
-        </p>
-      </div>
-
-      {/* Category nav */}
-      <div style={{ marginBottom: '2.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between', alignItems: 'center' }}>
-        <CategoryNav categories={categories} activeSlug={categorySlug} />
-        
-        <form method="GET" action="/shop" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          {categorySlug && <input type="hidden" name="category" value={categorySlug} />}
-          <div className="filter-group">
-            <select name="sort" style={{ padding: '0.5rem', border: '1px solid var(--border)', borderRadius: '4px' }}>
-              <option value="">Sort By</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="newest">Newest Arrivals</option>
-            </select>
+      <section className="section">
+        <div className="container shop-layout">
+          <aside>
+            <div className="filter-box">
+              <h5>Category</h5>
+              <Link href="/shop" className="filter-opt" style={{ display: 'block', textDecoration: 'none', color: !categorySlug ? 'var(--oxblood)' : 'inherit' }}>
+                All Pieces
+              </Link>
+              {categories.map(c => (
+                <Link key={c.slug} href={`/shop?category=${c.slug}`} className="filter-opt" style={{ display: 'block', textDecoration: 'none', color: categorySlug === c.slug ? 'var(--oxblood)' : 'inherit' }}>
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+            <div className="filter-box">
+              <h5>Price</h5>
+              <div className="filter-opt"><input type="checkbox" /> Under ₹1,500</div>
+              <div className="filter-opt"><input type="checkbox" /> ₹1,500 – ₹4,000</div>
+              <div className="filter-opt"><input type="checkbox" /> ₹4,000 – ₹8,000</div>
+              <div className="filter-opt"><input type="checkbox" /> Above ₹8,000</div>
+            </div>
+            <div className="filter-box">
+              <h5>Finish</h5>
+              <div className="filter-opt"><input type="checkbox" /> Antique Gold</div>
+              <div className="filter-opt"><input type="checkbox" /> Kemp &amp; Temple</div>
+              <div className="filter-opt"><input type="checkbox" /> Kundan &amp; Pearl</div>
+              <div className="filter-opt"><input type="checkbox" /> Diamond-Finish</div>
+            </div>
+          </aside>
+          <div>
+            <div className="shop-toolbar">
+              <span>Showing {filtered.length} results</span>
+              <div className="toggle-group">
+                <span className="active">Popular</span>
+                <span>Newest</span>
+                <span>Price ↑</span>
+                <span>Price ↓</span>
+              </div>
+            </div>
+            
+            <div className="product-grid">
+              {filtered.length > 0 ? (
+                filtered.map((product) => (
+                  <SJProductCard key={product.id} product={product} glyph="💎" />
+                ))
+              ) : (
+                <div style={{ gridColumn: '1 / -1', padding: '4rem 0', textAlign: 'center' }}>
+                  <p>No products found matching your criteria.</p>
+                  <Link href="/shop" className="btn btn-gold" style={{ marginTop: '1rem' }}>Clear Filters</Link>
+                </div>
+              )}
+            </div>
+            
+            {filtered.length > 0 && (
+              <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <a href="#" className="btn btn-gold">Load More Pieces</a>
+              </div>
+            )}
           </div>
-          <div className="filter-group">
-            <select name="priceRange" style={{ padding: '0.5rem', border: '1px solid var(--border)', borderRadius: '4px' }}>
-              <option value="">Any Price</option>
-              <option value="0-5000">Under ₹5,000</option>
-              <option value="5000-15000">₹5,000 - ₹15,000</option>
-              <option value="15000+">Over ₹15,000</option>
-            </select>
-          </div>
-          <input 
-            type="text" 
-            name="q" 
-            defaultValue={q || ''} 
-            placeholder="Search pieces..." 
-            style={{ padding: '0.5rem 1rem', border: '1px solid var(--border)', borderRadius: '4px 0 0 4px', fontSize: '0.85rem' }} 
-          />
-          <button type="submit" className="btn btn--primary" style={{ padding: '0.5rem 1rem', borderRadius: '0 4px 4px 0', minHeight: 'auto', marginLeft: '-1rem' }}>
-            Search
-          </button>
-        </form>
-      </div>
-      
-      {!categorySlug && !q && trendingProducts.length > 0 && (
-        <div style={{ marginBottom: '4rem' }}>
-          <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.8rem', marginBottom: '1.5rem', color: 'var(--oxblood)' }}>
-            Trending Now
-          </h2>
-          <ProductGrid products={trendingProducts.slice(0, 4)} />
-          <hr style={{ margin: '4rem 0 2rem 0', borderColor: 'rgba(33,29,25,.1)' }} />
-          <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.8rem', marginBottom: '1.5rem' }}>
-            All Pieces
-          </h2>
         </div>
-      )}
-
-      {/* Grid */}
-      <ProductGrid products={filtered} />
-    </div>
+      </section>
+    </>
   );
 }

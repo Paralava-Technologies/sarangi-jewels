@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { fetchOrders, fetchReportsData, fetchSupportTickets, type Order } from '@/lib/api';
+import { fetchOrders, fetchReportsData, fetchSupportTickets, fetchRentals, fetchMakeupSessions, type Order } from '@/lib/api';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -15,6 +15,8 @@ export default function DashboardPage() {
   const [dailyRevenue, setDailyRevenue] = useState<any[]>([]);
   const [ordersByStatus, setOrdersByStatus] = useState<any[]>([]);
   const [supportTickets, setSupportTickets] = useState<any[]>([]);
+  const [rentals, setRentals] = useState<any[]>([]);
+  const [makeupSessions, setMakeupSessions] = useState<any[]>([]);
 
   const formatPrice = (cents: number, currency = 'INR') =>
     (cents / 100).toLocaleString('en-IN', {
@@ -33,8 +35,10 @@ export default function DashboardPage() {
       fetchReportsData('daily-revenue').catch(() => []),
       fetchReportsData('orders-by-status').catch(() => []),
       fetchSupportTickets(1, 100).catch(() => ({ data: [] })),
+      fetchRentals(1, 100).catch(() => ({ data: [] })),
+      fetchMakeupSessions().catch(() => []),
     ])
-      .then(([ordersRes, salesRes, productsRes, transactionsRes, dailyRes, statusRes, ticketsRes]) => {
+      .then(([ordersRes, salesRes, productsRes, transactionsRes, dailyRes, statusRes, ticketsRes, rentalsRes, makeupRes]) => {
         setOrders(ordersRes.data || []);
         setSalesSummary(salesRes?.data || salesRes);
         setTopProducts(
@@ -62,6 +66,8 @@ export default function DashboardPage() {
               : [],
         );
         setSupportTickets(ticketsRes?.data || []);
+        setRentals(rentalsRes?.data || []);
+        setMakeupSessions(makeupRes || []);
       })
       .finally(() => setLoading(false));
   };
@@ -92,6 +98,9 @@ export default function DashboardPage() {
   const unattendedTickets = unattendedList.length;
   const firstUnattendedId = unattendedList[0]?.id;
 
+  const upcomingRentals = rentals.length;
+  const pendingMakeup = makeupSessions.filter((s: any) => s.status === 'PENDING').length;
+
   const stats = [
     {
       label: 'Open orders',
@@ -114,6 +123,16 @@ export default function DashboardPage() {
       subValue: loading ? undefined : unattendedTickets,
       subHref: firstUnattendedId ? `/dashboard/support?ticketId=${firstUnattendedId}` : undefined,
       href: '/dashboard/support',
+    },
+    {
+      label: 'Upcoming rentals',
+      value: loading ? '—' : upcomingRentals,
+      href: '/dashboard/rentals',
+    },
+    {
+      label: 'Pending makeup',
+      value: loading ? '—' : pendingMakeup,
+      href: '/dashboard/makeup',
     },
   ];
 
@@ -178,7 +197,7 @@ export default function DashboardPage() {
           <code className="rounded bg-neutral-100 px-1">/v1/admin/*</code> endpoints.
         </p>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-4">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -241,7 +260,7 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-medium mb-6">Daily Revenue</h2>
                 {dailyRevenue.length > 0 ? (
                   <div className="h-64 flex items-end gap-1">
-                    {dailyRevenue.map((day, i) => {
+                    {dailyRevenue.map((day) => {
                       const heightPct = Math.max((day.revenueCents / maxRevenue) * 100, 1);
                       return (
                         <div

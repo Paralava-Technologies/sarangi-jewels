@@ -25,6 +25,7 @@ const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#14b8a6'
 export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [revenueData, setRevenueData] = useState<any[]>([]);
+  const [bookingsData, setBookingsData] = useState<any[]>([]);
   const [topProducts, setTopProducts] = useState<any[]>([]);
   const [categoryData, setCategoryData] = useState<any[]>([]);
   const [userAcquisition, setUserAcquisition] = useState<any[]>([]);
@@ -35,13 +36,16 @@ export default function AnalyticsPage() {
     { label: 'Total Revenue', value: '$0.00', change: '—', trend: 'up' },
     { label: 'Total Orders', value: '0', change: '—', trend: 'up' },
     { label: 'Average Order', value: '$0.00', change: '—', trend: 'up' },
+    { label: 'Rental Bookings', value: '0', change: '—', trend: 'up' },
+    { label: 'Makeup Sessions', value: '0', change: '—', trend: 'up' },
   ]);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const [dailyRes, topRes, statusRes, userRes, summaryRes, topCustRes, recentTxRes] = await Promise.all([
+        const [dailyRes, bookingsRes, topRes, statusRes, userRes, summaryRes, topCustRes, recentTxRes] = await Promise.all([
           fetchReportsData('daily-revenue'),
+          fetchReportsData('daily-bookings'),
           fetchReportsData('top-products'),
           fetchReportsData('orders-by-status'),
           fetchReportsData('user-acquisition'),
@@ -55,6 +59,14 @@ export default function AnalyticsPage() {
           setRevenueData(dailyRes.map((d: any) => ({
             name: new Date(d.date).toLocaleDateString('en-US', { weekday: 'short' }),
             revenue: d.revenueCents / 100
+          })));
+        }
+        
+        if (Array.isArray(bookingsRes)) {
+          setBookingsData(bookingsRes.map((d: any) => ({
+            name: new Date(d.date).toLocaleDateString('en-US', { weekday: 'short' }),
+            rentals: d.rentals,
+            makeup: d.makeup
           })));
         }
 
@@ -90,6 +102,8 @@ export default function AnalyticsPage() {
             { label: 'Total Revenue', value: `$${(summaryRes.totalRevenueCents / 100).toLocaleString()}`, change: 'Past 30 days', trend: 'up' },
             { label: 'Total Orders', value: summaryRes.totalOrders.toString(), change: 'Past 30 days', trend: 'up' },
             { label: 'Average Order', value: `$${(summaryRes.averageOrderValueCents / 100).toLocaleString()}`, change: 'Past 30 days', trend: 'up' },
+            { label: 'Rental Bookings', value: (summaryRes.totalRentals || 0).toString(), change: 'Past 30 days', trend: 'up' },
+            { label: 'Makeup Sessions', value: (summaryRes.totalMakeupSessions || 0).toString(), change: 'Past 30 days', trend: 'up' },
           ]);
         }
       } catch (err) {
@@ -112,7 +126,7 @@ export default function AnalyticsPage() {
         <p className="text-sm text-neutral-500">Current state analysis of Sarangi Jewels.store</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
           <div key={stat.label} className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
             <h3 className="text-sm font-medium text-neutral-500">{stat.label}</h3>
@@ -169,6 +183,25 @@ export default function AnalyticsPage() {
                 />
                 <Legend verticalAlign="bottom" height={36} iconType="circle" />
               </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="col-span-1 md:col-span-2 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+          <h3 className="mb-4 text-base font-semibold text-neutral-900">Rental & Makeup Bookings Over Time (Past 30 Days)</h3>
+          <div className="h-[300px] w-full text-sm">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={bookingsData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e5e5" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#737373' }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#737373' }} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e5e5e5', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                />
+                <Legend />
+                <Bar dataKey="rentals" name="Rental Bookings" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="makeup" name="Makeup Sessions" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>

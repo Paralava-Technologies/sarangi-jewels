@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useCart } from '@/components/cart/cart-provider';
+import { SJCartRow } from '@/components/atomic/SJCartRow';
 import { formatPrice } from '@/lib/format';
+import { SJPageBanner } from '@/components/atomic/SJHomeComponents';
+import { isLoggedIn } from '@/lib/auth';
 
 interface StoreSettings {
   shippingThresholdCents: number;
@@ -15,11 +17,13 @@ interface StoreSettings {
 export default function CartPage(): React.JSX.Element {
   const { cart, loading, updateQuantity, removeItem } = useCart();
   const [settings, setSettings] = useState<StoreSettings | null>(null);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   useEffect(() => {
     import('@/lib/api').then(({ apiClient }) => {
       apiClient.store.getSettings().then(res => setSettings(res.data)).catch(console.error);
     });
+    setUserLoggedIn(isLoggedIn());
   }, []);
 
   if (loading || !settings || !cart) return <div className="wrap"><p style={{padding:'5rem 0',textAlign:'center',color:'rgba(33,29,25,.55)'}}>Loading your bag…</p></div>;
@@ -29,83 +33,72 @@ export default function CartPage(): React.JSX.Element {
   const total = subtotal + shipping;
 
   return (
-    <div className="wrap">
-      <nav className="breadcrumb">
-        <Link href="/">Home</Link><span>/</span>
-        <span style={{color:'var(--ink)'}}>Your Bag</span>
-      </nav>
+    <>
+      <SJPageBanner crumbs="Home / My Bag" title="My Bag" />
 
-      <div className="page-head">
-        <p className="eyebrow">{cart.itemCount} {cart.itemCount === 1 ? 'Item' : 'Items'}</p>
-        <h1>Your Bag</h1>
-      </div>
-
-      <div className="cart-layout">
-        <div>
-          {cart.lines.length === 0 ? (
-            <div className="cart-empty is-visible">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
-              <h3 style={{fontFamily:'var(--display)',fontSize:'1.6rem'}}>Your bag is empty</h3>
-              <p>Pieces you add will show up here.</p>
-              <Link href="/shop" className="btn btn--primary">Continue Shopping</Link>
-            </div>
-          ) : (
-            <div className="cart-items">
-              {cart.lines.map((line) => (
-                <div className="cart-item" key={line.id}>
-                  <div className="cart-item__media" style={{background:'linear-gradient(135deg,#DCD3C2,#B89B6E)', position: 'relative', overflow: 'hidden'}}>
-                    {line.imageUrl && (
-                      <Image src={line.imageUrl} alt={line.productName} fill style={{ objectFit: 'cover' }} />
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="cart-item__name">{line.productName}</h3>
-                    <p className="cart-item__meta">{line.sku}</p>
-                    <button className="cart-item__remove" onClick={() => removeItem(line.id)}>Remove</button>
-                  </div>
-                  <div className="qty">
-                    <button onClick={() => updateQuantity(line.id, Math.max(1, line.quantity - 1))} aria-label="Decrease">−</button>
-                    <span>{line.quantity}</span>
-                    <button onClick={() => updateQuantity(line.id, line.quantity + 1)} aria-label="Increase">+</button>
-                  </div>
-                  <div className="cart-item__price">{formatPrice(line.unitPriceCents * line.quantity, line.currency)}</div>
+      <section className="section">
+        <div className="container grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-11 items-start">
+          <div>
+            {cart.lines.length === 0 ? (
+              <div className="card-panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+                <h3 style={{ fontFamily: 'var(--display)', fontSize: '1.6rem', marginBottom: '1rem' }}>Your bag is empty</h3>
+                <p style={{ color: 'rgba(33,29,25,.6)', marginBottom: '2rem' }}>Pieces you add will show up here.</p>
+                <Link href="/shop" className="btn btn-gold">Continue Shopping</Link>
+              </div>
+            ) : (
+              <>
+                <p className="eyebrow" style={{ marginBottom: '10px' }}>To Buy</p>
+                <div className="card-panel">
+                  {cart.lines.map((line) => (
+                    <SJCartRow 
+                      key={line.id}
+                      id={line.id}
+                      imageUrl={line.imageUrl || undefined}
+                      productName={line.productName}
+                      sku={line.sku}
+                      quantity={line.quantity}
+                      formattedPrice={formatPrice(line.unitPriceCents * line.quantity, line.currency)}
+                      onUpdateQuantity={updateQuantity}
+                      onRemove={removeItem}
+                    />
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </>
+            )}
 
-        <aside className="summary">
-          <h3>Order Summary</h3>
-          <div className="summary__row"><span>Subtotal</span><span>{formatPrice(subtotal, cart.currency)}</span></div>
-          <div className="summary__row"><span>Shipping</span><span>{subtotal === 0 ? '—' : shipping === 0 ? 'Free' : formatPrice(shipping, cart.currency)}</span></div>
-          <div className="summary__row summary__row--total"><span>Total</span><span>{formatPrice(total, cart.currency)}</span></div>
+            <div style={{ marginTop: '26px' }}>
+              <Link href="/shop" className="btn">← Continue Shopping</Link>
+            </div>
+          </div>
 
-          <Link href={cart.lines.length > 0 ? '/checkout' : '/shop'} className="btn btn--primary">Proceed to Checkout</Link>
-          <p className="summary__note">Free shipping automatically applied over {formatPrice(settings.shippingThresholdCents, cart.currency)}</p>
-
-          <div className="trust-row">
-            <div className="trust-row__item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="4" y="10" width="16" height="10" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-              Secure Checkout
+          <div className="cart-summary">
+            <h4>Order Summary</h4>
+            <div className="summary-line"><span>Purchase Subtotal</span><span>{formatPrice(subtotal, cart.currency)}</span></div>
+            <div className="summary-line"><span>Delivery</span><span>{subtotal === 0 ? '—' : shipping === 0 ? 'Free' : formatPrice(shipping, cart.currency)}</span></div>
+            <div className="promo-row">
+              <input type="text" placeholder="Promo code" />
+              <button>Apply</button>
             </div>
-            <div className="trust-row__item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 12l4-2v4z"/></svg>
-              30-Day Returns
+            <div className="summary-line total">
+              <span>Total Payable Now</span>
+              <span>{formatPrice(total, cart.currency)}</span>
             </div>
-            <div className="trust-row__item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M16 3v8M8 3v8"/></svg>
-              Free Over {formatPrice(settings.shippingThresholdCents, cart.currency).replace('.00', '').replace(',000', 'k')}
-            </div>
-            {settings.codAllowed && (
-              <div className="trust-row__item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                Cash on Delivery
+            <p style={{ fontSize: '.72rem', color: '#8a7a6a', margin: '10px 0 20px', lineHeight: 1.6 }}>
+              Free shipping automatically applied over {formatPrice(settings.shippingThresholdCents, cart.currency)}
+            </p>
+            <Link href={cart.lines.length > 0 ? '/checkout' : '/shop'} className="btn btn-gold" style={{ width: '100%', justifyContent: 'center', display: 'flex', textAlign: 'center' }}>
+              Proceed to Checkout
+            </Link>
+            {!userLoggedIn && (
+              <div style={{ textAlign: 'center', marginTop: '14px' }}>
+                <Link href="/login" style={{ fontSize: '.78rem', color: 'var(--wine)', borderBottom: '1px solid var(--gold)' }}>
+                  Sign in for faster checkout
+                </Link>
               </div>
             )}
           </div>
-        </aside>
-      </div>
-    </div>
+        </div>
+      </section>
+    </>
   );
 }

@@ -14,6 +14,7 @@ export default function AnalyticsSummaryPage() {
           { name: 'Customer LTV', href: '/dashboard/reports/customer' },
           { name: 'Order Processing (Heatmaps)', href: '/dashboard/reports/order' },
           { name: 'Product Leaderboard', href: '/dashboard/reports/product' },
+          { name: 'Rental Bookings', href: '/dashboard/reports/rentals' },
           { name: 'Profit & Loss', href: '/dashboard/reports/profit-and-loss' }
         ].map(r => (
           <Link key={r.name} href={r.href} className="flex items-center justify-between p-4 rounded border border-neutral-200 bg-white hover:border-brand-primary">

@@ -35,6 +35,7 @@ export class SettingsService {
     marqueeText?: string;
     storeState?: string;
     gstin?: string;
+    rentalDeliveryAllowed?: boolean;
   }): Promise<StoreSettings> {
     const settings = await this.getSettings();
     return this.prisma.storeSettings.update({

@@ -20,6 +20,12 @@ export class AdminOrdersController {
     return this.orders.listAll(query);
   }
 
+  @Get('rentals')
+  @Roles(UserRole.ADMIN, UserRole.FULFILLMENT, UserRole.SUPPORT)
+  listRentals(@Query() query: Record<string, unknown>) {
+    return this.orders.getRentals(query);
+  }
+
   @Get('promotions')
   @Roles(UserRole.ADMIN, UserRole.SUPPORT)
   listPromotions(@Query() query: Record<string, unknown>) {

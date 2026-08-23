@@ -100,11 +100,38 @@ export class CartService {
       throw new BadRequestException('Please select a variant');
     }
 
+    const isRental = data.isRental ?? false;
+    const rentStartDate = data.rentStartDate ? new Date(data.rentStartDate) : null;
+    const rentEndDate = data.rentEndDate ? new Date(data.rentEndDate) : null;
+
+    if (isRental && rentStartDate && rentEndDate && variant) {
+      // Calendar based inventory blocking
+      const overlappingRentals = await this.prisma.orderLine.findMany({
+        where: {
+          variantId,
+          isRental: true,
+          order: {
+            status: { notIn: ['CANCELLED', 'REFUNDED'] }
+          },
+          rentStartDate: { lte: rentEndDate },
+          rentEndDate: { gte: rentStartDate }
+        }
+      });
+      const rentedQuantity = overlappingRentals.reduce((sum, line) => sum + line.quantity, 0);
+      
+      if (variant.stockQuantity - rentedQuantity < data.quantity) {
+        throw new BadRequestException(`Item is fully booked for these dates (Available: ${Math.max(0, variant.stockQuantity - rentedQuantity)})`);
+      }
+    }
+
     const existing = await this.prisma.cartLine.findFirst({
       where: {
         cartId: cart.id,
         productId: data.productId,
         variantId,
+        isRental,
+        rentStartDate,
+        rentEndDate,
       },
     });
 
@@ -123,6 +150,9 @@ export class CartService {
           productId: data.productId,
           variantId,
           quantity: data.quantity,
+          isRental,
+          rentStartDate,
+          rentEndDate,
         },
       });
     }
@@ -273,7 +303,14 @@ export class CartService {
     let cgstCents = 0, sgstCents = 0, igstCents = 0;
 
     const lines = cart.lines.map((line) => {
-      const unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
+      let unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
+      let rentalDays = 0;
+      if (line.isRental && line.rentStartDate && line.rentEndDate) {
+        rentalDays = Math.ceil((line.rentEndDate.getTime() - line.rentStartDate.getTime()) / (1000 * 60 * 60 * 24));
+        if (rentalDays < 1) rentalDays = 1;
+        const dailyRentPriceCents = line.variant?.rentPriceCents ?? line.product.rentPriceCents ?? Math.round(unitPriceCents * 0.1);
+        unitPriceCents = dailyRentPriceCents * rentalDays;
+      }
       const lineTotalCents = unitPriceCents * line.quantity;
 
       let lCgst = 0, lSgst = 0, lIgst = 0;
@@ -322,7 +359,11 @@ export class CartService {
         currency: line.product.currency,
         cgstCents: lCgst,
         sgstCents: lSgst,
-        igstCents: lIgst
+        igstCents: lIgst,
+        isRental: line.isRental,
+        rentStartDate: line.rentStartDate?.toISOString() ?? null,
+        rentEndDate: line.rentEndDate?.toISOString() ?? null,
+        rentalDays: line.isRental ? rentalDays : undefined,
       };
     });
 

@@ -25,6 +25,7 @@ export default function SettingsPage() {
   const [codReconciliationMode, setCodReconciliationMode] = useState<'MANUAL' | 'AUTOMATIC'>('MANUAL');
   const [storeState, setStoreState] = useState('');
   const [gstin, setGstin] = useState('');
+  const [rentalDeliveryAllowed, setRentalDeliveryAllowed] = useState(true);
 
   useEffect(() => {
     loadSettings();
@@ -50,6 +51,7 @@ export default function SettingsPage() {
       setCodReconciliationMode(data.codReconciliationMode || 'MANUAL');
       setStoreState(data.storeState || 'Kerala');
       setGstin(data.gstin || '');
+      setRentalDeliveryAllowed(data.rentalDeliveryAllowed ?? true);
     } catch (err: any) {
       setError(err.message || 'Failed to load settings');
     } finally {
@@ -78,6 +80,7 @@ export default function SettingsPage() {
         codReconciliationMode,
         storeState: storeState || 'Kerala',
         gstin: gstin || null,
+        rentalDeliveryAllowed,
       });
       setSuccess('Settings updated successfully');
       await loadSettings();
@@ -237,6 +240,22 @@ export default function SettingsPage() {
               <input type="text" value={gstin} onChange={(e) => setGstin(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="32AABCU9603R1ZM" />
               <p className="mt-1 text-xs text-gray-500">Displayed on Tax Invoices.</p>
             </div>
+          </div>
+        </div>
+        <div className="space-y-4 mt-8 pt-6 border-t">
+          <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Rental Settings</h2>
+          
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rentalDeliveryAllowed"
+              checked={rentalDeliveryAllowed}
+              onChange={(e) => setRentalDeliveryAllowed(e.target.checked)}
+              className="h-4 w-4 text-black border-gray-300 rounded focus:ring-black"
+            />
+            <label htmlFor="rentalDeliveryAllowed" className="ml-2 block text-sm text-gray-900">
+              Allow Online Delivery for Rentals (if unchecked, Shop Visit Only)
+            </label>
           </div>
         </div>
 

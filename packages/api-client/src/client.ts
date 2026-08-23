@@ -77,7 +77,7 @@ export class SarangiJewelsApiClient {
 
     getCartSession: () => this.request<{ sessionId: string }>('/store/cart/session'),
     getCart: (options?: RequestInit) => this.request<Cart>('/store/cart', options),
-    addToCart: (body: { productId: string; variantId?: string; quantity: number }, options?: RequestInit) =>
+    addToCart: (body: { productId: string; variantId?: string; quantity: number; isRental?: boolean; rentStartDate?: string; rentEndDate?: string }, options?: RequestInit) =>
       this.request<Cart>('/store/cart/items', { ...options, method: 'POST', body: JSON.stringify(body) }),
     updateCartLine: (lineId: string, body: { quantity: number }, options?: RequestInit) =>
       this.request<Cart>(`/store/cart/items/${lineId}`, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
@@ -148,6 +148,16 @@ export class SarangiJewelsApiClient {
       
     replyToSupportTicket: (ticketId: string, body: { message: string }, options?: RequestInit) =>
       this.request<any>(`/store/support/${ticketId}/reply`, { ...options, method: 'POST', body: JSON.stringify(body) }),
+      
+    createMakeupSession: (body: { serviceName: string; location: string; date: string; time: string; address?: string }, options?: RequestInit) =>
+      this.request<any>('/store/makeup', { ...options, method: 'POST', body: JSON.stringify(body) }),
+    getMyMakeupSessions: (options?: RequestInit) =>
+      this.request<any[]>('/store/makeup/me', options),
+      
+    getMakeupPackages: (options?: RequestInit) =>
+      this.request<any[]>('/store/makeup/packages', options),
+    getMakeupPackage: (slug: string, options?: RequestInit) =>
+      this.request<any>(`/store/makeup/packages/${slug}`, options),
   };
 
   admin = {
@@ -169,6 +179,13 @@ export class SarangiJewelsApiClient {
       if (params?.pageSize) q.append('pageSize', String(params.pageSize));
       const qs = q.toString();
       return this.request<Order[]>(qs ? `/admin/orders?${qs}` : '/admin/orders', options);
+    },
+    getRentals: (params?: PaginationQuery, options?: RequestInit) => {
+      const q = new URLSearchParams();
+      if (params?.page) q.append('page', String(params.page));
+      if (params?.pageSize) q.append('pageSize', String(params.pageSize));
+      const qs = q.toString();
+      return this.request<any[]>(qs ? `/admin/orders/rentals?${qs}` : '/admin/orders/rentals', options);
     },
     updateOrderStatus: (orderId: string, body: { status: string; note?: string }, options?: RequestInit) =>
       this.request<Order>(`/admin/orders/${orderId}/status`, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
@@ -264,6 +281,20 @@ export class SarangiJewelsApiClient {
       this.request<any>(`/admin/support/${id}`, options),
     addSupportTicketReply: (id: string, body: { message: string }, options?: RequestInit) =>
       this.request<any>(`/admin/support/${id}/reply`, { ...options, method: 'POST', body: JSON.stringify(body) }),
+      
+    getMakeupSessions: (options?: RequestInit) =>
+      this.request<any[]>('/admin/makeup', options),
+    updateMakeupSessionStatus: (id: string, body: { status: string }, options?: RequestInit) =>
+      this.request<any>(`/admin/makeup/${id}/status`, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
+      
+    getMakeupPackages: (options?: RequestInit) =>
+      this.request<any[]>('/admin/makeup/packages', options),
+    createMakeupPackage: (body: any, options?: RequestInit) =>
+      this.request<any>('/admin/makeup/packages', { ...options, method: 'POST', body: JSON.stringify(body) }),
+    updateMakeupPackage: (id: string, body: any, options?: RequestInit) =>
+      this.request<any>(`/admin/makeup/packages/${id}`, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
+    deleteMakeupPackage: (id: string, options?: RequestInit) =>
+      this.request<void>(`/admin/makeup/packages/${id}`, { ...options, method: 'DELETE' }),
   };
 }
 

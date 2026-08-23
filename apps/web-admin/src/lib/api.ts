@@ -95,11 +95,16 @@ export async function fetchOrders(
   deliveryDate?: string,
   search?: string
 ): Promise<PaginatedResponse<Order>> {
-  const res = await apiClient.admin.getOrders({ status, page, pageSize, paymentProvider, paymentStatus, deliveryDate, search });
+  const res = await apiClient.admin.getOrders({ status, page, pageSize, paymentProvider, paymentStatus, deliveryDate, search } as any);
   return { data: res.data as unknown as Order[], meta: res.meta! };
 }
 
-export async function updateOrderStatus(orderId: string, status: string, note?: string, trackingNumber?: string, carrier?: string): Promise<Order> {
+export async function fetchRentals(page = 1, pageSize = 100): Promise<PaginatedResponse<any>> {
+  const res = await apiClient.admin.getRentals({ page, pageSize });
+  return { data: res.data as unknown as any[], meta: res.meta! };
+}
+
+export async function updateOrderStatus(orderId: string, status: string, note?: string, _trackingNumber?: string, _carrier?: string): Promise<Order> {
   const res = await apiClient.admin.updateOrderStatus(orderId, { status, note });
   return res.data as unknown as Order;
 }
@@ -270,6 +275,7 @@ export interface StoreSettings {
   storeState: string;
   gstin?: string;
   marqueeText?: string;
+  rentalDeliveryAllowed?: boolean;
   updatedAt: string;
 }
 
@@ -525,4 +531,33 @@ export async function deleteTaxRule(id: string): Promise<void> {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) throw new Error('Failed to delete tax rule');
+}
+
+export async function fetchMakeupSessions(): Promise<any[]> {
+  const res = await apiClient.admin.getMakeupSessions();
+  return res.data;
+}
+
+export async function updateMakeupSessionStatus(id: string, status: string): Promise<any> {
+  const res = await apiClient.admin.updateMakeupSessionStatus(id, { status });
+  return res.data;
+}
+
+export async function fetchMakeupPackages(): Promise<any[]> {
+  const res = await apiClient.admin.getMakeupPackages();
+  return res.data;
+}
+
+export async function createMakeupPackage(data: any): Promise<any> {
+  const res = await apiClient.admin.createMakeupPackage(data);
+  return res.data;
+}
+
+export async function updateMakeupPackage(id: string, data: any): Promise<any> {
+  const res = await apiClient.admin.updateMakeupPackage(id, data);
+  return res.data;
+}
+
+export async function deleteMakeupPackage(id: string): Promise<void> {
+  await apiClient.admin.deleteMakeupPackage(id);
 }

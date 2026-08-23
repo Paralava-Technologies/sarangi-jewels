@@ -45,6 +45,7 @@ export async function placeOrder(
   note?: string,
   promotionCode?: string,
   discountCents?: number,
+  deliveryMethod?: 'ONLINE_DELIVERY' | 'STORE_PICKUP',
 ): Promise<Order> {
   const sessionId = getCartSessionId();
   const res = await fetch(`${API_URL}/store/orders`, {
@@ -54,7 +55,7 @@ export async function placeOrder(
       ...authHeaders(),
       ...(sessionId ? { 'X-Cart-Session': sessionId } : {}),
     },
-    body: JSON.stringify({ note, promotionCode, discountCents }),
+    body: JSON.stringify({ note, promotionCode, discountCents, deliveryMethod }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));

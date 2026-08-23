@@ -133,6 +133,69 @@ export class OrdersService {
     };
   }
 
+  async getRentals(query: Record<string, unknown>) {
+    const { page, pageSize } = paginationQuerySchema.parse(query);
+    const startDate = query.startDate as string | undefined;
+    const endDate = query.endDate as string | undefined;
+    const productName = query.productName as string | undefined;
+    const category = query.category as string | undefined;
+
+    const where: any = {
+      isRental: true,
+      order: {
+        status: { notIn: ['CANCELLED', 'REFUNDED'] }
+      }
+    };
+
+    if (startDate || endDate) {
+      where.order.createdAt = {};
+      if (startDate) where.order.createdAt.gte = new Date(startDate);
+      if (endDate) where.order.createdAt.lte = new Date(endDate);
+    }
+    
+    if (productName) {
+      where.productName = { contains: productName, mode: 'insensitive' };
+    }
+    
+    // We cannot easily filter by category in orderLine unless we join with Product.
+    // The OrderLine only has productId. So we need to fetch products by category first.
+    if (category) {
+      const productsInCategory = await this.prisma.product.findMany({
+        where: { category: { name: { contains: category, mode: 'insensitive' } } },
+        select: { id: true }
+      });
+      where.productId = { in: productsInCategory.map(p => p.id) };
+    }
+
+    const [rentalLines, total] = await Promise.all([
+      this.prisma.orderLine.findMany({
+        where,
+        include: {
+          order: {
+            select: {
+              orderNumber: true,
+              status: true,
+              user: {
+                select: { firstName: true, lastName: true, email: true }
+              }
+            }
+          }
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { rentStartDate: 'asc' },
+      }),
+      this.prisma.orderLine.count({
+        where
+      }),
+    ]);
+
+    return {
+      data: rentalLines,
+      meta: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    };
+  }
+
   async getById(id: string, userId?: string) {
     const order = await this.prisma.order.findFirst({
       where: userId ? { id, userId } : { id },
@@ -439,7 +502,10 @@ export class OrdersService {
         lineTotalCents,
         cgstCents: cgst,
         sgstCents: sgst,
-        igstCents: igst
+        igstCents: igst,
+        isRental: line.isRental || false,
+        rentStartDate: line.rentStartDate || null,
+        rentEndDate: line.rentEndDate || null
       };
     });
 
@@ -453,6 +519,10 @@ export class OrdersService {
     let shippingCents = 0;
     if (subtotalCents < shippingThresholdCents) {
       shippingCents = shippingRateCentsFallback;
+    }
+
+    if (input.deliveryMethod === 'STORE_PICKUP') {
+      shippingCents = 0;
     }
 
     const totalCents = Math.max(

@@ -129,7 +129,7 @@ export default function CustomerInsightsPage({ params }: { params: Promise<{ id:
                       {review.status}
                     </span>
                   </div>
-                  {review.comment && <p className="mt-2 text-sm text-neutral-600 italic">"{review.comment}"</p>}
+                  {review.comment && <p className="mt-2 text-sm text-neutral-600 italic">&quot;{review.comment}&quot;</p>}
                 </li>
               ))}
               {(!insights.recentReviews || insights.recentReviews.length === 0) && (

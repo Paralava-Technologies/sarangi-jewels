@@ -14,8 +14,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src/"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@noeve/config-typescript": "workspace:*",

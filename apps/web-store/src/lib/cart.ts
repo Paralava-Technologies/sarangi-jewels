@@ -35,8 +35,10 @@ async function ensureSession(): Promise<string> {
 
   const res = await apiClient.store.getCartSession();
   sessionId = res.data.sessionId;
-  setCartSessionId(sessionId);
-  return sessionId;
+  if (sessionId) {
+    setCartSessionId(sessionId);
+  }
+  return sessionId || '';
 }
 
 export async function fetchCart(): Promise<Cart> {
@@ -50,9 +52,9 @@ export async function fetchCart(): Promise<Cart> {
   }
 }
 
-export async function addToCart(productId: string, variantId?: string, quantity = 1) {
+export async function addToCart(productId: string, variantId?: string, quantity = 1, isRental?: boolean, rentStartDate?: string, rentEndDate?: string) {
   await ensureSession();
-  const res = await apiClient.store.addToCart({ productId, variantId, quantity });
+  const res = await apiClient.store.addToCart({ productId, variantId, quantity, isRental, rentStartDate, rentEndDate });
   return res.data;
 }
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { AccountPanel } from '@/components/account/account-panel';
+import { SJAccountPanel } from '@/components/atomic/SJAccountPanel';
 
 export default function AccountPage(): React.JSX.Element {
   return (
     <div className="wrap" style={{paddingBottom:'4rem'}}>
-      <AccountPanel />
+      <SJAccountPanel />
     </div>
   );
 }

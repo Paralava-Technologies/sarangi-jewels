@@ -19,6 +19,7 @@ export interface ProductVariant {
   sku: string;
   name: string;
   priceCents: number;
+  compareAtPriceCents?: number;
   stockQuantity?: number;
 }
 
@@ -28,6 +29,7 @@ export interface Product {
   slug: string;
   description: string | null;
   basePriceCents: number;
+  compareAtPriceCents?: number;
   currency: string;
   material: string | null;
   purity: string | null;

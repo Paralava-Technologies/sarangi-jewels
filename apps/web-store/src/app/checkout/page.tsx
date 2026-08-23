@@ -10,7 +10,7 @@ import { placeOrder, validatePromotion } from '@/lib/orders';
 import { apiClient } from '@/lib/api';
 
 import { fetchAddresses, type Address } from '@/lib/addresses';
-
+import { SJPageBanner } from '@/components/atomic/SJHomeComponents';
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
     const script = document.createElement('script');
@@ -54,6 +54,10 @@ export default function CheckoutPage(): React.JSX.Element {
 
   const [codAllowed, setCodAllowed] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'ONLINE' | 'COD'>('ONLINE');
+  const [user, setUser] = useState<any>(null);
+
+  const [rentalDeliveryAllowed, setRentalDeliveryAllowed] = useState(true);
+  const [deliveryMethod, setDeliveryMethod] = useState<'ONLINE_DELIVERY' | 'STORE_PICKUP'>('ONLINE_DELIVERY');
 
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -70,15 +74,27 @@ export default function CheckoutPage(): React.JSX.Element {
 
       apiClient.store.getSettings?.().then((res: any) => {
           setCodAllowed(res.data?.codAllowed || false);
+          const allowRentalDelivery = res.data?.rentalDeliveryAllowed ?? true;
+          setRentalDeliveryAllowed(allowRentalDelivery);
+          if (!allowRentalDelivery) {
+            setDeliveryMethod('STORE_PICKUP');
+          }
       }).catch(console.error);
+
+      // Fetch User Profile to check verification status
+      import('@/lib/auth').then(({ authHeaders }) => 
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'}/store/user/me`, { headers: authHeaders() })
+          .then(res => res.json())
+          .then(res => setUser(res.data))
+      ).catch(console.error);
     }
   }, [router]);
 
   const taxCents = cart?.taxCents || 0;
-  const shippingCents = cart?.shippingCents || 0;
+  const shippingCents = deliveryMethod === 'STORE_PICKUP' ? 0 : (cart?.shippingCents || 0);
   const discountCents = appliedPromo ? appliedPromo.discountCents : 0;
   const totalCents = cart
-    ? Math.max(0, (cart?.totalCents || 0) - discountCents)
+    ? Math.max(0, (cart?.subtotalCents || 0) + shippingCents + taxCents - discountCents)
     : 0;
 
   const handleApplyPromo = async () => {
@@ -108,7 +124,7 @@ export default function CheckoutPage(): React.JSX.Element {
   const minDateString = minDateObj.toISOString().split('T')[0];
 
   const handlePlaceOrder = async () => {
-    if (!selectedAddressId) {
+    if (!selectedAddressId && deliveryMethod !== 'STORE_PICKUP') {
       setError('Please select a shipping address.');
       return;
     }
@@ -137,6 +153,7 @@ export default function CheckoutPage(): React.JSX.Element {
         finalNote || undefined,
         appliedPromo?.code,
         appliedPromo?.discountCents,
+        deliveryMethod
       );
       setCurrentOrder(order);
 
@@ -257,9 +274,11 @@ export default function CheckoutPage(): React.JSX.Element {
 
   if (!mounted || loading) {
     return (
-      <div className="wrap" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <p style={{ color: 'rgba(33,29,25,0.5)' }}>Loading checkout…</p>
-      </div>
+      <section className="section">
+        <div className="container" style={{ padding: '6rem 0', textAlign: 'center' }}>
+          <p style={{ color: 'rgba(33,29,25,0.5)' }}>Loading checkout…</p>
+        </div>
+      </section>
     );
   }
 
@@ -269,138 +288,138 @@ export default function CheckoutPage(): React.JSX.Element {
 
   if (success) {
     return (
-      <div className="wrap" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <div className="auth__success is-visible">
-          <div className="auth__success-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
-          </div>
-          <h2>Order confirmed</h2>
-          <p>
-            Thank you for your purchase. Your order <strong>{success}</strong> has been placed and
-            payment has been processed successfully.
-          </p>
-          <div className="auth__success-actions">
-            <Link href="/account" className="btn btn--primary">
-              View orders
-            </Link>
-            <Link href="/shop" className="btn btn--outline">
-              Continue shopping
-            </Link>
+      <section className="section">
+        <div className="container" style={{ maxWidth: '600px' }}>
+          <div className="card-panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '50%', background: 'var(--ivory-deep)', color: 'var(--peacock)', marginBottom: '1.5rem' }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '32px', height: '32px' }}>
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+            </div>
+            <h2 style={{ fontFamily: 'var(--display)', fontSize: '2rem', marginBottom: '1rem' }}>Order confirmed</h2>
+            <p style={{ color: 'rgba(33,29,25,.7)', marginBottom: '2rem', lineHeight: 1.6 }}>
+              Thank you for your purchase. Your order <strong>{success}</strong> has been placed and
+              payment has been processed successfully.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <Link href="/account" className="btn btn-gold">
+                View orders
+              </Link>
+              <Link href="/shop" className="btn">
+                Continue shopping
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   if (cart.lines.length === 0) {
     return (
-      <div className="wrap" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <div className="auth__success is-visible">
-          <h2>Your bag is empty</h2>
-          <p>Add items before checking out.</p>
-          <div className="auth__success-actions">
-            <Link href="/shop" className="btn btn--primary">
+      <section className="section">
+        <div className="container" style={{ maxWidth: '600px' }}>
+          <div className="card-panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+            <h2 style={{ fontFamily: 'var(--display)', fontSize: '2rem', marginBottom: '1rem' }}>Your bag is empty</h2>
+            <p style={{ color: 'rgba(33,29,25,.7)', marginBottom: '2rem' }}>Add items before checking out.</p>
+            <Link href="/shop" className="btn btn-gold">
               Browse collection
             </Link>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   if (paymentFailedOrder) {
     return (
-      <div className="wrap" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <div className="auth__success is-visible">
-          <div className="auth__success-icon" style={{ borderColor: 'var(--oxblood)', color: 'var(--oxblood)' }}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <h2>Payment Incomplete</h2>
-          <p>
-            The payment for your order <strong>{paymentFailedOrder.orderNumber}</strong> was not completed.
-          </p>
-          <p style={{ marginTop: '1rem', color: 'rgba(33,29,25,.7)' }}>
-            Would you like to convert this order to Cash on Delivery?
-          </p>
-          <div className="auth__success-actions" style={{ marginTop: '2rem' }}>
-            {codAllowed && (
-              <button onClick={handleConvertToCod} disabled={submitting} className="btn btn--primary">
-                {submitting ? 'Converting...' : 'Yes, Change to COD'}
-              </button>
-            )}
-            <Link href="/account" className="btn btn--outline">
-              No, View My Orders
-            </Link>
+      <section className="section">
+        <div className="container" style={{ maxWidth: '600px' }}>
+          <div className="card-panel" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '50%', background: 'var(--ivory-deep)', color: '#a3372f', marginBottom: '1.5rem' }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '32px', height: '32px' }}>
+                <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h2 style={{ fontFamily: 'var(--display)', fontSize: '2rem', marginBottom: '1rem' }}>Payment Incomplete</h2>
+            <p style={{ color: 'rgba(33,29,25,.7)', lineHeight: 1.6 }}>
+              The payment for your order <strong>{paymentFailedOrder.orderNumber}</strong> was not completed.
+            </p>
+            <p style={{ marginTop: '1rem', color: 'rgba(33,29,25,.7)', marginBottom: '2.5rem' }}>
+              Would you like to convert this order to Cash on Delivery?
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              {codAllowed && (
+                <button onClick={handleConvertToCod} disabled={submitting} className="btn btn-gold">
+                  {submitting ? 'Converting...' : 'Yes, Change to COD'}
+                </button>
+              )}
+              <Link href="/account" className="btn">
+                No, View My Orders
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="wrap">
-      {/* Breadcrumb */}
-      <nav className="breadcrumb">
-        <Link href="/">Home</Link>
-        <span>/</span>
-        <Link href="/cart">Your Bag</Link>
-        <span>/</span>
-        <span style={{ color: 'var(--ink)' }}>Checkout</span>
-      </nav>
+    <>
+      <SJPageBanner crumbs="Home / Your Bag / Checkout" title="Complete your order" desc="Verify your items and proceed with secure payment." />
 
-      {/* Page Head */}
-      <div className="page-head">
-        <p className="eyebrow">Secure Checkout</p>
-        <h1>Complete your order</h1>
-        <p className="sub">Verify your items and proceed with secure payment.</p>
-      </div>
+      <section className="section">
+        <div className="container grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-11 items-start">
+          <div>
+            {/* Order Details form fields */}
+            <div className="card-panel">
+            {cart?.lines.some((l: any) => l.isRental) && (
+              <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--ivory-deep)', border: '1px solid var(--line)' }}>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontFamily: 'var(--display)' }}>Delivery Option</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: rentalDeliveryAllowed ? 'pointer' : 'not-allowed', opacity: rentalDeliveryAllowed ? 1 : 0.6 }}>
+                     <input 
+                       type="radio" 
+                       name="deliveryMethod"
+                       value="ONLINE_DELIVERY" 
+                       checked={deliveryMethod === 'ONLINE_DELIVERY'} 
+                       onChange={() => setDeliveryMethod('ONLINE_DELIVERY')}
+                       disabled={!rentalDeliveryAllowed}
+                     />
+                     Online Delivery {rentalDeliveryAllowed ? '' : '(Currently Unavailable for Rentals)'}
+                   </label>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                     <input 
+                       type="radio" 
+                       name="deliveryMethod"
+                       value="STORE_PICKUP" 
+                       checked={deliveryMethod === 'STORE_PICKUP'} 
+                       onChange={() => setDeliveryMethod('STORE_PICKUP')}
+                     />
+                     Store Pickup (Free)
+                   </label>
+                </div>
+              </div>
+            )}
 
-      <div className="cart-layout">
-        <div>
-          {/* Order Details form fields */}
-          <div
-            className="section-card"
-            style={{
-              background: 'var(--cream)',
-              border: '1px solid rgba(33,29,25,.1)',
-              borderRadius: '2px',
-              padding: '2rem',
-            }}
-          >
-            <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.6rem', marginBottom: '1rem' }}>
-              Shipping Details
-            </h2>
-            <p style={{ fontSize: '.88rem', color: 'rgba(33,29,25,.65)', marginBottom: '1.5rem' }}>
-              Select a shipping address below or add a new one in your account.
-            </p>
+            {deliveryMethod !== 'STORE_PICKUP' ? (
+              <>
+                <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.6rem', marginBottom: '1rem' }}>
+                  Shipping Details
+                </h2>
+                <p style={{ fontSize: '.88rem', color: 'rgba(33,29,25,.65)', marginBottom: '1.5rem' }}>
+                  Select a shipping address below or add a new one in your account.
+                </p>
 
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                marginBottom: '2rem',
-              }}
-            >
+            <div className="flex flex-col gap-4 mb-8">
               {addresses.length === 0 ? (
-                <div
-                  style={{
-                    padding: '1.5rem',
-                    border: '1px dashed rgba(33,29,25,.2)',
-                    textAlign: 'center',
-                  }}
-                >
+                <div style={{ padding: '1.5rem', border: '1px dashed var(--line)', textAlign: 'center' }}>
                   <p style={{ fontSize: '.9rem', marginBottom: '1rem' }}>
                     No shipping addresses found.
                   </p>
                   <Link
                     href="/account?tab=addresses&new=1&redirect=checkout"
-                    className="btn btn--outline"
-                    style={{ display: 'inline-block' }}
+                    className="btn"
                   >
                     Add Address
                   </Link>
@@ -413,10 +432,9 @@ export default function CheckoutPage(): React.JSX.Element {
                       display: 'flex',
                       gap: '1rem',
                       padding: '1rem',
-                      border: `1px solid ${selectedAddressId === addr.id ? 'var(--brand-primary)' : 'rgba(33,29,25,.1)'}`,
-                      borderRadius: '2px',
+                      border: `1px solid ${selectedAddressId === addr.id ? 'var(--gold)' : 'var(--line)'}`,
                       cursor: 'pointer',
-                      background: selectedAddressId === addr.id ? 'var(--cream)' : 'transparent',
+                      background: selectedAddressId === addr.id ? 'var(--ivory)' : 'var(--white)',
                     }}
                   >
                     <input
@@ -431,29 +449,20 @@ export default function CheckoutPage(): React.JSX.Element {
                       <p style={{ fontWeight: 600, color: 'var(--ink)', marginBottom: '0.25rem' }}>
                         {addr.name}{' '}
                         {addr.isDefault && (
-                          <span
-                            style={{
-                              fontSize: '.7rem',
-                              padding: '0.1rem 0.4rem',
-                              background: 'var(--brand-accent)',
-                              color: 'var(--brand-primary)',
-                              borderRadius: '2px',
-                              marginLeft: '0.5rem',
-                            }}
-                          >
+                          <span className="pill" style={{ marginLeft: '0.5rem', background: 'var(--gold-light)', color: 'var(--wine-deep)' }}>
                             Default
                           </span>
                         )}
                       </p>
-                      <p style={{ color: 'rgba(33,29,25,.8)' }}>
+                      <p style={{ color: 'rgba(36,16,8,.8)' }}>
                         {addr.streetLine1}
                         {addr.streetLine2 ? `, ${addr.streetLine2}` : ''}
                       </p>
-                      <p style={{ color: 'rgba(33,29,25,.8)' }}>
+                      <p style={{ color: 'rgba(36,16,8,.8)' }}>
                         {addr.city}, {addr.state} {addr.postalCode}
                       </p>
-                      <p style={{ color: 'rgba(33,29,25,.8)' }}>{addr.country}</p>
-                      <p style={{ color: 'rgba(33,29,25,.8)', marginTop: '0.25rem' }}>
+                      <p style={{ color: 'rgba(36,16,8,.8)' }}>{addr.country}</p>
+                      <p style={{ color: 'rgba(36,16,8,.8)', marginTop: '0.25rem' }}>
                         Phone: {addr.phone}
                       </p>
                     </div>
@@ -464,33 +473,25 @@ export default function CheckoutPage(): React.JSX.Element {
                 <div style={{ textAlign: 'right' }}>
                   <Link
                     href="/account?tab=addresses&new=1&redirect=checkout"
-                    style={{ fontSize: '.85rem', textDecoration: 'underline' }}
+                    style={{ fontSize: '.85rem', textDecoration: 'underline', color: 'var(--wine)' }}
                   >
                     + Add a new address
                   </Link>
                 </div>
               )}
             </div>
+            </>
+            ) : (
+              <div style={{ marginBottom: '2rem' }}>
+                <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.6rem', marginBottom: '1rem' }}>Store Pickup</h2>
+                <p style={{ fontSize: '.88rem', color: 'rgba(33,29,25,.65)', marginBottom: '1.5rem' }}>
+                  Your items will be ready for pickup at our physical store. We will contact you once the order is ready.
+                </p>
+              </div>
+            )}
 
-            <div
-              style={{
-                marginBottom: '2rem',
-                padding: '1.5rem',
-                background: 'rgba(33,29,25,.03)',
-                border: '1px solid rgba(33,29,25,.1)',
-                borderRadius: '2px',
-              }}
-            >
-              <label
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  fontSize: '1rem',
-                }}
-              >
+            <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--ivory-deep)', border: '1px solid var(--line)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', fontWeight: 600, fontSize: '1rem' }}>
                 <input
                   type="checkbox"
                   checked={isGift}
@@ -501,71 +502,39 @@ export default function CheckoutPage(): React.JSX.Element {
               </label>
 
               {isGift && (
-                <div
-                  style={{
-                    marginTop: '1.5rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '1rem',
-                  }}
-                >
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    <div className="form-field">
+                <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div className="field-row">
+                    <div className="field">
                       <label>Preferred Delivery Date</label>
                       <input
                         type="date"
                         min={minDateString}
                         value={deliveryDate}
                         onChange={(e) => setDeliveryDate(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '0.6rem',
-                          border: '1px solid rgba(33,29,25,.2)',
-                        }}
                       />
                       {selectedAddress && (
-                        <p
-                          style={{
-                            fontSize: '.75rem',
-                            color: 'rgba(33,29,25,.6)',
-                            marginTop: '.4rem',
-                            lineHeight: 1.3,
-                          }}
-                        >
+                        <p style={{ fontSize: '.75rem', color: 'rgba(36,16,8,.6)', marginTop: '.4rem', lineHeight: 1.3 }}>
                           Based on your pincode ({selectedAddress.postalCode}), the earliest
                           delivery is <strong>{minDateObj.toLocaleDateString()}</strong>.
                         </p>
                       )}
                     </div>
-                    <div className="form-field">
+                    <div className="field">
                       <label>Preferred Time</label>
                       <input
                         type="time"
                         value={deliveryTime}
                         onChange={(e) => setDeliveryTime(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '0.6rem',
-                          border: '1px solid rgba(33,29,25,.2)',
-                        }}
                       />
                     </div>
                   </div>
-                  <div className="form-field" style={{ margin: 0 }}>
+                  <div className="field" style={{ margin: 0 }}>
                     <label>Gift Message</label>
                     <textarea
                       rows={2}
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                       placeholder="Write a special message for the recipient…"
-                      style={{
-                        width: '100%',
-                        border: '1px solid rgba(33,29,25,.25)',
-                        background: 'transparent',
-                        padding: '.85em 1em',
-                        fontSize: '.95rem',
-                        outline: 'none',
-                      }}
                     />
                   </div>
                 </div>
@@ -573,7 +542,7 @@ export default function CheckoutPage(): React.JSX.Element {
             </div>
 
             {!isGift && (
-              <div className="form-field">
+              <div className="field">
                 <label htmlFor="note">Order note (optional)</label>
                 <textarea
                   id="note"
@@ -581,17 +550,6 @@ export default function CheckoutPage(): React.JSX.Element {
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="Gift message, delivery instructions…"
-                  style={{
-                    width: '100%',
-                    border: '1px solid rgba(33,29,25,.25)',
-                    background: 'transparent',
-                    padding: '.85em 1em',
-                    fontSize: '.95rem',
-                    color: 'var(--ink)',
-                    outline: 'none',
-                    borderRadius: '1px',
-                    fontFamily: 'inherit',
-                  }}
                 />
               </div>
             )}
@@ -599,83 +557,39 @@ export default function CheckoutPage(): React.JSX.Element {
         </div>
 
         {/* Sidebar Summary */}
-        <aside className="summary">
-          <h3>Order summary</h3>
-          <div className="summary__items" style={{ marginBottom: '1.5rem' }}>
+        <div className="cart-summary">
+          <h4>Order Summary</h4>
+          <div style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--line)', paddingBottom: '1rem' }}>
             {cart.lines.map((line) => (
-              <div
-                key={line.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontSize: '.85rem',
-                  padding: '.6rem 0',
-                  borderBottom: '1px solid rgba(33,29,25,.1)',
-                }}
-              >
-                <span style={{ color: 'rgba(33,29,25,.8)' }}>
+              <div key={line.id} className="summary-line" style={{ padding: '4px 0' }}>
+                <span>
                   {line.productName}{' '}
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: '.76rem' }}>
+                  <span style={{ fontSize: '.76rem', color: '#8a7a6a' }}>
                     × {line.quantity}
                   </span>
                 </span>
-                <span style={{ fontFamily: 'var(--mono)', fontWeight: 500 }}>
+                <span style={{ fontWeight: 500 }}>
                   {formatPrice(line.lineTotalCents, line.currency)}
                 </span>
               </div>
             ))}
           </div>
 
-          <div
-            className="summary__row"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '.85rem',
-              marginBottom: '.5rem',
-              color: 'rgba(33,29,25,.8)',
-            }}
-          >
+          <div className="summary-line">
             <span>Subtotal</span>
             <span>{formatPrice(cart.subtotalCents, cart.currency)}</span>
           </div>
-          <div
-            className="summary__row"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '.85rem',
-              marginBottom: '.5rem',
-              color: 'rgba(33,29,25,.8)',
-            }}
-          >
+          <div className="summary-line">
             <span>Shipping</span>
             <span>{shippingCents === 0 ? 'Free' : formatPrice(shippingCents, cart.currency)}</span>
           </div>
-          <div
-            className="summary__row"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '.85rem',
-              marginBottom: '.5rem',
-              color: 'rgba(33,29,25,.8)',
-            }}
-          >
+          <div className="summary-line">
             <span>Taxes & Fees</span>
             <span>{formatPrice(taxCents, cart.currency)}</span>
           </div>
 
           {(cart?.cgstCents || cart?.sgstCents || cart?.igstCents) ? (
-            <div
-              style={{
-                fontSize: '.75rem',
-                color: 'rgba(33,29,25,.6)',
-                paddingBottom: '1rem',
-                marginBottom: '1rem',
-                borderBottom: '1px solid rgba(33,29,25,.1)',
-              }}
-            >
+            <div style={{ fontSize: '.75rem', color: '#6b5a4d', paddingBottom: '1rem', marginBottom: '1rem', borderBottom: '1px solid var(--line)' }}>
               {cart?.igstCents ? (
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>IGST</span>
@@ -695,101 +609,59 @@ export default function CheckoutPage(): React.JSX.Element {
               )}
             </div>
           ) : (
-            <div style={{ borderBottom: '1px solid rgba(33,29,25,.1)', marginBottom: '1rem' }} />
+            <div style={{ borderBottom: '1px solid var(--line)', marginBottom: '1rem' }} />
           )}
 
           {appliedPromo && (
-            <div
-              className="summary__row"
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '.85rem',
-                marginBottom: '1rem',
-                color: 'var(--brand-primary)',
-              }}
-            >
+            <div className="summary-line" style={{ color: 'var(--wine)' }}>
               <span>Discount ({appliedPromo.code})</span>
               <span>-{formatPrice(appliedPromo.discountCents, cart.currency)}</span>
             </div>
           )}
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input
-                type="text"
-                placeholder="Promo Code"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                disabled={!!appliedPromo}
-                style={{
-                  flex: 1,
-                  padding: '0.6rem 0.8rem',
-                  border: '1px solid rgba(33,29,25,.2)',
-                  borderRadius: '1px',
-                  outline: 'none',
-                }}
-              />
-              {!appliedPromo ? (
-                <button
-                  type="button"
-                  onClick={handleApplyPromo}
-                  disabled={validatingPromo || !promoCode}
-                  style={{
-                    padding: '0 1rem',
-                    background: 'var(--ink)',
-                    color: 'white',
-                    borderRadius: '1px',
-                  }}
-                >
-                  {validatingPromo ? '...' : 'Apply'}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAppliedPromo(null);
-                    setPromoCode('');
-                  }}
-                  style={{
-                    padding: '0 1rem',
-                    background: 'var(--oxblood)',
-                    color: 'white',
-                    borderRadius: '1px',
-                  }}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-            {promoError && (
-              <p style={{ fontSize: '.75rem', color: 'var(--oxblood)', marginTop: '0.4rem' }}>
-                {promoError}
-              </p>
+          <div className="promo-row">
+            <input
+              type="text"
+              placeholder="Promo Code"
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+              disabled={!!appliedPromo}
+            />
+            {!appliedPromo ? (
+              <button type="button" onClick={handleApplyPromo} disabled={validatingPromo || !promoCode}>
+                {validatingPromo ? '...' : 'Apply'}
+              </button>
+            ) : (
+              <button type="button" onClick={() => { setAppliedPromo(null); setPromoCode(''); }} style={{ background: 'var(--wine)', borderColor: 'var(--wine)' }}>
+                Remove
+              </button>
             )}
           </div>
+          {promoError && (
+            <p style={{ fontSize: '.75rem', color: '#a3372f', marginTop: '-10px', marginBottom: '10px' }}>
+              {promoError}
+            </p>
+          )}
 
-          <div
-            className="summary__row summary__row--total"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontWeight: 600,
-              fontSize: '1rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            <span>Total</span>
+          <div className="summary-line total">
+            <span>Total Payable Now</span>
             <span>{formatPrice(totalCents, cart.currency)}</span>
           </div>
 
           {error && (
-            <p style={{ fontSize: '.76rem', color: 'var(--oxblood)', marginBottom: '1rem' }}>
+            <p style={{ fontSize: '.76rem', color: '#a3372f', marginBottom: '1rem' }}>
               {error}
             </p>
           )}
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          {cart?.lines.some(l => l.isRental) && user && user.idVerificationStatus !== 'VERIFIED' && (
+            <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#fff3e0', border: '1px solid #ffe0b2', borderRadius: '4px', color: '#e65100', fontSize: '.8rem' }}>
+              <strong>Notice:</strong> You have a rental item in your cart, but your ID is not verified. 
+              You can complete your checkout now, but your order will not be processed or shipped until you upload a valid ID in your <Link href="/account?tab=verification" style={{ textDecoration: 'underline' }}>Account Portal</Link>.
+            </div>
+          )}
+
+          <div style={{ margin: '20px 0' }}>
             <h4 style={{ fontSize: '.9rem', marginBottom: '.5rem', fontFamily: 'var(--display)' }}>Payment Method</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '.5rem', cursor: 'pointer', fontSize: '.85rem' }}>
@@ -821,55 +693,20 @@ export default function CheckoutPage(): React.JSX.Element {
             type="button"
             disabled={submitting}
             onClick={handlePlaceOrder}
-            className="btn btn--primary"
-            style={{
-              width: '100%',
-              display: 'flex',
-              gap: '0.5rem',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="btn btn-gold"
+            style={{ width: '100%', justifyContent: 'center' }}
           >
-            {submitting ? (
-              <>
-                <svg
-                  className="spinner"
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{ animation: 'spin 1s linear infinite' }}
-                >
-                  <circle cx="12" cy="12" r="10" strokeDasharray="30" strokeDashoffset="10" />
-                </svg>{' '}
-                Processing…
-              </>
-            ) : paymentMethod === 'COD' ? (
-              'Place Order'
-            ) : (
-              'Place Order & Pay'
-            )}
+            {submitting ? 'Processing…' : paymentMethod === 'COD' ? 'Place Order' : 'Place Order & Pay'}
           </button>
 
-          <Link
-            href="/cart"
-            style={{
-              display: 'block',
-              textAlign: 'center',
-              marginTop: '1.2rem',
-              fontSize: '.8rem',
-              textDecoration: 'underline',
-            }}
-          >
-            ← Back to bag
-          </Link>
-          <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
-        </aside>
+          <div style={{ textAlign: 'center', marginTop: '14px' }}>
+            <Link href="/cart" style={{ fontSize: '.78rem', color: 'var(--wine)', borderBottom: '1px solid var(--gold)' }}>
+              ← Return to bag
+            </Link>
+          </div>
+        </div>
       </div>
+      </section>
 
       {/* Mock Sandbox Payment Modal */}
       {showMockModal && (
@@ -885,22 +722,11 @@ export default function CheckoutPage(): React.JSX.Element {
             backdropFilter: 'blur(4px)',
           }}
         >
-          <div
-            style={{
-              background: 'var(--cream)',
-              border: '1px solid rgba(33, 29, 25, 0.15)',
-              borderRadius: '2px',
-              padding: '2.5rem',
-              maxWidth: '480px',
-              width: '100%',
-              textAlign: 'center',
-              boxShadow: '0 12px 36px rgba(33, 29, 25, 0.15)',
-            }}
-          >
+          <div className="card-panel" style={{ maxWidth: '480px', width: '100%', textAlign: 'center' }}>
             <span
               style={{
                 fontSize: '2.5rem',
-                color: 'var(--oxblood)',
+                color: 'var(--wine)',
                 display: 'block',
                 marginBottom: '1rem',
               }}
@@ -911,7 +737,7 @@ export default function CheckoutPage(): React.JSX.Element {
               style={{
                 fontFamily: 'var(--display)',
                 fontSize: '1.8rem',
-                color: 'var(--oxblood)',
+                color: 'var(--wine-deep)',
                 marginBottom: '0.8rem',
               }}
             >
@@ -933,8 +759,8 @@ export default function CheckoutPage(): React.JSX.Element {
               <button
                 type="button"
                 onClick={handleSimulatePaymentSuccess}
-                className="btn btn--primary"
-                style={{ width: '100%' }}
+                className="btn btn-gold"
+                style={{ width: '100%', justifyContent: 'center' }}
               >
                 Simulate Successful Payment
               </button>
@@ -945,8 +771,8 @@ export default function CheckoutPage(): React.JSX.Element {
                   setSubmitting(false);
                   setPaymentFailedOrder(currentOrder);
                 }}
-                className="btn btn--outline"
-                style={{ width: '100%' }}
+                className="btn"
+                style={{ width: '100%', justifyContent: 'center' }}
               >
                 Cancel Transaction
               </button>
@@ -968,28 +794,20 @@ export default function CheckoutPage(): React.JSX.Element {
             background: 'rgba(33, 29, 25, 0.5)',
           }}
         >
-          <div
-            style={{
-              background: 'white',
-              padding: '2rem',
-              borderRadius: '2px',
-              maxWidth: '400px',
-              textAlign: 'center',
-            }}
-          >
+          <div className="card-panel" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
             <h3>Payment Discontinued</h3>
             <p style={{ margin: '1rem 0' }}>Would you like to switch this order to Cash on Delivery?</p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button onClick={() => handleConvertToCod()} className="btn btn--primary">
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+              <button onClick={() => handleConvertToCod()} className="btn btn-gold">
                 Switch to COD
               </button>
-              <button onClick={() => setPaymentFailedOrder(null)} className="btn btn--outline">
+              <button onClick={() => setPaymentFailedOrder(null)} className="btn">
                 Cancel
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

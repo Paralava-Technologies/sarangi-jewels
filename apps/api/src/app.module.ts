@@ -27,6 +27,8 @@ import { FulfillmentModule } from './modules/fulfillment/fulfillment.module';
 import { BlogsModule } from './modules/blogs/blogs.module';
 import { ShippingModule } from './modules/shipping/shipping.module';
 import { ReconciliationModule } from './modules/reconciliation/reconciliation.module';
+import { MakeupModule } from './modules/makeup/makeup.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -66,6 +68,7 @@ import { ReconciliationModule } from './modules/reconciliation/reconciliation.mo
     BlogsModule,
     ShippingModule,
     ReconciliationModule,
+    MakeupModule,
     ScheduleModule.forRoot(),
   ],
 })

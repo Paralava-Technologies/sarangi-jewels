@@ -97,3 +97,21 @@ export async function getSettings() {
     return null;
   }
 }
+
+export async function getMakeupPackages(): Promise<any[]> {
+  try {
+    const res = await apiClient.store.getMakeupPackages({ next: { revalidate: 60 } } as RequestInit);
+    return res.data;
+  } catch {
+    return [];
+  }
+}
+
+export async function getMakeupPackage(slug: string): Promise<any | null> {
+  try {
+    const res = await apiClient.store.getMakeupPackage(slug, { next: { revalidate: 60 } } as RequestInit);
+    return res.data;
+  } catch {
+    return null;
+  }
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 /**
@@ -26,7 +26,7 @@ export function startProgress() {
   _setState?.('loading');
 }
 
-export function NavigationProgress() {
+export function NavigationProgress(): React.JSX.Element | null {
   const [state, setState] = useState<ProgressState>('idle');
   const [width, setWidth] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);

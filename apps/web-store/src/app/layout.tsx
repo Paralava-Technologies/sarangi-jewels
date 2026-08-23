@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { CartProvider } from '@/components/cart/cart-provider';
-import { SiteFooter } from '@/components/layout/site-footer';
-import { SiteHeader } from '@/components/layout/site-header';
+import { SJFooter } from '@/components/atomic/SJFooter';
+import { SJHeader } from '@/components/atomic/SJHeader';
+import { SJUtilityBar } from '@/components/atomic/SJUtilityBar';
 import './globals.css';
 import React from 'react';
 
@@ -52,9 +53,10 @@ export default function RootLayout({ children }: { children: any }): React.JSX.E
       <body>
         <NextTopLoader color="var(--oxblood)" showSpinner={false} height={4} />
         <CartProvider>
-          <SiteHeader />
+          <SJUtilityBar />
+          <SJHeader />
           <main className="flex-1">{children}</main>
-          <SiteFooter />
+          <SJFooter />
         </CartProvider>
       </body>
     </html>

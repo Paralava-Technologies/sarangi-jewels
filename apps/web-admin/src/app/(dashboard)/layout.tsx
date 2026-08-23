@@ -11,6 +11,7 @@ import {
   BarChart3,
   FileText,
   Package,
+  ShoppingBag,
   Tags,
   Boxes,
   ShoppingCart,
@@ -24,6 +25,7 @@ import {
   LogOut,
   PenTool,
   Receipt,
+  Calendar,
 } from 'lucide-react';
 
 const navGroups = [
@@ -40,6 +42,7 @@ const navGroups = [
       { href: '/dashboard/reports/sales', label: 'Sales Report', icon: FileText },
       { href: '/dashboard/reports/customer', label: 'Customer Report', icon: Users },
       { href: '/dashboard/reports/product', label: 'Product Report', icon: Package },
+      { href: '/dashboard/reports/rentals', label: 'Rental Report', icon: ShoppingBag },
       { href: '/dashboard/reports/vendor', label: 'Vendor Report', icon: Truck },
       { href: '/dashboard/reports/order', label: 'Order Heat Map', icon: ShoppingCart },
       { href: '/dashboard/reports/support', label: 'Support Report', icon: LifeBuoy },
@@ -55,6 +58,7 @@ const navGroups = [
     items: [
       { href: '/dashboard/products', label: 'Products', icon: Package },
       { href: '/dashboard/categories', label: 'Categories', icon: Tags },
+      { href: '/dashboard/makeup/packages', label: 'Makeup Packages', icon: Package },
       { href: '/dashboard/inventory', label: 'Inventory', icon: Boxes },
     ],
   },
@@ -62,6 +66,8 @@ const navGroups = [
     title: 'Sales',
     items: [
       { href: '/dashboard/orders', label: 'Orders', icon: ShoppingCart },
+      { href: '/dashboard/rentals', label: 'Rentals', icon: Calendar },
+      { href: '/dashboard/makeup', label: 'Makeup Bookings', icon: MessageSquare },
       { href: '/dashboard/fulfillment', label: 'Fulfillment', icon: Truck },
       { href: '/dashboard/reconciliation', label: 'COD Reconciliation', icon: FileText },
       { href: '/dashboard/promotions', label: 'Promotions', icon: Percent },
@@ -99,8 +105,13 @@ export default function DashboardLayout({ children }: { children: any }) {
    * Determine if a nav item is active.
    * The Overview ("/dashboard") only matches exactly; sub-pages match by prefix.
    */
-  const isActive = (href: string) =>
-    href === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(href);
+  const isActive = (href: string) => {
+    if (href === '/dashboard') return pathname === '/dashboard';
+    if (href === '/dashboard/makeup') {
+      return pathname === '/dashboard/makeup' || (pathname.startsWith('/dashboard/makeup/') && !pathname.startsWith('/dashboard/makeup/packages'));
+    }
+    return pathname === href || pathname.startsWith(href + '/');
+  };
 
   return (
     <AuthGuard>

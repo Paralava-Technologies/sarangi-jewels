@@ -1,0 +1,64 @@
+
+> @noeve/web-store@0.0.1 build /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store
+> next build
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /home/digeeshs/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/pnpm-lock.yaml
+
+   ▲ Next.js 15.5.18
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 15.1s
+   Linting and checking validity of types ...
+
+./src/app/blog/[slug]/page.tsx
+45:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/blog/page.tsx
+32:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/makeup/[slug]/page.tsx
+35:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/atomic/SJAccountPanel.tsx
+710:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/atomic/SJFooter.tsx
+9:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/atomic/SJHeader.tsx
+34:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+110:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/atomic/SJRegisterForm.tsx
+53:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/28) ...
+   Generating static pages (7/28) 
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+[TypeError: fetch failed] {
+  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+}
+   Generating static pages (14/28) 
+   Generating static pages (21/28) 
+ ✓ Generating static pages (28/28)
+   Finalizing page optimization ...
+   Collecting build traces ...
+[Error: ENOENT: no such file or directory, open '/home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store/.next/server/app/_not-found/page.js.nft.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store/.next/server/app/_not-found/page.js.nft.json'
+}
+ ELIFECYCLE  Command failed with exit code 1.

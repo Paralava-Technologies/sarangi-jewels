@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getBlog } from '@/lib/api';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = await getBlog(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getBlog(slug);
   if (!post) return { title: 'Not Found' };
   return {
     title: `${post.title} | NOEVE Journal`,
@@ -12,8 +13,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getBlog(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getBlog(slug);
   if (!post) notFound();
 
   return (

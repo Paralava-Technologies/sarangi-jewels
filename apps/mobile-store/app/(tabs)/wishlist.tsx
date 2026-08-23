@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { colors } from '@noeve/ui-tokens';
@@ -10,10 +10,10 @@ export default function WishlistScreen() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   const fetchItems = async () => {
-    if (!user) {
+    if (!isAuthenticated) {
       setLoading(false);
       return;
     }
@@ -26,7 +26,7 @@ export default function WishlistScreen() {
   useFocusEffect(
     useCallback(() => {
       fetchItems();
-    }, [user])
+    }, [isAuthenticated])
   );
 
   const handleRemove = async (productId: string) => {
@@ -42,7 +42,7 @@ export default function WishlistScreen() {
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return (
       <View style={styles.center}>
         <Text style={styles.emptyText}>Sign in to view your wishlist.</Text>
@@ -106,12 +106,12 @@ export default function WishlistScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.primary,
+    backgroundColor: colors.neutral.cream,
   },
   header: {
     fontFamily: 'PlayfairDisplay_600SemiBold',
     fontSize: 24,
-    color: colors.text.primary,
+    color: colors.brand.primaryDark,
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 10,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background.primary,
+    backgroundColor: colors.neutral.cream,
     padding: 20,
   },
   list: {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   mediaContainer: {
     width: 100,
     height: 120,
-    backgroundColor: colors.background.secondary,
+    backgroundColor: colors.neutral.bone,
   },
   image: {
     width: '100%',
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: 'Inter_500Medium',
     fontSize: 16,
-    color: colors.text.primary,
+    color: colors.brand.primaryDark,
     marginBottom: 6,
   },
   price: {
     fontFamily: 'Inter_400Regular',
     fontSize: 14,
-    color: colors.text.secondary,
+    color: colors.neutral[500],
     marginBottom: 16,
   },
   removeBtn: {
@@ -170,19 +170,19 @@ const styles = StyleSheet.create({
   removeBtnText: {
     fontFamily: 'Inter_500Medium',
     fontSize: 12,
-    color: colors.brand.oxblood,
+    color: colors.brand.primary,
     textDecorationLine: 'underline',
   },
   emptyTitle: {
     fontFamily: 'PlayfairDisplay_600SemiBold',
     fontSize: 22,
-    color: colors.text.primary,
+    color: colors.brand.primaryDark,
     marginBottom: 10,
   },
   emptyText: {
     fontFamily: 'Inter_400Regular',
     fontSize: 14,
-    color: colors.text.secondary,
+    color: colors.neutral[500],
     marginBottom: 20,
     textAlign: 'center',
   },

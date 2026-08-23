@@ -14,17 +14,31 @@ export class ReportsService {
       where: {
         createdAt: { gte: start, lte: end },
         status: { notIn: [OrderStatus.PENDING_PAYMENT, OrderStatus.CANCELLED, OrderStatus.REFUNDED] }
+      },
+      include: {
+        lines: true
       }
     });
 
     const totalRevenueCents = orders.reduce((sum, order) => sum + (order.totalCents || 0), 0);
     const totalOrders = orders.length;
     const averageOrderValueCents = totalOrders > 0 ? totalRevenueCents / totalOrders : 0;
+    
+    const totalRentals = orders.reduce((sum, order) => sum + order.lines.filter(l => l.isRental).length, 0);
+
+    const totalMakeupSessions = await this.prisma.makeupSession.count({
+      where: {
+        createdAt: { gte: start, lte: end },
+        status: { notIn: ['CANCELLED'] }
+      }
+    });
 
     return {
       totalRevenueCents,
       totalOrders,
       averageOrderValueCents,
+      totalRentals,
+      totalMakeupSessions,
       period: { start, end }
     };
   }
@@ -118,6 +132,55 @@ export class ReportsService {
       data.push({
         date: dateKey,
         revenueCents: dailyMap.get(dateKey) || 0
+      });
+    }
+
+    return data;
+  }
+
+  async getDailyBookings(startDate?: string, endDate?: string) {
+    const end = endDate ? new Date(endDate) : new Date();
+    const start = startDate ? new Date(startDate) : new Date(new Date().setDate(end.getDate() - 30));
+
+    const orders = await this.prisma.order.findMany({
+      where: {
+        createdAt: { gte: start, lte: end },
+        status: { notIn: [OrderStatus.PENDING_PAYMENT, OrderStatus.CANCELLED, OrderStatus.REFUNDED] },
+        lines: { some: { isRental: true } }
+      },
+      select: { createdAt: true }
+    });
+
+    const makeupSessions = await this.prisma.makeupSession.findMany({
+      where: {
+        createdAt: { gte: start, lte: end },
+        status: { notIn: ['CANCELLED'] }
+      },
+      select: { createdAt: true }
+    });
+
+    const dailyMap = new Map<string, { rentals: number, makeup: number }>();
+    
+    for (const o of orders) {
+      const dateKey = o.createdAt.toISOString().split('T')[0];
+      if (!dailyMap.has(dateKey)) dailyMap.set(dateKey, { rentals: 0, makeup: 0 });
+      dailyMap.get(dateKey)!.rentals += 1;
+    }
+
+    for (const m of makeupSessions) {
+      const dateKey = m.createdAt.toISOString().split('T')[0];
+      if (!dailyMap.has(dateKey)) dailyMap.set(dateKey, { rentals: 0, makeup: 0 });
+      dailyMap.get(dateKey)!.makeup += 1;
+    }
+
+    const data = [];
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dateKey = d.toISOString().split('T')[0];
+      const stats = dailyMap.get(dateKey) || { rentals: 0, makeup: 0 };
+      data.push({
+        date: dateKey,
+        rentals: stats.rentals,
+        makeup: stats.makeup
       });
     }
 
@@ -237,6 +300,7 @@ export class ReportsService {
     const view = query?.view || 'monthly'; // 'monthly' | 'weekly'
     const productNameFilter = query?.productName || '';
     const categoryFilter = query?.category || '';
+    const isRentalFilter = query?.isRental === 'true';
 
     const orderWhere: any = {
       createdAt: { gte: start, lte: end },
@@ -244,6 +308,9 @@ export class ReportsService {
     };
 
     const lineWhere: any = { order: orderWhere };
+    if (isRentalFilter) {
+      lineWhere.isRental = true;
+    }
     if (productNameFilter) {
       lineWhere.productName = { contains: productNameFilter, mode: 'insensitive' };
     }

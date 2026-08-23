@@ -23,10 +23,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans:        ['"Public Sans"', 'sans-serif'],
-        display:     ['"Libre Caslon Display"', 'serif'],
-        serif:       ['"Libre Caslon Text"', 'serif'],
-        mono:        ['"JetBrains Mono"', 'monospace'],
+        sans:        ['"Jost"', 'sans-serif'],
+        display:     ['"Cormorant Garamond"', 'serif'],
+        serif:       ['"Marcellus"', 'serif'],
       },
       maxWidth: {
         container: '1280px',

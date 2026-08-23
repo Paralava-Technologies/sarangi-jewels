@@ -37,6 +37,14 @@ export class AdminReportsController {
     return this.reportsService.getDailyRevenue(startDate, endDate);
   }
 
+  @Get('daily-bookings')
+  getDailyBookings(
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ) {
+    return this.reportsService.getDailyBookings(startDate, endDate);
+  }
+
   @Get('orders-by-status')
   getOrdersByStatus() {
     return this.reportsService.getOrdersByStatus();

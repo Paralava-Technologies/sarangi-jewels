@@ -23,7 +23,7 @@ interface CartContextValue {
   cart: Cart;
   loading: boolean;
   refresh: () => Promise<void>;
-  addItem: (productId: string, variantId?: string, quantity?: number) => Promise<void>;
+  addItem: (productId: string, variantId?: string, quantity?: number, isRental?: boolean, rentStartDate?: string, rentEndDate?: string) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
 }
@@ -58,20 +58,30 @@ export function CartProvider({ children }: { children: ReactNode }): React.JSX.E
     refresh().finally(() => setLoading(false));
   }, [refresh]);
 
-  const addItem = useCallback(async (productId: string, variantId?: string, quantity = 1) => {
-    const data = await apiAdd(productId, variantId, quantity);
+  const addItem = useCallback(async (productId: string, variantId?: string, quantity = 1, isRental?: boolean, rentStartDate?: string, rentEndDate?: string) => {
+    const data = await apiAdd(productId, variantId, quantity, isRental, rentStartDate, rentEndDate);
     setCart(data);
   }, []);
 
   const updateQuantity = useCallback(async (lineId: string, quantity: number) => {
-    const data = await updateCartLine(lineId, quantity);
-    setCart(data);
-  }, []);
+    try {
+      const data = await updateCartLine(lineId, quantity);
+      setCart(data);
+    } catch (error) {
+      console.warn('Failed to update cart line, refreshing cart state:', error);
+      await refresh();
+    }
+  }, [refresh]);
 
   const removeItem = useCallback(async (lineId: string) => {
-    const data = await removeCartLine(lineId);
-    setCart(data);
-  }, []);
+    try {
+      const data = await removeCartLine(lineId);
+      setCart(data);
+    } catch (error) {
+      console.warn('Failed to remove cart line, refreshing cart state:', error);
+      await refresh();
+    }
+  }, [refresh]);
 
   const value = useMemo(
     () => ({ cart, loading, refresh, addItem, updateQuantity, removeItem }),

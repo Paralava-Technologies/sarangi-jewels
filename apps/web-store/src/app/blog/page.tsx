@@ -7,9 +7,10 @@ export const metadata = {
   description: 'Read the latest stories, styling tips, and news from NOEVE.',
 };
 
-export default async function BlogIndexPage({ searchParams }: { searchParams: { page?: string, category?: string } }) {
-  const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
-  const { data: posts, meta } = await getBlogs(page, 12, searchParams.category);
+export default async function BlogIndexPage({ searchParams }: { searchParams: Promise<{ page?: string, category?: string }> }) {
+  const { page: pageStr, category } = await searchParams;
+  const page = pageStr ? parseInt(pageStr, 10) : 1;
+  const { data: posts } = await getBlogs(page, 12, category);
 
   return (
     <main className="wrap pt-32 pb-24">

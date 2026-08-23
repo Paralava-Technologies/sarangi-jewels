@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { getProduct, getProducts } from '@/lib/api';
-import { ProductDetailClient } from './product-detail-client';
+import { SJProductDetail } from '@/components/atomic/SJProductDetail';
 
 import { Metadata } from 'next';
 
@@ -48,7 +48,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const relatedProducts = allProducts.filter((p) => p.id !== product.id);
 
   return (
-    <ProductDetailClient
+    <SJProductDetail
       product={product}
       relatedProducts={relatedProducts}
     />
