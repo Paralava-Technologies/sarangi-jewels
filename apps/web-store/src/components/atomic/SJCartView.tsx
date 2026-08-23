@@ -71,7 +71,17 @@ export function SJCartView(): React.JSX.Element {
               <p className="text-xs text-neutral-500">{line.sku}</p>
               <p className="mt-1 font-semibold">
                 {formatPrice(line.unitPriceCents, line.currency)}
+                {line.isRental && <span className="ml-1 text-xs font-normal text-neutral-500">/ day</span>}
               </p>
+              {line.isRental && (
+                <div className="mt-2 text-xs text-brand-primary bg-brand-accent-light/20 p-2 rounded">
+                  <p className="font-semibold mb-1">Rental Booking</p>
+                  <p>Dates: {line.rentStartDate ? new Date(line.rentStartDate).toLocaleDateString() : 'TBD'} – {line.rentEndDate ? new Date(line.rentEndDate).toLocaleDateString() : 'TBD'}</p>
+                  {!!line.depositCents && line.depositCents > 0 && (
+                    <p>Deposit: {formatPrice(line.depositCents, line.currency)}</p>
+                  )}
+                </div>
+              )}
               <div className="mt-auto flex items-center justify-between pt-3">
                 <div className="flex items-center gap-2">
                   <button
@@ -112,6 +122,12 @@ export function SJCartView(): React.JSX.Element {
             <dt className="text-neutral-600">Subtotal ({cart.itemCount} items)</dt>
             <dd className="font-semibold">{formatPrice(cart.subtotalCents, cart.currency)}</dd>
           </div>
+          {!!cart.depositCents && cart.depositCents > 0 && (
+            <div className="flex justify-between">
+              <dt className="text-neutral-600">Security Deposit (Refundable)</dt>
+              <dd className="font-semibold text-brand-primary">{formatPrice(cart.depositCents, cart.currency)}</dd>
+            </div>
+          )}
           <div className="flex justify-between">
             <dt className="text-neutral-600">Shipping</dt>
             <dd className="text-neutral-500">Calculated at checkout</dd>
@@ -119,7 +135,7 @@ export function SJCartView(): React.JSX.Element {
         </dl>
         <div className="mt-4 flex justify-between border-t border-neutral-200 pt-4 text-base font-semibold">
           <span>Estimated total</span>
-          <span>{formatPrice(cart.subtotalCents, cart.currency)}</span>
+          <span>{formatPrice(cart.subtotalCents + (cart.depositCents || 0), cart.currency)}</span>
         </div>
         <Link
           href={cart.lines.length > 0 ? '/checkout' : '/shop'}

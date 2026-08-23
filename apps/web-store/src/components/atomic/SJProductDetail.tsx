@@ -152,8 +152,19 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
       {/* PDP Grid */}
       <section className="section" style={{ padding: '40px 0' }}>
         <div className="container">
-          <div className="crumbs" style={{ color: 'var(--gold)', marginBottom: '30px' }}>
-            <Link href="/" style={{ color: 'inherit' }}>Home</Link> / <Link href="/shop" style={{ color: 'inherit' }}>Shop</Link> / {product.name}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <div className="crumbs" style={{ color: 'var(--gold)' }}>
+              <Link href="/" style={{ color: 'inherit' }}>Home</Link> / <Link href="/shop" style={{ color: 'inherit' }}>Shop</Link> / {product.name}
+            </div>
+            <button 
+              onClick={() => {
+                if (window.history.length > 2) router.back();
+                else router.push('/shop');
+              }} 
+              style={{ background: 'none', border: 'none', color: 'var(--wine)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.9rem', fontWeight: 500, padding: 0 }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Back to List
+            </button>
           </div>
           <div className="pd-layout">
             {/* Gallery */}
@@ -220,7 +231,9 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
 
               <div className="pd-mode-toggle">
                 <button className={mode === 'buy' ? 'active' : ''} onClick={() => setMode('buy')}>Buy — Own It</button>
-                <button className={mode === 'rent' ? 'active' : ''} onClick={() => setMode('rent')}>Rent — Wear It</button>
+                {product.isRental && (
+                  <button className={mode === 'rent' ? 'active' : ''} onClick={() => setMode('rent')}>Rent — Wear It</button>
+                )}
               </div>
 
               {mode === 'buy' && (
@@ -267,7 +280,7 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
                       {isAdding ? 'Adding…' : (activeVariant && (activeVariant.stockQuantity ?? 0) <= 0) ? 'Out of Stock' : 'Add To Bag'}
                     </button>
                     <button onClick={handleWishlistToggle} disabled={wishlistLoading} style={{ width: '50px', height: '50px', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--white)', cursor: 'pointer' }}>
-                      <span style={{ color: inWishlist ? 'var(--wine)' : 'rgba(74,14,30,.5)', fontSize: '1.2rem' }}>&#9825;</span>
+                      <span style={{ color: inWishlist ? 'var(--wine)' : 'rgba(74,14,30,.5)', fontSize: '1.2rem' }}>{inWishlist ? '♥' : '♡'}</span>
                     </button>
                   </div>
                 </div>
@@ -282,7 +295,7 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
                     <span style={{color: '#8a7a6a', fontSize: '.9rem'}}>/ day</span>
                   </div>
                   <div className="pd-meta">
-                    <div><strong>Deposit</strong><br/>₹5,000 (refundable)</div>
+                    <div><strong>Deposit</strong><br/>{activeVariant?.rentalDepositCents || product.rentalDepositCents ? formatPrice(activeVariant?.rentalDepositCents ?? product.rentalDepositCents ?? 0, product.currency) : 'None'} (refundable)</div>
                     <div><strong>Min. Rental</strong><br/>2 days</div>
                     <div><strong>Cleaning</strong><br/>Included</div>
                   </div>

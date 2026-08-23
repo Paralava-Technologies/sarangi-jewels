@@ -104,8 +104,8 @@ export async function fetchRentals(page = 1, pageSize = 100): Promise<PaginatedR
   return { data: res.data as unknown as any[], meta: res.meta! };
 }
 
-export async function updateOrderStatus(orderId: string, status: string, note?: string, _trackingNumber?: string, _carrier?: string): Promise<Order> {
-  const res = await apiClient.admin.updateOrderStatus(orderId, { status, note });
+export async function updateOrderStatus(orderId: string, status: string, note?: string, trackingNumber?: string, carrier?: string): Promise<Order> {
+  const res = await apiClient.admin.updateOrderStatus(orderId, { status, note, trackingNumber, carrier });
   return res.data as unknown as Order;
 }
 
@@ -155,6 +155,8 @@ export interface ProductVariant {
   sku: string;
   name: string;
   priceCents: number;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
   stockQuantity: number;
 }
 
@@ -164,6 +166,9 @@ export interface Product {
   slug: string;
   description: string | null;
   basePriceCents: number;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
+  isRental?: boolean;
   currency: string;
   categoryId: string;
   material: string | null;

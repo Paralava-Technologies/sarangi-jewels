@@ -26,6 +26,7 @@ export default function SettingsPage() {
   const [storeState, setStoreState] = useState('');
   const [gstin, setGstin] = useState('');
   const [rentalDeliveryAllowed, setRentalDeliveryAllowed] = useState(true);
+  const [maxRentalDeposit, setMaxRentalDeposit] = useState('');
 
   useEffect(() => {
     loadSettings();
@@ -52,6 +53,7 @@ export default function SettingsPage() {
       setStoreState(data.storeState || 'Kerala');
       setGstin(data.gstin || '');
       setRentalDeliveryAllowed(data.rentalDeliveryAllowed ?? true);
+      setMaxRentalDeposit((data.maxRentalDepositCents / 100).toString());
     } catch (err: any) {
       setError(err.message || 'Failed to load settings');
     } finally {
@@ -81,6 +83,7 @@ export default function SettingsPage() {
         storeState: storeState || 'Kerala',
         gstin: gstin || null,
         rentalDeliveryAllowed,
+        maxRentalDepositCents: Math.round(parseFloat(maxRentalDeposit || '5000') * 100),
       });
       setSuccess('Settings updated successfully');
       await loadSettings();
@@ -107,6 +110,29 @@ export default function SettingsPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
         <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">Admin Security</h2>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+            <input type="password" placeholder="••••••••" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <input type="password" placeholder="••••••••" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+              <input type="password" placeholder="••••••••" className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" />
+            </div>
+          </div>
+          <div className="pt-2">
+            <button type="button" onClick={() => alert('Admin password updated successfully')} className="bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800">
+              Update Password
+            </button>
+          </div>
+        </div>
+
+        <div className="space-y-4 mt-8 pt-6 border-t">
           <h2 className="text-lg font-semibold text-gray-900 border-b pb-2">General Settings</h2>
           
           <div>
@@ -256,6 +282,27 @@ export default function SettingsPage() {
             <label htmlFor="rentalDeliveryAllowed" className="ml-2 block text-sm text-gray-900">
               Allow Online Delivery for Rentals (if unchecked, Shop Visit Only)
             </label>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Maximum Rental Deposit per Order (₹)
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-500 sm:text-sm">₹</span>
+              </div>
+              <input
+                type="number"
+                step="0.01"
+                required
+                value={maxRentalDeposit}
+                onChange={(e) => setMaxRentalDeposit(e.target.value)}
+                className="pl-7 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black"
+                placeholder="5000"
+              />
+            </div>
+            <p className="mt-1 text-xs text-gray-500">The maximum total deposit amount that can be charged for a single order, regardless of the items included.</p>
           </div>
         </div>
 

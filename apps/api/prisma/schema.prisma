@@ -154,7 +154,9 @@ model Product {
   status             ProductStatus @default(DRAFT)
   categoryId         String        @map("category_id")
   basePriceCents     Int           @map("base_price_cents")
+  isRental           Boolean       @default(false) @map("is_rental")
   rentPriceCents     Int?          @map("rent_price_cents")
+  rentalDepositCents Int?          @map("rental_deposit_cents")
   currency           String        @default("INR")
   hsnCode            String?       @map("hsn_code")
   material           String?
@@ -202,6 +204,7 @@ model ProductVariant {
   name          String
   priceCents    Int     @map("price_cents")
   rentPriceCents Int?   @map("rent_price_cents")
+  rentalDepositCents Int? @map("rental_deposit_cents")
   stockQuantity Int     @default(0) @map("stock_quantity")
   isDigital     Boolean @default(false) @map("is_digital")
 
@@ -256,6 +259,7 @@ model Order {
   shippingCents  Int         @default(0) @map("shipping_cents")
   taxCents       Int         @default(0) @map("tax_cents")
   discountCents  Int         @default(0) @map("discount_cents")
+  depositCents   Int         @default(0) @map("deposit_cents")
   totalCents     Int         @map("total_cents")
   currency       String      @default("INR")
   promotionCode  String?     @map("promotion_code")
@@ -295,6 +299,7 @@ model OrderLine {
   sgstCents      Int       @default(0) @map("sgst_cents")
   igstCents      Int       @default(0) @map("igst_cents")
   isRental       Boolean   @default(false) @map("is_rental")
+  depositCents   Int       @default(0) @map("deposit_cents")
   rentStartDate  DateTime? @map("rent_start_date")
   rentEndDate    DateTime? @map("rent_end_date")
 
@@ -382,6 +387,7 @@ model StoreSettings {
   gstin                  String?
   marqueeText            String?  @map("marquee_text")
   rentalDeliveryAllowed  Boolean  @default(true) @map("rental_delivery_allowed")
+  maxRentalDepositCents  Int      @default(500000) @map("max_rental_deposit_cents")
   updatedAt              DateTime @updatedAt @map("updated_at")
 
   @@map("store_settings")

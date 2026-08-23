@@ -125,8 +125,8 @@ export class CatalogService {
           deleteMany: { id: { notIn: variants.map((v: any) => v.id).filter(Boolean) as string[] } },
           upsert: variants.map((v: any) => ({
             where: { id: v.id || 'new' },
-            update: { sku: v.sku, name: v.name, priceCents: v.priceCents, rentPriceCents: v.rentPriceCents, stockQuantity: v.stockQuantity },
-            create: { sku: v.sku, name: v.name, priceCents: v.priceCents, rentPriceCents: v.rentPriceCents, stockQuantity: v.stockQuantity },
+            update: { sku: v.sku, name: v.name, priceCents: v.priceCents, rentPriceCents: v.rentPriceCents, rentalDepositCents: v.rentalDepositCents, stockQuantity: v.stockQuantity },
+            create: { sku: v.sku, name: v.name, priceCents: v.priceCents, rentPriceCents: v.rentPriceCents, rentalDepositCents: v.rentalDepositCents, stockQuantity: v.stockQuantity },
           }))
         } : undefined,
       },

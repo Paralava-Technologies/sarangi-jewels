@@ -380,4 +380,51 @@ export class ReportsService {
 
     return { months, products, data: dataMap, view };
   }
+
+  async getProductOrders(query?: Record<string, string>) {
+    const end = query?.endDate ? new Date(query.endDate) : new Date();
+    const start = query?.startDate ? new Date(query.startDate) : new Date();
+    
+    if (!query?.startDate) {
+      start.setMonth(end.getMonth() - 5);
+      start.setDate(1);
+      start.setHours(0, 0, 0, 0);
+    }
+    
+    const productNameFilter = query?.productName || '';
+    const categoryFilter = query?.category || '';
+    const isRentalFilter = query?.isRental === 'true';
+
+    const orderWhere: any = {
+      createdAt: { gte: start, lte: end },
+      status: { notIn: [OrderStatus.PENDING_PAYMENT, OrderStatus.CANCELLED, OrderStatus.REFUNDED] }
+    };
+
+    const lineWhere: any = { order: orderWhere };
+    if (isRentalFilter) {
+      lineWhere.isRental = true;
+    }
+    if (productNameFilter) {
+      lineWhere.productName = { contains: productNameFilter, mode: 'insensitive' };
+    }
+    
+    if (categoryFilter) {
+      const productsInCategory = await this.prisma.product.findMany({
+        where: { category: { name: { contains: categoryFilter, mode: 'insensitive' } } },
+        select: { id: true }
+      });
+      lineWhere.productId = { in: productsInCategory.map(p => p.id) };
+    }
+
+    const orderLines = await this.prisma.orderLine.findMany({
+      where: lineWhere,
+      include: {
+        order: { select: { orderNumber: true, createdAt: true, status: true, user: { select: { email: true, firstName: true, lastName: true } } } }
+      },
+      orderBy: { order: { createdAt: 'desc' } },
+      take: 100 // limit to 100 for now to prevent massive payloads
+    });
+
+    return orderLines;
+  }
 }

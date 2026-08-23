@@ -64,4 +64,9 @@ export class AdminReportsController {
   getProductHeatmap(@Query() query: Record<string, string>) {
     return this.reportsService.getProductHeatmap(query);
   }
+
+  @Get('product-orders')
+  getProductOrders(@Query() query: Record<string, string>) {
+    return this.reportsService.getProductOrders(query);
+  }
 }

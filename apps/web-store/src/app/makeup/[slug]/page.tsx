@@ -4,6 +4,7 @@ import { getMakeupPackage, getMakeupPackages } from '@/lib/api';
 import { SJPageBanner, SJSectionHead } from '@/components/atomic/SJHomeComponents';
 import { MakeupBookingForm } from '@/components/MakeupBookingForm';
 import { SJProductCard } from '@/components/atomic/SJProductCard';
+import { BookThisPackageButton } from '@/components/BookThisPackageButton';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -69,9 +70,7 @@ export default async function MakeupPackagePage({ params }: { params: Promise<{ 
             </div>
             
             <div className="mt-4">
-              <a href="#book" className="btn btn-primary w-full text-center py-3 text-lg font-bold">
-                Book This Package
-              </a>
+              <BookThisPackageButton />
             </div>
           </div>
         </div>

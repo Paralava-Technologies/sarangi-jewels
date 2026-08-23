@@ -301,6 +301,7 @@ export class CartService {
 
     let taxCents = 0;
     let cgstCents = 0, sgstCents = 0, igstCents = 0;
+    let depositCents = 0;
 
     const lines = cart.lines.map((line) => {
       let unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
@@ -344,6 +345,13 @@ export class CartService {
           sgstCents += lSgst;
         }
       }
+      
+      let lDeposit = 0;
+      if (line.isRental) {
+        const itemDeposit = line.variant?.rentalDepositCents ?? line.product.rentalDepositCents ?? 0;
+        lDeposit = itemDeposit * line.quantity;
+        depositCents += lDeposit;
+      }
 
       return {
         id: line.id,
@@ -361,6 +369,7 @@ export class CartService {
         sgstCents: lSgst,
         igstCents: lIgst,
         isRental: line.isRental,
+        depositCents: lDeposit,
         rentStartDate: line.rentStartDate?.toISOString() ?? null,
         rentEndDate: line.rentEndDate?.toISOString() ?? null,
         rentalDays: line.isRental ? rentalDays : undefined,
@@ -373,7 +382,13 @@ export class CartService {
     const shippingThresholdCents = storeSettings ? storeSettings.shippingThresholdCents : 1500000;
     const shippingRateCentsFallback = storeSettings ? storeSettings.shippingRateCents : 100000;
     const shippingCents = (subtotalCents > 0 && subtotalCents < shippingThresholdCents) ? shippingRateCentsFallback : 0;
-    const totalCents = subtotalCents + taxCents + shippingCents;
+    
+    const maxDeposit = storeSettings?.maxRentalDepositCents ?? 500000;
+    if (depositCents > maxDeposit) {
+      depositCents = maxDeposit;
+    }
+    
+    const totalCents = subtotalCents + taxCents + shippingCents + depositCents;
 
     return {
       data: {
@@ -386,6 +401,7 @@ export class CartService {
         cgstCents,
         sgstCents,
         igstCents,
+        depositCents,
         totalCents,
         itemCount,
         currency: lines[0]?.currency ?? 'INR',

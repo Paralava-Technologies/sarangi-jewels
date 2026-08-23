@@ -49,7 +49,7 @@ export async function getProducts(sort?: string): Promise<Product[]> {
 
 export async function getProduct(slug: string): Promise<Product | null> {
   try {
-    const res = await apiClient.store.getProduct(slug, { next: { revalidate: 60 } } as RequestInit);
+    const res = await apiClient.store.getProduct(slug, { cache: 'no-store' } as RequestInit);
     return res.data;
   } catch {
     return null;

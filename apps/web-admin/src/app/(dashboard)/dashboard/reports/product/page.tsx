@@ -10,6 +10,7 @@ export default function ProductReportPage() {
     (cents / 100).toLocaleString('en-IN', { style: 'currency', currency, maximumFractionDigits: 0 });
 
   const [heatmapData, setHeatmapData] = useState<{ months: string[]; products: string[]; data: Record<string, Record<string, number>>; view: string } | null>(null);
+  const [productOrders, setProductOrders] = useState<any[]>([]);
 
   const [heatmapView, setHeatmapView] = useState('monthly');
   const [productNameFilter, setProductNameFilter] = useState('');
@@ -25,9 +26,14 @@ export default function ProductReportPage() {
     if (startDate) query.startDate = startDate;
     if (endDate) query.endDate = endDate;
 
-    fetchReportsData('product-heatmap', query)
-      .then(res => setHeatmapData(res))
-      .catch(() => setHeatmapData(null))
+    Promise.all([
+      fetchReportsData('product-heatmap', query).catch(() => null),
+      fetchReportsData('product-orders', query).catch(() => [])
+    ])
+      .then(([heatmap, orders]) => {
+        setHeatmapData(heatmap);
+        setProductOrders(Array.isArray(orders) ? orders : []);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -52,7 +58,7 @@ export default function ProductReportPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Product Report</h1>
+      <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Product Orders Report</h1>
       <p className="text-neutral-500">Detailed performance metrics for your catalog.</p>
       
       <section className="rounded-lg border border-neutral-200 bg-white p-6">
@@ -190,6 +196,44 @@ export default function ProductReportPage() {
           </div>
         ) : (
           <p className="text-sm text-neutral-500">No heatmap data available.</p>
+        )}
+      </section>
+      
+      <section className="rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-medium text-neutral-900 mb-4">Product Orders List</h2>
+        {productOrders.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-neutral-200">
+              <thead className="bg-neutral-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Order</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Product</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Customer</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Qty</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-200 bg-white">
+                {productOrders.map((line: any) => (
+                  <tr key={line.id}>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-brand-primary">{line.order?.orderNumber}</td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
+                      {new Date(line.order?.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-900">{line.productName}</td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
+                      {line.order?.user ? `${line.order.user.firstName || ''} ${line.order.user.lastName || ''}`.trim() || line.order.user.email : 'Guest'}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">{line.quantity}</td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">{formatPrice(line.lineTotalCents || 0)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-sm text-neutral-500">No orders found for the selected filters.</p>
         )}
       </section>
     </div>

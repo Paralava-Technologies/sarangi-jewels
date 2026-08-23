@@ -2,12 +2,11 @@ import React from 'react';
 
 export default function Loading(): React.ReactNode {
   return (
-    <div className="flex items-center justify-center min-h-[50vh]">
-      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-[var(--oxblood)] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-        <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-          Loading...
-        </span>
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
+      <svg className="spinner" viewBox="0 0 24 24" width="32" height="32" stroke="var(--oxblood)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
+        <circle cx="12" cy="12" r="10" strokeDasharray="30" strokeDashoffset="10"/>
+      </svg>
+      <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

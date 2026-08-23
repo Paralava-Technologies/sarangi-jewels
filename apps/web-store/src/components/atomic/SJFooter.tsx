@@ -44,10 +44,10 @@ export function SJFooter(): React.JSX.Element {
           <div>
             <h5>Visit Us</h5>
             <ul>
-              <li>Sarangi Jewels, MG Road</li>
-              <li>Kochi, Kerala 682035</li>
-              <li>+91 98XXX XXXXX</li>
-              <li>hello@sarangijewels.com</li>
+              <li><a href="https://maps.google.com/?q=Sarangi+Jewels+MG+Road+Kochi+Kerala+682035" target="_blank" rel="noopener noreferrer">Sarangi Jewels, MG Road<br/>Kochi, Kerala 682035</a></li>
+              <li><a href="tel:+919800000000">+91 98XXX XXXXX</a></li>
+              <li><a href="https://wa.me/919800000000" target="_blank" rel="noopener noreferrer">WhatsApp Us</a></li>
+              <li><a href="mailto:hello@sarangijewels.com">hello@sarangijewels.com</a></li>
             </ul>
           </div>
         </div>

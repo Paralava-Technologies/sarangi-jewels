@@ -6,6 +6,7 @@ export const productVariantSchema = z.object({
   name: z.string({ required_error: 'Variant name is required' }).min(1, 'Variant name cannot be empty'),
   priceCents: z.number({ required_error: 'Price is required', invalid_type_error: 'Price must be a number' }).int('Price must be an integer').min(0, 'Price cannot be negative'),
   rentPriceCents: z.number({ invalid_type_error: 'Rent price must be a number' }).int('Rent price must be an integer').min(0, 'Rent price cannot be negative').optional().nullable(),
+  rentalDepositCents: z.number({ invalid_type_error: 'Rental deposit must be a number' }).int('Rental deposit must be an integer').min(0, 'Rental deposit cannot be negative').optional().nullable(),
   stockQuantity: z.number({ invalid_type_error: 'Stock must be a number' }).int('Stock must be an integer').min(0, 'Stock cannot be negative').default(0),
 });
 
@@ -22,7 +23,9 @@ export const createProductSchema = z.object({
   description: z.string().max(5000, 'Description is too long').optional(),
   categoryId: z.string({ required_error: 'Category is required' }).uuid('Please select a valid category'),
   basePriceCents: z.number({ required_error: 'Base price is required', invalid_type_error: 'Price must be a number' }).int('Price must be an integer').min(0, 'Price cannot be negative'),
+  isRental: z.boolean().default(false).optional(),
   rentPriceCents: z.number({ invalid_type_error: 'Rent price must be a number' }).int('Rent price must be an integer').min(0, 'Rent price cannot be negative').optional().nullable(),
+  rentalDepositCents: z.number({ invalid_type_error: 'Rental deposit must be a number' }).int('Rental deposit must be an integer').min(0, 'Rental deposit cannot be negative').optional().nullable(),
   currency: z.string().length(3, 'Currency must be exactly 3 characters').default('INR'),
   material: z.string().max(100, 'Material description is too long').optional(),
   purity: z.string().max(50, 'Purity description is too long').optional(),

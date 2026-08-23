@@ -600,6 +600,18 @@ footer ul a:hover{ color:var(--gold-light); }
   .legal-toc ol{ columns:1; }
 }
 
+/* ===== UTILITY: Animations ===== */
+.spinner {
+  animation: spin 1s linear infinite;
+  transform-origin: center;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
 /* ============================================================
    NEW COMPONENTS — carousel hero + chat-style ticket view
    ============================================================ */

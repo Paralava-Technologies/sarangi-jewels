@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { apiClient } from '@/lib/api';
 
+import { isLoggedIn } from '@/lib/auth';
+
 export function MakeupBookingForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -11,6 +13,10 @@ export function MakeupBookingForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isLoggedIn()) {
+      window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
+      return;
+    }
     setLoading(true);
     setError('');
     

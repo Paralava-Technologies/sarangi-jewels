@@ -383,6 +383,9 @@ export default function OrdersPage(): React.JSX.Element {
                               <div className="flex justify-between"><span className="text-neutral-500">Subtotal:</span><span>{formatPrice(order.subtotalCents, order.currency)}</span></div>
                               <div className="flex justify-between"><span className="text-neutral-500">Shipping:</span><span>{formatPrice(order.shippingCents, order.currency)}</span></div>
                               <div className="flex justify-between"><span className="text-neutral-500">Tax:</span><span>{formatPrice(order.taxCents, order.currency)}</span></div>
+                              {(order.depositCents ?? 0) > 0 && (
+                                <div className="flex justify-between"><span className="text-neutral-500">Deposit:</span><span>{formatPrice(order.depositCents || 0, order.currency)}</span></div>
+                              )}
                               {(order.discountCents ?? 0) > 0 && (
                                 <div className="flex justify-between text-brand-primary"><span className="text-neutral-500">Discount:</span><span>-{formatPrice(order.discountCents || 0, order.currency)}</span></div>
                               )}

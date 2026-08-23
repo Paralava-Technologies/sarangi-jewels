@@ -7,6 +7,7 @@ import { useCart } from '@/components/cart/cart-provider';
 import { isLoggedIn } from '@/lib/auth';
 import { formatPrice } from '@/lib/format';
 import { placeOrder, validatePromotion } from '@/lib/orders';
+import { clearCart } from '@/lib/cart';
 import { apiClient } from '@/lib/api';
 
 import { fetchAddresses, type Address } from '@/lib/addresses';
@@ -94,7 +95,7 @@ export default function CheckoutPage(): React.JSX.Element {
   const shippingCents = deliveryMethod === 'STORE_PICKUP' ? 0 : (cart?.shippingCents || 0);
   const discountCents = appliedPromo ? appliedPromo.discountCents : 0;
   const totalCents = cart
-    ? Math.max(0, (cart?.subtotalCents || 0) + shippingCents + taxCents - discountCents)
+    ? Math.max(0, (cart?.subtotalCents || 0) + shippingCents + taxCents + (cart?.depositCents || 0) - discountCents)
     : 0;
 
   const handleApplyPromo = async () => {
@@ -160,6 +161,7 @@ export default function CheckoutPage(): React.JSX.Element {
       if (paymentMethod === 'COD') {
         try {
           await apiClient.store.changeToCod(order.id);
+          await clearCart();
           await refresh();
           setSuccess(order.orderNumber);
         } catch (err: any) {
@@ -202,6 +204,7 @@ export default function CheckoutPage(): React.JSX.Element {
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               });
+              await clearCart();
               await refresh();
               setSuccess(order.orderNumber);
             } catch (err: any) {
@@ -247,6 +250,7 @@ export default function CheckoutPage(): React.JSX.Element {
         razorpayPaymentId: `pay_mock_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
         razorpaySignature: 'mock_signature_verified',
       });
+      await clearCart();
       await refresh();
       setSuccess(currentOrder.orderNumber);
     } catch (err: any) {
@@ -262,6 +266,7 @@ export default function CheckoutPage(): React.JSX.Element {
     setSubmitting(true);
     try {
       await apiClient.store.changeToCod(paymentFailedOrder.id);
+      await clearCart();
       await refresh();
       setSuccess(paymentFailedOrder.orderNumber);
       setPaymentFailedOrder(null);
@@ -561,16 +566,26 @@ export default function CheckoutPage(): React.JSX.Element {
           <h4>Order Summary</h4>
           <div style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--line)', paddingBottom: '1rem' }}>
             {cart.lines.map((line) => (
-              <div key={line.id} className="summary-line" style={{ padding: '4px 0' }}>
-                <span>
-                  {line.productName}{' '}
-                  <span style={{ fontSize: '.76rem', color: '#8a7a6a' }}>
-                    × {line.quantity}
+              <div key={line.id} style={{ padding: '8px 0' }}>
+                <div className="summary-line" style={{ padding: 0 }}>
+                  <span>
+                    {line.productName}{' '}
+                    <span style={{ fontSize: '.76rem', color: '#8a7a6a' }}>
+                      × {line.quantity}
+                    </span>
                   </span>
-                </span>
-                <span style={{ fontWeight: 500 }}>
-                  {formatPrice(line.lineTotalCents, line.currency)}
-                </span>
+                  <span style={{ fontWeight: 500 }}>
+                    {formatPrice(line.lineTotalCents, line.currency)}
+                  </span>
+                </div>
+                {line.isRental && (
+                  <div style={{ fontSize: '.75rem', color: '#6b5a4d', marginTop: '4px' }}>
+                    <div>Rental: {line.rentStartDate ? new Date(line.rentStartDate).toLocaleDateString() : 'TBD'} – {line.rentEndDate ? new Date(line.rentEndDate).toLocaleDateString() : 'TBD'}</div>
+                    {!!line.depositCents && line.depositCents > 0 && (
+                      <div style={{ color: 'var(--brand-primary)' }}>Deposit: {formatPrice(line.depositCents, line.currency)}</div>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -587,6 +602,12 @@ export default function CheckoutPage(): React.JSX.Element {
             <span>Taxes & Fees</span>
             <span>{formatPrice(taxCents, cart.currency)}</span>
           </div>
+          {!!cart.depositCents && cart.depositCents > 0 && (
+            <div className="summary-line">
+              <span>Security Deposit</span>
+              <span style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>{formatPrice(cart.depositCents, cart.currency)}</span>
+            </div>
+          )}
 
           {(cart?.cgstCents || cart?.sgstCents || cart?.igstCents) ? (
             <div style={{ fontSize: '.75rem', color: '#6b5a4d', paddingBottom: '1rem', marginBottom: '1rem', borderBottom: '1px solid var(--line)' }}>

@@ -42,8 +42,11 @@ export interface Product {
   description: string | null;
   status: ProductStatus;
   categoryId: string;
+  isRental: boolean;
   category?: Category;
   basePriceCents: number;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
   currency: string;
   material: string | null;
   purity: string | null;
@@ -69,6 +72,8 @@ export interface ProductVariant {
   sku: string;
   name: string;
   priceCents: number;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
   stockQuantity: number;
 }
 
@@ -81,6 +86,7 @@ export interface Order {
   shippingCents: number;
   taxCents: number;
   discountCents?: number;
+  depositCents?: number;
   totalCents: number;
   currency: string;
   trackingNumber?: string | null;
@@ -103,6 +109,7 @@ export interface OrderLine {
   imageUrl?: string | null;
   productSlug?: string;
   isRental?: boolean;
+  depositCents?: number;
   rentStartDate?: string | null;
   rentEndDate?: string | null;
 }
@@ -120,6 +127,7 @@ export interface CartLine {
   lineTotalCents: number;
   currency: string;
   isRental?: boolean;
+  depositCents?: number;
   rentStartDate?: string | null;
   rentEndDate?: string | null;
 }
@@ -136,6 +144,7 @@ export interface Cart {
   cgstCents?: number;
   sgstCents?: number;
   igstCents?: number;
+  depositCents?: number;
   totalCents?: number;
 }
 

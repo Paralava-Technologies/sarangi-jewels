@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/format';
 import type { Product } from '@/lib/types';
+import { SJWishlistButton } from '@/components/atomic/SJWishlistButton';
 
 interface SJProductCardProps {
   product?: Product;
@@ -34,7 +35,7 @@ export function SJProductCard({ product, isRent, glyph = '💎', badgeOverride, 
           ) : (product?.variants?.reduce((sum, v) => sum + (v.stockQuantity || 0), 0) ?? 1) === 0 ? (
             <span className={`badge ${isRent ? 'rent' : ''}`}>Out of Stock</span>
           ) : null}
-          <span className="wish">&#9825;</span>
+          {product?.id ? <SJWishlistButton productId={product.id} /> : <span className="wish">♡</span>}
           {image ? (
             <Image
               src={image.url}

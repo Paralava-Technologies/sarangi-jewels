@@ -187,7 +187,7 @@ export class SarangiJewelsApiClient {
       const qs = q.toString();
       return this.request<any[]>(qs ? `/admin/orders/rentals?${qs}` : '/admin/orders/rentals', options);
     },
-    updateOrderStatus: (orderId: string, body: { status: string; note?: string }, options?: RequestInit) =>
+    updateOrderStatus: (orderId: string, body: { status: string; note?: string; trackingNumber?: string; carrier?: string }, options?: RequestInit) =>
       this.request<Order>(`/admin/orders/${orderId}/status`, { ...options, method: 'PATCH', body: JSON.stringify(body) }),
 
     getProducts: (params?: PaginationQuery, options?: RequestInit) => {

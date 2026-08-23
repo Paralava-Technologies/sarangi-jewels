@@ -461,6 +461,7 @@ export class OrdersService {
     const taxRuleMap = new Map(taxRules.map(tr => [tr.hsnCode, tr]));
 
     let taxCents = 0;
+    let depositCents = 0;
 
     const lines = cart.lines.map((line) => {
       const unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
@@ -491,6 +492,13 @@ export class OrdersService {
           sgst = fallbackTax - cgst;
         }
       }
+      
+      let lDeposit = 0;
+      if (line.isRental) {
+        const itemDeposit = line.variant?.rentalDepositCents ?? line.product.rentalDepositCents ?? 0;
+        lDeposit = itemDeposit * line.quantity;
+        depositCents += lDeposit;
+      }
 
       return {
         productId: line.productId,
@@ -504,6 +512,7 @@ export class OrdersService {
         sgstCents: sgst,
         igstCents: igst,
         isRental: line.isRental || false,
+        depositCents: lDeposit,
         rentStartDate: line.rentStartDate || null,
         rentEndDate: line.rentEndDate || null
       };
@@ -524,10 +533,15 @@ export class OrdersService {
     if (input.deliveryMethod === 'STORE_PICKUP') {
       shippingCents = 0;
     }
+    
+    const maxDeposit = storeSettings?.maxRentalDepositCents ?? 500000;
+    if (depositCents > maxDeposit) {
+      depositCents = maxDeposit;
+    }
 
     const totalCents = Math.max(
       0,
-      subtotalCents + shippingCents + taxCents - ((input as any).discountCents || 0),
+      subtotalCents + shippingCents + taxCents + depositCents - ((input as any).discountCents || 0),
     );
     const orderNumber = `NV-${Date.now().toString(36).toUpperCase()}`;
 
@@ -544,6 +558,7 @@ export class OrdersService {
           shippingCents,
           taxCents,
           discountCents: (input as any).discountCents || 0,
+          depositCents,
           totalCents,
           currency,
           promotionCode: (input as any).promotionCode,

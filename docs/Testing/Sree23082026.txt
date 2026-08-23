@@ -1,0 +1,17 @@
+1. redirect to login page if user isnt logged in when clicking on book this package in makeup session
+   booking.
+2. http://localhost:3002/dashboard/reports/product - required products order list below product heat map section. Change Report name to Product Orders Report. Provide filters for filtering out reports based on products.
+3. http://localhost:3000/shop - sorting is not working popular , newest , price
+4. category expand like bangles necklace chains etc..
+5. http://localhost:3000/shop -> sorting does not work
+6. Shop list page has filter on the left side but they dont work. Fix it.
+7. When an item added to the bag, and ordered successfully, the item continues in the bag. Fix it.
+8. Highlight the wishlisted items in the product listing and details page
+9. Search option is not working globally. Also need a search option in products listing as inner filter.
+10. Make all the contact details under Visit Us in the footer clickable and should open the respective application (gmail, whatsapp, phone app, location app).
+11. My orders does not have listing of orders for rentals and make up sessions. My orders listing should also point in the listing the type of order.
+12. Need a loading spinner or progress bar for all pages.
+13. Wishlist icon in the header should take the user to the wishlist page in My Account section.
+14. Add more details to the order listing in My Account section.
+15. Change the my account menu item name Dashboard -> Change to My Profile and provide option to change password. (This feature was already present.)
+16. Change password option required for Admin side also.
