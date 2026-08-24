@@ -32,6 +32,9 @@ export interface OrderLine {
   quantity: number;
   unitPriceCents: number;
   lineTotalCents: number;
+  isRental?: boolean;
+  rentStartDate?: string | null;
+  rentEndDate?: string | null;
 }
 
 export interface OrderUserAddress {

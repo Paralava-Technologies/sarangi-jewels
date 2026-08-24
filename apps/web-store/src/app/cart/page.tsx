@@ -30,7 +30,8 @@ export default function CartPage(): React.JSX.Element {
 
   const subtotal = cart.subtotalCents;
   const shipping = (cart.lines.length === 0 || subtotal >= settings.shippingThresholdCents) ? 0 : settings.shippingRateCents;
-  const total = subtotal + shipping;
+  const deposit = cart.depositCents || 0;
+  const total = subtotal + shipping + deposit;
 
   return (
     <>
@@ -47,21 +48,25 @@ export default function CartPage(): React.JSX.Element {
               </div>
             ) : (
               <>
-                <p className="eyebrow" style={{ marginBottom: '10px' }}>To Buy</p>
                 <div className="card-panel">
-                  {cart.lines.map((line) => (
-                    <SJCartRow 
-                      key={line.id}
-                      id={line.id}
-                      imageUrl={line.imageUrl || undefined}
-                      productName={line.productName}
-                      sku={line.sku}
-                      quantity={line.quantity}
-                      formattedPrice={formatPrice(line.unitPriceCents * line.quantity, line.currency)}
-                      onUpdateQuantity={updateQuantity}
-                      onRemove={removeItem}
-                    />
-                  ))}
+                  {cart.lines.map((line) => {
+                    const isMakeup = !line.isRental && (line.productSlug?.includes('makeup') || line.productName.toLowerCase().includes('makeup'));
+                    const orderType = line.isRental ? 'RENTAL' : isMakeup ? 'MAKEUP' : 'RETAIL';
+                    return (
+                      <SJCartRow 
+                        key={line.id}
+                        id={line.id}
+                        imageUrl={line.imageUrl || undefined}
+                        productName={line.productName}
+                        sku={line.sku}
+                        quantity={line.quantity}
+                        formattedPrice={formatPrice(line.unitPriceCents * line.quantity, line.currency)}
+                        orderType={orderType}
+                        onUpdateQuantity={updateQuantity}
+                        onRemove={removeItem}
+                      />
+                    );
+                  })}
                 </div>
               </>
             )}
@@ -75,6 +80,12 @@ export default function CartPage(): React.JSX.Element {
             <h4>Order Summary</h4>
             <div className="summary-line"><span>Purchase Subtotal</span><span>{formatPrice(subtotal, cart.currency)}</span></div>
             <div className="summary-line"><span>Delivery</span><span>{subtotal === 0 ? '—' : shipping === 0 ? 'Free' : formatPrice(shipping, cart.currency)}</span></div>
+            {deposit > 0 && (
+              <div className="summary-line">
+                <span>Rental Deposit (Refundable)</span>
+                <span>{formatPrice(deposit, cart.currency)}</span>
+              </div>
+            )}
             <div className="promo-row">
               <input type="text" placeholder="Promo code" />
               <button>Apply</button>

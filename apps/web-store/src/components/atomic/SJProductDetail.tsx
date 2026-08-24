@@ -43,6 +43,7 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
   const [submittingReview, setSubmittingReview] = useState(false);
   const [rentStartDate, setRentStartDate] = useState('');
   const [rentEndDate, setRentEndDate] = useState('');
+  const [rentalError, setRentalError] = useState<string | null>(null);
 
   React.useEffect(() => {
     import('@/lib/api').then(({ apiClient }) => {
@@ -131,14 +132,19 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
       alert('Please select both start and end dates for your rental.');
       return;
     }
-    
+    setRentalError(null);
     setIsAdding(true);
     try {
       const isRental = mode === 'rent';
       await addItem(product.id, activeVariant?.id, quantity, isRental, rentStartDate || undefined, rentEndDate || undefined);
       router.push('/cart');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      if (mode === 'rent') {
+        setRentalError(err.message || 'We are sorry, but those dates are currently booked out. Please try selecting different dates.');
+      } else {
+        alert(err.message || 'Failed to add item to bag');
+      }
     } finally {
       setIsAdding(false);
     }
@@ -304,7 +310,25 @@ export function SJProductDetail({ product, relatedProducts }: SJProductDetailPro
                     <input type="date" value={rentStartDate} onChange={e => setRentStartDate(e.target.value)} style={{flex: 1, padding: '12px', border: '1px solid var(--line)', fontFamily: 'Jost'}} />
                     <input type="date" value={rentEndDate} onChange={e => setRentEndDate(e.target.value)} style={{flex: 1, padding: '12px', border: '1px solid var(--line)', fontFamily: 'Jost'}} />
                   </div>
-                  <button className="btn btn-peacock" onClick={handleAddToBag} style={{width: '100%', justifyContent: 'center'}}>Reserve This Item</button>
+                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <div className="qty-stepper" style={{ background: 'var(--white)' }}>
+                      <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>−</button>
+                      <span>{quantity}</span>
+                      <button onClick={() => setQuantity(quantity + 1)}>+</button>
+                    </div>
+                    <button className="btn btn-peacock" onClick={handleAddToBag} disabled={isAdding || (activeVariant ? (activeVariant.stockQuantity ?? 0) <= 0 : false)} style={{ flex: 1, justifyContent: 'center' }}>
+                      {isAdding ? 'Adding…' : (activeVariant && (activeVariant.stockQuantity ?? 0) <= 0) ? 'Out of Stock' : 'Reserve This Item'}
+                    </button>
+                  </div>
+                  {rentalError && (
+                    <div style={{ marginTop: '16px', padding: '12px', background: '#ffebee', color: '#c62828', borderRadius: '4px', fontSize: '0.9rem', border: '1px solid #ffcdd2', display: 'flex', alignItems: 'flex-start', gap: '8px', lineHeight: '1.4' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0, marginTop: '1px' }}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                      <div>
+                        <strong>Availability Issue</strong><br/>
+                        {rentalError}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
           <div className="accordion" style={{ marginTop: '34px' }}>

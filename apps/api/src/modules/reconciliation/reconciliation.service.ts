@@ -93,7 +93,7 @@ export class ReconciliationService {
     });
 
     if (status === 'SETTLED_TO_BANK') {
-      const existingPayment = await this.prisma.payment.findUnique({ where: { orderId: order.id } });
+      const existingPayment = await this.prisma.payment.findFirst({ where: { orders: { some: { id: order.id } } } });
       if (existingPayment) {
         await this.prisma.payment.update({
           where: { id: existingPayment.id },
@@ -102,7 +102,7 @@ export class ReconciliationService {
       } else {
         await this.prisma.payment.create({
           data: {
-            orderId: order.id,
+            orders: { connect: { id: order.id } },
             amountCents: settledAmountCents,
             status: 'SUCCESS',
             provider: 'COD',

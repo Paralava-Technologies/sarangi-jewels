@@ -87,7 +87,7 @@ export class SarangiJewelsApiClient {
       this.request<Cart>('/store/cart', { ...options, method: 'DELETE' }),
 
     placeOrder: (body?: { note?: string, promotionCode?: string, discountCents?: number }, options?: RequestInit) =>
-      this.request<Order>('/store/orders', { ...options, method: 'POST', body: JSON.stringify(body || {}) }),
+      this.request<{ orders: Order[], paymentId?: string }>('/store/orders', { ...options, method: 'POST', body: JSON.stringify(body || {}) }),
     getOrders: (options?: RequestInit) => this.request<Order[]>('/store/orders', options),
     changeToCod: (orderId: string, options?: RequestInit) => 
       this.request<Order>(`/store/orders/${orderId}/change-to-cod`, { ...options, method: 'POST' }),
@@ -99,7 +99,7 @@ export class SarangiJewelsApiClient {
         body: JSON.stringify(body),
       }),
 
-    createPaymentSession: (body: { orderId: string }, options?: RequestInit) =>
+    createPaymentSession: (body: { paymentId: string }, options?: RequestInit) =>
       this.request<{
         paymentId: string;
         providerOrderId: string;
@@ -111,7 +111,7 @@ export class SarangiJewelsApiClient {
 
     verifyPayment: (
       body: {
-        orderId: string;
+        paymentId: string;
         razorpayOrderId: string;
         razorpayPaymentId: string;
         razorpaySignature: string;
@@ -120,7 +120,7 @@ export class SarangiJewelsApiClient {
     ) =>
       this.request<{
         success: boolean;
-        orderId: string;
+        paymentId: string;
         status: string;
       }>('/store/payments/verify', { ...options, method: 'POST', body: JSON.stringify(body) }),
 

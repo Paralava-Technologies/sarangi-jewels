@@ -41,7 +41,7 @@ export default function RentalReportPage() {
     
     apiClient.admin.getRentals(params)
       .then(res => {
-        setRentals(res.data?.data || res.data || []);
+        setRentals(res.data || []);
       })
       .catch(console.error);
   };
@@ -178,38 +178,42 @@ export default function RentalReportPage() {
             <thead className="bg-neutral-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Order #</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Product</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Dates</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Customer</th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Total</th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">Line Total</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-200 bg-white">
-              {rentals.map((order: any) => (
-                <tr key={order.id}>
+              {rentals.map((line: any) => (
+                <tr key={line.id}>
                   <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-brand-primary">
-                    <Link href={`/dashboard/orders/${order.id}`}>
-                      {order.orderNumber}
+                    <Link href={`/dashboard/orders`}>
+                      {line.order?.orderNumber || 'Unknown'}
                     </Link>
                   </td>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-900">
+                    {line.productName}
+                  </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {line.rentStartDate ? new Date(line.rentStartDate).toLocaleDateString() : 'N/A'} - {line.rentEndDate ? new Date(line.rentEndDate).toLocaleDateString() : 'N/A'}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-900">
-                    {order.user ? `${order.user.firstName || ''} ${order.user.lastName || ''}`.trim() : 'Guest'}
+                    {line.order?.user ? `${line.order.user.firstName || ''} ${line.order.user.lastName || ''}`.trim() : 'Guest'}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
                     <span className="inline-flex rounded-full bg-neutral-100 px-2 text-xs font-semibold leading-5 text-neutral-800">
-                      {order.status}
+                      {line.order?.status || 'UNKNOWN'}
                     </span>
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
-                    {formatPrice(order.totalCents || 0, order.currency)}
+                    {formatPrice((line.lineTotalCents || 0) + (line.depositCents || 0), 'INR')}
                   </td>
                 </tr>
               ))}
               {rentals.length === 0 && (
-                <tr><td colSpan={5} className="px-6 py-4 text-sm text-neutral-500 text-center">No rental orders found for these filters.</td></tr>
+                <tr><td colSpan={6} className="px-6 py-4 text-sm text-neutral-500 text-center">No rental items found for these filters.</td></tr>
               )}
             </tbody>
           </table>

@@ -66,7 +66,7 @@ export class ReportsService {
         take: limit,
         orderBy: { createdAt: 'desc' },
         include: {
-            order: {
+            orders: {
                 select: {
                     orderNumber: true,
                     user: {

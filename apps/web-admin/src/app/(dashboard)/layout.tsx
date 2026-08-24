@@ -67,6 +67,7 @@ const navGroups = [
     items: [
       { href: '/dashboard/orders', label: 'Orders', icon: ShoppingCart },
       { href: '/dashboard/rentals', label: 'Rentals', icon: Calendar },
+      { href: '/dashboard/deposits', label: 'Deposits', icon: Receipt },
       { href: '/dashboard/makeup', label: 'Makeup Bookings', icon: MessageSquare },
       { href: '/dashboard/fulfillment', label: 'Fulfillment', icon: Truck },
       { href: '/dashboard/reconciliation', label: 'COD Reconciliation', icon: FileText },

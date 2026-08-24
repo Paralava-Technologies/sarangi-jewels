@@ -41,6 +41,7 @@
 :root{
   --wine:#4a0e1e;
   --wine-deep:#320a15;
+  --oxblood: var(--wine);
   --ink:#241008;
   --gold:#c9993d;
   --gold-light:#e7c77e;

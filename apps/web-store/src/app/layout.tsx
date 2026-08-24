@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: any }): React.JSX.E
   return (
     <html lang="en">
       <body>
-        <NextTopLoader color="var(--oxblood)" showSpinner={false} height={4} />
+        <NextTopLoader color="var(--gold)" showSpinner={false} height={4} />
         <CartProvider>
           <SJUtilityBar />
           <SJHeader />

@@ -6,13 +6,13 @@ import { IsString, IsNotEmpty } from 'class-validator';
 class CreateSessionDto {
   @IsString()
   @IsNotEmpty()
-  orderId!: string;
+  paymentId!: string;
 }
 
 class VerifyPaymentDto {
   @IsString()
   @IsNotEmpty()
-  orderId!: string;
+  paymentId!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -34,14 +34,14 @@ export class PaymentsController {
   @UseGuards(JwtAuthGuard)
   @Post('create-session')
   createSession(@Body() body: CreateSessionDto) {
-    return this.payments.createPaymentSession(body.orderId);
+    return this.payments.createPaymentSession(body.paymentId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('verify')
   verify(@Body() body: VerifyPaymentDto) {
     return this.payments.verifyPayment(
-      body.orderId,
+      body.paymentId,
       body.razorpayOrderId,
       body.razorpayPaymentId,
       body.razorpaySignature,

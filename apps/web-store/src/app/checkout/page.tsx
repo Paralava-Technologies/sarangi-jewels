@@ -58,8 +58,8 @@ export default function CheckoutPage(): React.JSX.Element {
   const [user, setUser] = useState<any>(null);
 
   const [rentalDeliveryAllowed, setRentalDeliveryAllowed] = useState(true);
-  const [deliveryMethod, setDeliveryMethod] = useState<'ONLINE_DELIVERY' | 'STORE_PICKUP'>('ONLINE_DELIVERY');
-
+  const [retailDeliveryMethod, setRetailDeliveryMethod] = useState<'ONLINE_DELIVERY' | 'STORE_PICKUP'>('ONLINE_DELIVERY');
+  const [rentalDeliveryMethod, setRentalDeliveryMethod] = useState<'ONLINE_DELIVERY' | 'STORE_PICKUP'>('ONLINE_DELIVERY');
   useEffect(() => {
     if (!isLoggedIn()) {
       router.replace('/account?redirect=/checkout');
@@ -78,7 +78,7 @@ export default function CheckoutPage(): React.JSX.Element {
           const allowRentalDelivery = res.data?.rentalDeliveryAllowed ?? true;
           setRentalDeliveryAllowed(allowRentalDelivery);
           if (!allowRentalDelivery) {
-            setDeliveryMethod('STORE_PICKUP');
+            setRentalDeliveryMethod('STORE_PICKUP');
           }
       }).catch(console.error);
 
@@ -91,8 +91,12 @@ export default function CheckoutPage(): React.JSX.Element {
     }
   }, [router]);
 
+  const hasRental = cart?.lines.some((l: any) => l.isRental) || false;
+  const hasRetail = cart?.lines.some((l: any) => !l.isRental) || false;
+  const requiresShipping = (hasRetail && retailDeliveryMethod === 'ONLINE_DELIVERY') || (hasRental && rentalDeliveryMethod === 'ONLINE_DELIVERY');
+
   const taxCents = cart?.taxCents || 0;
-  const shippingCents = deliveryMethod === 'STORE_PICKUP' ? 0 : (cart?.shippingCents || 0);
+  const shippingCents = requiresShipping ? (cart?.shippingCents || 0) : 0;
   const discountCents = appliedPromo ? appliedPromo.discountCents : 0;
   const totalCents = cart
     ? Math.max(0, (cart?.subtotalCents || 0) + shippingCents + taxCents + (cart?.depositCents || 0) - discountCents)
@@ -125,7 +129,7 @@ export default function CheckoutPage(): React.JSX.Element {
   const minDateString = minDateObj.toISOString().split('T')[0];
 
   const handlePlaceOrder = async () => {
-    if (!selectedAddressId && deliveryMethod !== 'STORE_PICKUP') {
+    if (!selectedAddressId && requiresShipping) {
       setError('Please select a shipping address.');
       return;
     }
@@ -149,30 +153,29 @@ export default function CheckoutPage(): React.JSX.Element {
     }
 
     try {
-      // 1. Create order (returns Order in PENDING_PAYMENT status)
-      const order = await placeOrder(
+      // 1. Create order (returns orders and paymentId)
+      const result = await placeOrder(
         finalNote || undefined,
         appliedPromo?.code,
         appliedPromo?.discountCents,
-        deliveryMethod
+        { retail: retailDeliveryMethod, rental: rentalDeliveryMethod },
+        paymentMethod
       );
-      setCurrentOrder(order);
+      const orders = result.orders;
+      const paymentId = result.paymentId;
+      setCurrentOrder(orders[0]); // store the first order for fallback
 
       if (paymentMethod === 'COD') {
-        try {
-          await apiClient.store.changeToCod(order.id);
-          await clearCart();
-          await refresh();
-          setSuccess(order.orderNumber);
-        } catch (err: any) {
-          setError(err?.message || 'Failed to convert to COD');
-        }
+        // COD logic is now handled entirely within the backend createFromCart
+        await clearCart();
+        await refresh();
+        setSuccess(orders.map(o => o.orderNumber).join(', '));
         setSubmitting(false);
         return;
       }
 
       // 2. Create Payment Session on API
-      const sessionRes = await apiClient.store.createPaymentSession({ orderId: order.id });
+      const sessionRes = await apiClient.store.createPaymentSession({ paymentId });
       const session = sessionRes.data;
       setPaymentSession(session);
 
@@ -193,20 +196,20 @@ export default function CheckoutPage(): React.JSX.Element {
           amount: session.amount,
           currency: session.currency,
           name: 'Sarangi Jewels',
-          description: `Order ${order.orderNumber}`,
+          description: `Order ${orders.map(o => o.orderNumber).join(', ')}`,
           order_id: session.providerOrderId,
           handler: async function (response: any) {
             try {
               setSubmitting(true);
               await apiClient.store.verifyPayment({
-                orderId: order.id,
+                paymentId,
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               });
               await clearCart();
               await refresh();
-              setSuccess(order.orderNumber);
+              setSuccess(orders.map(o => o.orderNumber).join(', '));
             } catch (err: any) {
               setError(err?.message || 'Payment signature verification failed');
             } finally {
@@ -223,7 +226,7 @@ export default function CheckoutPage(): React.JSX.Element {
           modal: {
             ondismiss: function () {
               setSubmitting(false);
-              setPaymentFailedOrder(order);
+              setPaymentFailedOrder(orders[0]);
             },
           },
         };
@@ -238,21 +241,21 @@ export default function CheckoutPage(): React.JSX.Element {
   };
 
   const handleSimulatePaymentSuccess = async () => {
-    if (!currentOrder || !paymentSession) return;
+    if (!paymentSession) return;
     setError(null);
     setSubmitting(true);
     setShowMockModal(false);
 
     try {
       await apiClient.store.verifyPayment({
-        orderId: currentOrder.id,
+        paymentId: paymentSession.paymentId,
         razorpayOrderId: paymentSession.providerOrderId,
         razorpayPaymentId: `pay_mock_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
         razorpaySignature: 'mock_signature_verified',
       });
       await clearCart();
       await refresh();
-      setSuccess(currentOrder.orderNumber);
+      setSuccess('Your orders have been successfully placed.');
     } catch (err: any) {
       setError(err?.message || 'Verification of mock payment failed');
       setPaymentFailedOrder(currentOrder);
@@ -268,7 +271,7 @@ export default function CheckoutPage(): React.JSX.Element {
       await apiClient.store.changeToCod(paymentFailedOrder.id);
       await clearCart();
       await refresh();
-      setSuccess(paymentFailedOrder.orderNumber);
+      setSuccess('Orders converted to Cash on Delivery successfully.');
       setPaymentFailedOrder(null);
     } catch (err: any) {
       setError(err?.message || 'Failed to convert to COD');
@@ -378,28 +381,27 @@ export default function CheckoutPage(): React.JSX.Element {
           <div>
             {/* Order Details form fields */}
             <div className="card-panel">
-            {cart?.lines.some((l: any) => l.isRental) && (
+            {hasRetail && (
               <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--ivory-deep)', border: '1px solid var(--line)' }}>
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontFamily: 'var(--display)' }}>Delivery Option</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: rentalDeliveryAllowed ? 'pointer' : 'not-allowed', opacity: rentalDeliveryAllowed ? 1 : 0.6 }}>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', fontFamily: 'var(--display)' }}>Delivery Option {hasRental ? '(Purchase Items)' : ''}</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1rem' }}>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                      <input 
                        type="radio" 
-                       name="deliveryMethod"
+                       name="retailDeliveryMethod"
                        value="ONLINE_DELIVERY" 
-                       checked={deliveryMethod === 'ONLINE_DELIVERY'} 
-                       onChange={() => setDeliveryMethod('ONLINE_DELIVERY')}
-                       disabled={!rentalDeliveryAllowed}
+                       checked={retailDeliveryMethod === 'ONLINE_DELIVERY'} 
+                       onChange={() => setRetailDeliveryMethod('ONLINE_DELIVERY')}
                      />
-                     Online Delivery {rentalDeliveryAllowed ? '' : '(Currently Unavailable for Rentals)'}
+                     Online Delivery
                    </label>
                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
                      <input 
                        type="radio" 
-                       name="deliveryMethod"
+                       name="retailDeliveryMethod"
                        value="STORE_PICKUP" 
-                       checked={deliveryMethod === 'STORE_PICKUP'} 
-                       onChange={() => setDeliveryMethod('STORE_PICKUP')}
+                       checked={retailDeliveryMethod === 'STORE_PICKUP'} 
+                       onChange={() => setRetailDeliveryMethod('STORE_PICKUP')}
                      />
                      Store Pickup (Free)
                    </label>
@@ -407,7 +409,36 @@ export default function CheckoutPage(): React.JSX.Element {
               </div>
             )}
 
-            {deliveryMethod !== 'STORE_PICKUP' ? (
+            {hasRental && (
+              <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--ivory-deep)', border: '1px solid var(--line)' }}>
+                <h4 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', fontFamily: 'var(--display)' }}>Delivery Option {hasRetail ? '(Rental Items)' : ''}</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1rem' }}>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: rentalDeliveryAllowed ? 'pointer' : 'not-allowed', opacity: rentalDeliveryAllowed ? 1 : 0.6 }}>
+                     <input 
+                       type="radio" 
+                       name="rentalDeliveryMethod"
+                       value="ONLINE_DELIVERY" 
+                       checked={rentalDeliveryMethod === 'ONLINE_DELIVERY'} 
+                       onChange={() => setRentalDeliveryMethod('ONLINE_DELIVERY')}
+                       disabled={!rentalDeliveryAllowed}
+                     />
+                     Online Delivery {!rentalDeliveryAllowed ? '(Currently Unavailable for Rentals)' : ''}
+                   </label>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                     <input 
+                       type="radio" 
+                       name="rentalDeliveryMethod"
+                       value="STORE_PICKUP" 
+                       checked={rentalDeliveryMethod === 'STORE_PICKUP'} 
+                       onChange={() => setRentalDeliveryMethod('STORE_PICKUP')}
+                     />
+                     Store Pickup (Free)
+                   </label>
+                </div>
+              </div>
+            )}
+
+            {requiresShipping ? (
               <>
                 <h2 style={{ fontFamily: 'var(--display)', fontSize: '1.6rem', marginBottom: '1rem' }}>
                   Shipping Details

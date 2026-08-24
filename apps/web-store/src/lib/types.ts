@@ -21,6 +21,8 @@ export interface ProductVariant {
   priceCents: number;
   compareAtPriceCents?: number;
   stockQuantity?: number;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
 }
 
 export interface Product {
@@ -43,4 +45,7 @@ export interface Product {
   variants?: ProductVariant[];
   category?: Category;
   reviews?: { rating: number }[];
+  isRental?: boolean;
+  rentPriceCents?: number | null;
+  rentalDepositCents?: number | null;
 }

@@ -6,6 +6,7 @@ import { Pagination } from '@/components/Pagination';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 const STATUS_OPTIONS = [
+  'PENDING_PAYMENT',
   'CONFIRMED',
   'PROCESSING',
   'PICKED',
@@ -16,6 +17,7 @@ const STATUS_OPTIONS = [
 ] as const;
 
 const NEXT_STATUS: Record<string, string[]> = {
+  PENDING_PAYMENT: ['CONFIRMED', 'CANCELLED'],
   CONFIRMED: ['PROCESSING', 'CANCELLED'],
   PROCESSING: ['PICKED', 'CANCELLED'],
   PICKED: ['PACKED'],
@@ -301,19 +303,32 @@ export default function OrdersPage(): React.JSX.Element {
                   <React.Fragment key={order.id}>
                   <tr className="border-b border-neutral-100 hover:bg-neutral-50/50 cursor-pointer" onClick={() => setOpenOrder(isOpen ? null : order.id)}>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">{order.orderNumber}</p>
-                        {hasOpenTicket && (
-                          <span title="User has an open support ticket" className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600">
-                            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                          </span>
-                        )}
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{order.orderNumber}</p>
+                          {hasOpenTicket && (
+                            <span title="User has an open support ticket" className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-red-600">
+                              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                              </svg>
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex gap-1 flex-wrap">
+                          {order.lines?.some(l => l.isRental) && (
+                            <span className="rounded bg-orange-100 text-orange-800 px-1.5 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide">Rental</span>
+                          )}
+                          {order.lines?.some(l => !l.isRental && (l.sku?.toLowerCase().includes('makeup') || l.productName?.toLowerCase().includes('makeup'))) && (
+                            <span className="rounded bg-pink-100 text-pink-800 px-1.5 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide">Makeup</span>
+                          )}
+                          {order.lines?.some(l => !l.isRental && !(l.sku?.toLowerCase().includes('makeup') || l.productName?.toLowerCase().includes('makeup'))) && (
+                            <span className="rounded bg-blue-100 text-blue-800 px-1.5 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide">Purchase</span>
+                          )}
+                        </div>
+                        <p className="text-xs text-neutral-500">
+                          {new Date(order.createdAt).toLocaleString('en-IN')}
+                        </p>
                       </div>
-                      <p className="text-xs text-neutral-500">
-                        {new Date(order.createdAt).toLocaleString('en-IN')}
-                      </p>
                     </td>
                     <td className="px-4 py-3 text-neutral-600">
                       <div>{order.user?.firstName} {order.user?.lastName}</div>
@@ -321,7 +336,7 @@ export default function OrdersPage(): React.JSX.Element {
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full bg-brand-accent-light px-2 py-0.5 text-xs font-medium text-brand-primary">
-                        {order.status}
+                        {order.status === 'PENDING_PAYMENT' && order.payment?.provider === 'COD' ? 'CONFIRMED' : order.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-sm">

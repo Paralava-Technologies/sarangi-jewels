@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SJCartBadge } from '@/components/atomic/SJCartBadge';
-import { isLoggedIn, logout } from '@/lib/auth';
+
 
 const NAV_ITEMS = [
   { key: "shop", label: "Shop", href: "/shop" },
@@ -18,12 +18,7 @@ const NAV_ITEMS = [
 export function SJHeader() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-
   React.useEffect(() => {
-    setMounted(true);
-    setLoggedIn(isLoggedIn());
   }, []);
 
   return (

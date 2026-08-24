@@ -16,6 +16,9 @@ export interface OrderLine {
   lineTotalCents: number;
   imageUrl?: string | null;
   productSlug?: string;
+  isRental?: boolean;
+  rentStartDate?: string | null;
+  rentEndDate?: string | null;
 }
 
 export interface Order {
@@ -26,6 +29,7 @@ export interface Order {
   shippingCents: number;
   taxCents: number;
   totalCents: number;
+  depositCents?: number;
   currency: string;
   trackingNumber: string | null;
   carrier: string | null;
@@ -35,6 +39,7 @@ export interface Order {
   statusHistory?: { note: string | null; createdAt: string }[];
   discountCents?: number;
   promotionCode?: string | null;
+  paymentId?: string | null;
   payment?: {
     status: string;
     provider: string;
@@ -45,9 +50,14 @@ export async function placeOrder(
   note?: string,
   promotionCode?: string,
   discountCents?: number,
-  deliveryMethod?: 'ONLINE_DELIVERY' | 'STORE_PICKUP',
-): Promise<Order> {
+  deliveryMethods?: { retail?: 'ONLINE_DELIVERY' | 'STORE_PICKUP', rental?: 'ONLINE_DELIVERY' | 'STORE_PICKUP' },
+  paymentMethod?: 'ONLINE' | 'COD'
+): Promise<{ orders: Order[], paymentId: string }> {
   const sessionId = getCartSessionId();
+  const payload: any = { note, promotionCode, discountCents, paymentMethod };
+  if (deliveryMethods?.retail) payload.retailDeliveryMethod = deliveryMethods.retail;
+  if (deliveryMethods?.rental) payload.rentalDeliveryMethod = deliveryMethods.rental;
+  
   const res = await fetch(`${API_URL}/store/orders`, {
     method: 'POST',
     headers: {
@@ -55,14 +65,14 @@ export async function placeOrder(
       ...authHeaders(),
       ...(sessionId ? { 'X-Cart-Session': sessionId } : {}),
     },
-    body: JSON.stringify({ note, promotionCode, discountCents, deliveryMethod }),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.message ?? 'Could not place order');
   }
   const json = await res.json();
-  return json.data as Order;
+  return json.data as { orders: Order[], paymentId: string };
 }
 
 export async function fetchMyOrders(): Promise<Order[]> {

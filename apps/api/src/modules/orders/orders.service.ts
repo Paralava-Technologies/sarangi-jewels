@@ -7,6 +7,7 @@ import { CartService } from '../cart/cart.service';
 import { MailService } from '../mail/mail.service';
 
 const FULFILLMENT_TRANSITIONS: Partial<Record<OrderStatus, OrderStatus[]>> = {
+  [OrderStatus.PENDING_PAYMENT]: [OrderStatus.CONFIRMED, OrderStatus.CANCELLED],
   [OrderStatus.CONFIRMED]: [OrderStatus.PROCESSING, OrderStatus.CANCELLED],
   [OrderStatus.PROCESSING]: [OrderStatus.PICKED, OrderStatus.CANCELLED],
   [OrderStatus.PICKED]: [OrderStatus.PACKED],
@@ -359,7 +360,9 @@ export class OrdersService {
 
     const allowed = FULFILLMENT_TRANSITIONS[order.status] ?? [];
     if (!allowed.includes(status)) {
-      throw new NotFoundException(`Cannot transition from ${order.status} to ${status}`);
+      throw new BadRequestException(
+        `Invalid status update: An order in '${order.status}' status cannot be directly changed to '${status}'. Please follow the correct fulfillment workflow.`
+      );
     }
 
     if (status === OrderStatus.DELIVERED) {
@@ -425,23 +428,18 @@ export class OrdersService {
     return { data: updated };
   }
 
+  
+  
   async createFromCart(userId: string, sessionId: string | undefined, input: PlaceOrderInput) {
     const { note } = placeOrderSchema.parse(input);
-
-    if (sessionId) {
-      await this.cart.mergeSessionToUser(userId, sessionId);
-    }
+    if (sessionId) await this.cart.mergeSessionToUser(userId, sessionId);
 
     const cart = await this.cart.getCartForCheckout(userId);
-    if (!cart) {
-      throw new BadRequestException('Cart is empty');
-    }
+    if (!cart) throw new BadRequestException('Cart is empty');
 
     for (const line of cart.lines) {
-      if (line.variant) {
-        if (line.variant.stockQuantity < line.quantity) {
-          throw new BadRequestException(`Insufficient stock for ${line.product.name}`);
-        }
+      if (line.variant && line.variant.stockQuantity < line.quantity) {
+        throw new BadRequestException(`Insufficient stock for ${line.product.name}`);
       }
     }
 
@@ -460,126 +458,141 @@ export class OrdersService {
     const taxRules = await this.prisma.taxRule.findMany({ where: { hsnCode: { in: hsnCodes } } });
     const taxRuleMap = new Map(taxRules.map(tr => [tr.hsnCode, tr]));
 
-    let taxCents = 0;
-    let depositCents = 0;
-
-    const lines = cart.lines.map((line) => {
-      const unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
-      const lineTotalCents = unitPriceCents * line.quantity;
-
-      let cgst = 0, sgst = 0, igst = 0;
-      const rule = line.product.hsnCode ? taxRuleMap.get(line.product.hsnCode) : null;
-
-      if (rule) {
-        if (isInterState) {
-          igst = Math.round(lineTotalCents * (rule.igstPercentage / 100));
-          taxCents += igst;
-        } else {
-          cgst = Math.round(lineTotalCents * (rule.cgstPercentage / 100));
-          sgst = Math.round(lineTotalCents * (rule.sgstPercentage / 100));
-          taxCents += (cgst + sgst);
-        }
-      } else {
-        const catTaxRate = line.product.category?.taxRatePercentage;
-        const rateToUse = catTaxRate !== null && catTaxRate !== undefined ? catTaxRate / 100 : defaultTaxRate;
-        const fallbackTax = Math.round(lineTotalCents * rateToUse);
-        taxCents += fallbackTax;
-        
-        if (isInterState) {
-          igst = fallbackTax;
-        } else {
-          cgst = Math.round(fallbackTax / 2);
-          sgst = fallbackTax - cgst;
-        }
-      }
-      
-      let lDeposit = 0;
-      if (line.isRental) {
-        const itemDeposit = line.variant?.rentalDepositCents ?? line.product.rentalDepositCents ?? 0;
-        lDeposit = itemDeposit * line.quantity;
-        depositCents += lDeposit;
-      }
-
-      return {
-        productId: line.productId,
-        variantId: line.variantId,
-        productName: line.product.name,
-        sku: line.variant?.sku ?? line.product.slug,
-        quantity: line.quantity,
-        unitPriceCents,
-        lineTotalCents,
-        cgstCents: cgst,
-        sgstCents: sgst,
-        igstCents: igst,
-        isRental: line.isRental || false,
-        depositCents: lDeposit,
-        rentStartDate: line.rentStartDate || null,
-        rentEndDate: line.rentEndDate || null
-      };
-    });
-
-    const subtotalCents = lines.reduce((sum, l) => sum + l.lineTotalCents, 0);
-    const currency = cart.lines[0]?.product.currency ?? 'INR';
-
-    // Shipping threshold from settings, default to 15000 INR
-    const shippingThresholdCents = storeSettings ? storeSettings.shippingThresholdCents : 1500000;
-    const shippingRateCentsFallback = storeSettings ? storeSettings.shippingRateCents : 100000;
-
-    let shippingCents = 0;
-    if (subtotalCents < shippingThresholdCents) {
-      shippingCents = shippingRateCentsFallback;
-    }
-
-    if (input.deliveryMethod === 'STORE_PICKUP') {
-      shippingCents = 0;
-    }
-    
-    const maxDeposit = storeSettings?.maxRentalDepositCents ?? 500000;
-    if (depositCents > maxDeposit) {
-      depositCents = maxDeposit;
-    }
-
-    const totalCents = Math.max(
-      0,
-      subtotalCents + shippingCents + taxCents + depositCents - ((input as any).discountCents || 0),
-    );
-    const orderNumber = `NV-${Date.now().toString(36).toUpperCase()}`;
+    const retailLines = cart.lines.filter(l => !l.isRental);
+    const rentalLines = cart.lines.filter(l => l.isRental);
+    const splitLines = [
+      { type: 'RETAIL', lines: retailLines },
+      { type: 'RENTAL', lines: rentalLines }
+    ].filter(s => s.lines.length > 0);
 
     const isCod = (input as any).paymentMethod === 'COD' && storeSettings?.codAllowed;
     const initialStatus = isCod ? OrderStatus.CONFIRMED : OrderStatus.PENDING_PAYMENT;
+    const shippingThresholdCents = storeSettings ? storeSettings.shippingThresholdCents : 1500000;
+    const shippingRateCentsFallback = storeSettings ? storeSettings.shippingRateCents : 100000;
+    const maxDeposit = storeSettings?.maxRentalDepositCents ?? 500000;
 
-    const order = await this.prisma.$transaction(async (tx) => {
-      const created = await tx.order.create({
+    const ordersToCreate = splitLines.map((group, index) => {
+      let taxCents = 0;
+      let depositCents = 0;
+
+      const orderLines = group.lines.map((line) => {
+        const unitPriceCents = line.variant?.priceCents ?? line.product.basePriceCents;
+        const lineTotalCents = unitPriceCents * line.quantity;
+        let cgst = 0, sgst = 0, igst = 0;
+        const rule = line.product.hsnCode ? taxRuleMap.get(line.product.hsnCode) : null;
+
+        if (rule) {
+          if (isInterState) {
+            igst = Math.round(lineTotalCents * (rule.igstPercentage / 100));
+            taxCents += igst;
+          } else {
+            cgst = Math.round(lineTotalCents * (rule.cgstPercentage / 100));
+            sgst = Math.round(lineTotalCents * (rule.sgstPercentage / 100));
+            taxCents += (cgst + sgst);
+          }
+        } else {
+          const catTaxRate = line.product.category?.taxRatePercentage;
+          const rateToUse = catTaxRate !== null && catTaxRate !== undefined ? catTaxRate / 100 : defaultTaxRate;
+          const fallbackTax = Math.round(lineTotalCents * rateToUse);
+          taxCents += fallbackTax;
+          if (isInterState) igst = fallbackTax;
+          else { cgst = Math.round(fallbackTax / 2); sgst = fallbackTax - cgst; }
+        }
+        
+        let lDeposit = 0;
+        if (line.isRental) {
+          const itemDeposit = line.variant?.rentalDepositCents ?? line.product.rentalDepositCents ?? 0;
+          lDeposit = itemDeposit * line.quantity;
+          depositCents += lDeposit;
+        }
+
+        return {
+          productId: line.productId,
+          variantId: line.variantId,
+          productName: line.product.name,
+          sku: line.variant?.sku ?? line.product.slug,
+          quantity: line.quantity,
+          unitPriceCents,
+          lineTotalCents,
+          cgstCents: cgst,
+          sgstCents: sgst,
+          igstCents: igst,
+          isRental: line.isRental || false,
+          depositCents: lDeposit,
+          rentStartDate: line.rentStartDate || null,
+          rentEndDate: line.rentEndDate || null
+        };
+      });
+
+      const subtotalCents = orderLines.reduce((sum, l) => sum + l.lineTotalCents, 0);
+      let shippingCents = 0;
+      
+      const isRentalOrder = group.type === 'RENTAL';
+      const orderDeliveryMethod = isRentalOrder 
+        ? ((input as any).rentalDeliveryMethod || (input as any).deliveryMethod) 
+        : ((input as any).retailDeliveryMethod || (input as any).deliveryMethod);
+      
+      const cartSubtotal = cart.lines.reduce((s, l) => s + ((l.variant?.priceCents ?? l.product.basePriceCents) * l.quantity), 0);
+      
+      // Calculate shipping. If this order is online delivery and no previous order was charged shipping, charge it here.
+      if (orderDeliveryMethod !== 'STORE_PICKUP' && cartSubtotal < shippingThresholdCents) {
+        // Find if any prior order was already charged shipping
+        const priorShipping = index > 0 && splitLines.slice(0, index).some((_, i) => {
+           const pRental = splitLines[i].type === 'RENTAL';
+           const pMethod = pRental ? ((input as any).rentalDeliveryMethod || (input as any).deliveryMethod) : ((input as any).retailDeliveryMethod || (input as any).deliveryMethod);
+           return pMethod !== 'STORE_PICKUP';
+        });
+        if (!priorShipping) {
+          shippingCents = shippingRateCentsFallback;
+        }
+      }
+      
+      if (depositCents > maxDeposit) depositCents = maxDeposit;
+      const discountCents = index === 0 ? ((input as any).discountCents || 0) : 0;
+      const totalCents = Math.max(0, subtotalCents + shippingCents + taxCents + depositCents - discountCents);
+      const orderNumber = `NV-${Date.now().toString(36).toUpperCase()}-${index + 1}`;
+
+      return {
+        orderNumber,
+        userId,
+        status: initialStatus,
+        subtotalCents,
+        shippingCents,
+        taxCents,
+        discountCents,
+        depositCents,
+        totalCents,
+        isPickup: orderDeliveryMethod === 'STORE_PICKUP',
+        currency: cart.lines[0]?.product.currency ?? 'INR',
+        promotionCode: index === 0 ? (input as any).promotionCode : null,
+        lines: { create: orderLines },
+        statusHistory: {
+          create: {
+            status: initialStatus,
+            note: note ?? (isCod ? 'Order placed with Cash on Delivery' : 'Order placed'),
+            createdBy: userId,
+          }
+        }
+      };
+    });
+
+    const totalPaymentCents = ordersToCreate.reduce((sum, o) => sum + o.totalCents, 0);
+    const currency = ordersToCreate[0]?.currency ?? 'INR';
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      const createdOrders = [];
+      for (const oData of ordersToCreate) {
+        createdOrders.push(await tx.order.create({ data: oData, include: { lines: true } }));
+      }
+
+      const payment = await tx.payment.create({
         data: {
-          orderNumber,
-          userId,
-          status: initialStatus,
-          subtotalCents,
-          shippingCents,
-          taxCents,
-          discountCents: (input as any).discountCents || 0,
-          depositCents,
-          totalCents,
+          amountCents: totalPaymentCents,
           currency,
-          promotionCode: (input as any).promotionCode,
-          lines: { create: lines },
-          statusHistory: {
-            create: {
-              status: initialStatus,
-              note: note ?? (isCod ? 'Order placed with Cash on Delivery' : 'Order placed'),
-              createdBy: userId,
-            },
-          },
-          payment: isCod ? {
-            create: {
-              amountCents: totalCents,
-              currency,
-              status: 'PENDING',
-              provider: 'COD',
-            }
-          } : undefined,
-        },
-        include: { lines: true, statusHistory: true },
+          status: 'PENDING',
+          provider: isCod ? 'COD' : 'RAZORPAY',
+          orders: { connect: createdOrders.map(o => ({ id: o.id })) }
+        }
       });
 
       for (const line of cart.lines) {
@@ -592,26 +605,22 @@ export class OrdersService {
       }
 
       await tx.cartLine.deleteMany({ where: { cartId: cart.id } });
-
-      return created;
+      return { orders: createdOrders, payment };
     });
 
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: { email: true },
     });
+    
     if (user?.email) {
-      const formattedTotal = (order.totalCents / 100).toLocaleString('en-IN', {
-        style: 'currency',
-        currency: order.currency,
-        maximumFractionDigits: 0,
-      });
-      this.mailService
-        .sendOrderConfirmation(user.email, order.orderNumber, formattedTotal)
-        .catch(console.error);
+      for (const order of result.orders) {
+        const formattedTotal = (order.totalCents / 100).toLocaleString('en-IN', { style: 'currency', currency: order.currency, maximumFractionDigits: 0 });
+        this.mailService.sendOrderConfirmation(user.email, order.orderNumber, formattedTotal).catch(console.error);
+      }
     }
 
-    return { data: order };
+    return { data: { orders: result.orders, paymentId: result.payment.id } };
   }
 
   // --- PROMOTIONS ---
@@ -696,23 +705,21 @@ export class OrdersService {
             createdBy: userId,
           },
         },
-        payment: {
-          upsert: {
-            create: {
-              amountCents: order.totalCents,
-              currency: order.currency,
-              status: 'PENDING',
-              provider: 'COD',
-            },
-            update: {
-              provider: 'COD',
-              status: 'PENDING',
-            },
-          },
-        },
       },
-      include: { lines: true, statusHistory: true },
+      include: { lines: true, statusHistory: true, payment: true },
     });
+
+    if (updated.paymentId) {
+      await this.prisma.payment.update({
+        where: { id: updated.paymentId },
+        data: {
+          provider: 'COD',
+          status: 'PENDING',
+        }
+      });
+    }
+
+    return updated;
 
     return updated;
   }

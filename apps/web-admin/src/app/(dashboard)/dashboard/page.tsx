@@ -232,8 +232,8 @@ export default function DashboardPage() {
         ) : (
           <>
             <section>
-              <h2 className="text-xl font-medium mb-4">Sales Summary (Last 30 Days)</h2>
-              <div className="grid gap-4 sm:grid-cols-3">
+              <h2 className="text-xl font-medium mb-4">Financial Overview</h2>
+              <div className="grid gap-4 sm:grid-cols-4">
                 <div className="rounded-lg border border-neutral-200 bg-white p-6">
                   <p className="text-sm text-neutral-500">Total Revenue</p>
                   <p className="mt-2 text-3xl font-semibold text-brand-primary">
@@ -251,6 +251,21 @@ export default function DashboardPage() {
                   <p className="mt-2 text-3xl font-semibold text-neutral-900">
                     {formatPrice(salesSummary?.averageOrderValueCents || 0)}
                   </p>
+                </div>
+                <div className="rounded-lg border border-brand-accent/30 bg-brand-accent-light/10 p-6 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-neutral-600 font-medium">Deposits Held</p>
+                      <span className="text-xs bg-brand-primary text-white px-2 py-0.5 rounded-full">Rentals</span>
+                    </div>
+                    <p className="mt-2 text-3xl font-display text-wine-deep">
+                      {formatPrice(rentals.reduce((sum, r) => sum + (r.depositCents || 0), 0))}
+                    </p>
+                    <p className="mt-1 text-xs text-neutral-500">Across {rentals.length} active rentals</p>
+                  </div>
+                  <Link href="/dashboard/deposits" className="mt-4 text-sm font-semibold text-brand-primary hover:underline">
+                    Manage Deposits →
+                  </Link>
                 </div>
               </div>
             </section>

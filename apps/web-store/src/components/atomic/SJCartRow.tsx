@@ -10,6 +10,7 @@ interface SJCartRowProps {
   sku?: string;
   quantity: number;
   formattedPrice: string;
+  orderType?: 'RETAIL' | 'RENTAL' | 'MAKEUP';
   onUpdateQuantity: (id: string, qty: number) => void;
   onRemove: (id: string) => void;
   children?: React.ReactNode;
@@ -22,6 +23,7 @@ export function SJCartRow({
   sku,
   quantity,
   formattedPrice,
+  orderType = 'RETAIL',
   onUpdateQuantity,
   onRemove,
   children
@@ -35,7 +37,19 @@ export function SJCartRow({
       </div>
       <div>
         <h5>{productName}</h5>
-        <div className="meta">{sku || 'Piece'}</div>
+        <div className="meta" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span>{sku || 'Piece'}</span>
+          <span style={{ 
+            fontSize: '0.65rem', 
+            textTransform: 'uppercase', 
+            background: orderType === 'RENTAL' ? '#e2d7c1' : orderType === 'MAKEUP' ? '#edd4d4' : '#f0f0f0',
+            padding: '2px 6px',
+            borderRadius: '4px',
+            letterSpacing: '0.5px'
+          }}>
+            {orderType === 'RENTAL' ? 'Rental' : orderType === 'MAKEUP' ? 'Makeup Session' : 'Purchase'}
+          </span>
+        </div>
       </div>
       <div className="qty-stepper">
         <button onClick={() => onUpdateQuantity(id, Math.max(1, quantity - 1))}>

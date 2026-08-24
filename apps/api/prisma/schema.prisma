@@ -73,15 +73,15 @@ enum CODSettlementStatus {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  passwordHash String   @map("password_hash")
-  firstName    String?  @map("first_name")
-  lastName     String?  @map("last_name")
-  role         UserRole @default(CUSTOMER)
-  tier         UserTier @default(RETAIL)
-  createdAt          DateTime @default(now()) @map("created_at")
-  updatedAt          DateTime @updatedAt @map("updated_at")
+  id                   String   @id @default(uuid())
+  email                String   @unique
+  passwordHash         String   @map("password_hash")
+  firstName            String?  @map("first_name")
+  lastName             String?  @map("last_name")
+  role                 UserRole @default(CUSTOMER)
+  tier                 UserTier @default(RETAIL)
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
   idVerificationStatus String?  @map("id_verification_status")
   idDocumentUrl        String?  @map("id_document_url")
 
@@ -198,15 +198,15 @@ model ProductImage {
 }
 
 model ProductVariant {
-  id            String  @id @default(uuid())
-  productId     String  @map("product_id")
-  sku           String  @unique
-  name          String
-  priceCents    Int     @map("price_cents")
-  rentPriceCents Int?   @map("rent_price_cents")
-  rentalDepositCents Int? @map("rental_deposit_cents")
-  stockQuantity Int     @default(0) @map("stock_quantity")
-  isDigital     Boolean @default(false) @map("is_digital")
+  id                 String  @id @default(uuid())
+  productId          String  @map("product_id")
+  sku                String  @unique
+  name               String
+  priceCents         Int     @map("price_cents")
+  rentPriceCents     Int?    @map("rent_price_cents")
+  rentalDepositCents Int?    @map("rental_deposit_cents")
+  stockQuantity      Int     @default(0) @map("stock_quantity")
+  isDigital          Boolean @default(false) @map("is_digital")
 
   product         Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
   cartLines       CartLine[]
@@ -234,14 +234,14 @@ model Cart {
 }
 
 model CartLine {
-  id        String  @id @default(uuid())
-  cartId    String  @map("cart_id")
-  productId String  @map("product_id")
-  variantId      String?   @map("variant_id")
-  quantity       Int       @default(1)
-  isRental       Boolean   @default(false) @map("is_rental")
-  rentStartDate  DateTime? @map("rent_start_date")
-  rentEndDate    DateTime? @map("rent_end_date")
+  id            String    @id @default(uuid())
+  cartId        String    @map("cart_id")
+  productId     String    @map("product_id")
+  variantId     String?   @map("variant_id")
+  quantity      Int       @default(1)
+  isRental      Boolean   @default(false) @map("is_rental")
+  rentStartDate DateTime? @map("rent_start_date")
+  rentEndDate   DateTime? @map("rent_end_date")
 
   cart    Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
   product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -273,7 +273,8 @@ model Order {
   user          User                 @relation(fields: [userId], references: [id])
   lines         OrderLine[]
   statusHistory OrderStatusHistory[]
-  payment       Payment?
+  paymentId     String?              @map("payment_id")
+  payment       Payment?             @relation(fields: [paymentId], references: [id])
   shipment      Shipment?
   rmas          RMA[]
   serialNumbers SerialNumber[]
@@ -286,15 +287,15 @@ model Order {
 }
 
 model OrderLine {
-  id             String  @id @default(uuid())
-  orderId        String  @map("order_id")
-  productId      String  @map("product_id")
-  variantId      String? @map("variant_id")
-  productName    String  @map("product_name")
+  id             String    @id @default(uuid())
+  orderId        String    @map("order_id")
+  productId      String    @map("product_id")
+  variantId      String?   @map("variant_id")
+  productName    String    @map("product_name")
   sku            String
   quantity       Int
-  unitPriceCents Int     @map("unit_price_cents")
-  lineTotalCents Int     @map("line_total_cents")
+  unitPriceCents Int       @map("unit_price_cents")
+  lineTotalCents Int       @map("line_total_cents")
   cgstCents      Int       @default(0) @map("cgst_cents")
   sgstCents      Int       @default(0) @map("sgst_cents")
   igstCents      Int       @default(0) @map("igst_cents")
@@ -325,8 +326,8 @@ model OrderStatusHistory {
 }
 
 model Payment {
-  id                String        @id @default(uuid())
-  orderId           String        @unique @map("order_id")
+  id String @id @default(uuid())
+
   amountCents       Int           @map("amount_cents")
   currency          String        @default("INR")
   status            PaymentStatus @default(PENDING)
@@ -336,7 +337,7 @@ model Payment {
   createdAt         DateTime      @default(now()) @map("created_at")
   updatedAt         DateTime      @updatedAt @map("updated_at")
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orders Order[]
 
   @@map("payments")
 }
@@ -615,32 +616,32 @@ model Comment {
 }
 
 model TaxRule {
-  id              String   @id @default(uuid())
-  hsnCode         String   @unique @map("hsn_code")
-  description     String?
-  cgstPercentage  Float    @default(0) @map("cgst_percentage")
-  sgstPercentage  Float    @default(0) @map("sgst_percentage")
-  igstPercentage  Float    @default(0) @map("igst_percentage")
-  cessPercentage  Float    @default(0) @map("cess_percentage")
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id             String   @id @default(uuid())
+  hsnCode        String   @unique @map("hsn_code")
+  description    String?
+  cgstPercentage Float    @default(0) @map("cgst_percentage")
+  sgstPercentage Float    @default(0) @map("sgst_percentage")
+  igstPercentage Float    @default(0) @map("igst_percentage")
+  cessPercentage Float    @default(0) @map("cess_percentage")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   @@map("tax_rules")
 }
 
 model MakeupSession {
-  id           String        @id @default(uuid())
-  userId       String?       @map("user_id")
-  serviceName  String        @map("service_name")
-  location     String
-  date         DateTime
-  time         String
-  address      String?
-  status       BookingStatus @default(PENDING)
-  createdAt    DateTime      @default(now()) @map("created_at")
-  updatedAt    DateTime      @updatedAt @map("updated_at")
+  id          String        @id @default(uuid())
+  userId      String?       @map("user_id")
+  serviceName String        @map("service_name")
+  location    String
+  date        DateTime
+  time        String
+  address     String?
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
 
-  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@map("makeup_sessions")
 }

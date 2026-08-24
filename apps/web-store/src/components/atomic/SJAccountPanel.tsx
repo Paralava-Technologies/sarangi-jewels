@@ -126,11 +126,8 @@ export function SJAccountPanel(): React.JSX.Element {
       .then(setOrders)
       .catch(() => setOrders([]));
   const fetchSettings = () =>
-    import('@/lib/api').then(({ apiClient }) =>
-      apiClient.store
-        .getSettings()
-        .then((res) => setSettings(res.data))
-        .catch(() => {}),
+    import('@/lib/api').then(({ getSettings }) =>
+      getSettings().then((res) => setSettings(res || { codAllowed: true }))
     );
   const fetchWishlistData = () =>
     fetchWishlist()
@@ -166,12 +163,12 @@ export function SJAccountPanel(): React.JSX.Element {
     setPayingOrder(order.id);
     try {
       const { apiClient } = await import('@/lib/api');
-      const sessionRes = await apiClient.store.createPaymentSession({ orderId: order.id });
+      const sessionRes = await apiClient.store.createPaymentSession({ paymentId: order.paymentId! });
       const session = sessionRes.data;
 
       if (session.isMock) {
         await apiClient.store.verifyPayment({
-          orderId: order.id,
+          paymentId: order.paymentId!,
           razorpayOrderId: session.providerOrderId,
           razorpayPaymentId: `pay_mock_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
           razorpaySignature: 'mock_signature_verified',
@@ -195,7 +192,7 @@ export function SJAccountPanel(): React.JSX.Element {
           handler: async function (response: any) {
             try {
               await apiClient.store.verifyPayment({
-                orderId: order.id,
+                paymentId: order.paymentId!,
                 razorpayOrderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
@@ -641,12 +638,6 @@ export function SJAccountPanel(): React.JSX.Element {
               ) : (
                 orders.map((order) => {
                   const isOpen = openOrder === order.id;
-                  const statusClass =
-                    order.status === 'DELIVERED'
-                      ? 'status--delivered'
-                      : order.status === 'SHIPPED'
-                        ? 'status--shipped'
-                        : 'status--processing';
                   const isRental = order.lines?.some((l) => l.isRental);
                   const isMakeup = order.lines?.some(
                     (l) => !l.isRental && l.productSlug?.includes('makeup'),
@@ -747,7 +738,7 @@ export function SJAccountPanel(): React.JSX.Element {
                                 color: 'var(--wine)',
                               }}
                             >
-                              {order.status}
+                              {order.status === 'PENDING_PAYMENT' && order.payment?.provider === 'COD' ? 'CONFIRMED' : order.status}
                             </span>
                             <span style={{ display: 'block', fontWeight: 600, marginTop: '4px' }}>
                               {formatPrice(order.totalCents, order.currency)}
@@ -979,7 +970,7 @@ export function SJAccountPanel(): React.JSX.Element {
                                   marginBottom: '.75rem',
                                 }}
                               >
-                                {order.status}
+                                {order.status === 'PENDING_PAYMENT' && order.payment?.provider === 'COD' ? 'CONFIRMED' : order.status}
                               </p>
 
                               <h4
@@ -1187,35 +1178,38 @@ export function SJAccountPanel(): React.JSX.Element {
                               )}
                           </div>
                         </div>
-                        <div className="order-card__actions">
+                        <div className="order-card__actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '1.5rem', borderTop: '1px solid var(--line)', paddingTop: '1.5rem' }}>
                           <button
                             onClick={() => handleBuyAgain(order)}
                             disabled={addingToCart === order.id}
                             className="btn btn--primary"
+                            style={{ flex: '1 1 auto', minWidth: '140px', textAlign: 'center', justifyContent: 'center' }}
                           >
                             {addingToCart === order.id ? 'Adding to Cart...' : 'Buy Again'}
                           </button>
                           <button
                             onClick={() => handleNeedHelp(order)}
                             className="btn btn--outline"
+                            style={{ flex: '1 1 auto', minWidth: '140px', textAlign: 'center', justifyContent: 'center' }}
                           >
                             Need Help?
                           </button>
-                          {order.status === 'PENDING_PAYMENT' && (
+                          {order.status === 'PENDING_PAYMENT' && order.payment?.provider !== 'COD' && (
                             <button
                               onClick={() => handleReinitiatePayment(order)}
                               disabled={payingOrder === order.id}
                               className="btn btn--primary"
+                              style={{ flex: '1 1 auto', minWidth: '140px', textAlign: 'center', justifyContent: 'center' }}
                             >
                               {payingOrder === order.id ? 'Loading...' : 'Pay Now'}
                             </button>
                           )}
-                          {order.status === 'PENDING_PAYMENT' && settings?.codAllowed && (
+                          {order.status === 'PENDING_PAYMENT' && settings?.codAllowed && order.payment?.provider !== 'COD' && (
                             <button
                               onClick={() => handleChangeToCOD(order.id)}
                               disabled={changingToCod === order.id}
                               className="btn btn--primary"
-                              style={{ background: 'var(--ink)' }}
+                              style={{ flex: '1 1 auto', minWidth: '140px', textAlign: 'center', justifyContent: 'center', background: 'var(--ink)' }}
                             >
                               {changingToCod === order.id ? 'Updating...' : 'Change to COD'}
                             </button>
@@ -1229,6 +1223,7 @@ export function SJAccountPanel(): React.JSX.Element {
                               }
                             }}
                             className="btn btn--outline"
+                            style={{ flex: '1 1 auto', minWidth: '140px', textAlign: 'center', justifyContent: 'center' }}
                           >
                             Download Invoice
                           </button>
