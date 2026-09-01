@@ -12,6 +12,27 @@ Here are the industry-standard strategies for delivering the software to your cl
 
 Docker is the most secure and professional way to deliver the application. You compile the application into a "Docker Image" on your machine, push it to a private registry, and the client pulls the image to run it.
 
+```mermaid
+flowchart TD
+    subgraph Sarangi_IP ["Sarangi IP (Your Infrastructure)"]
+        CODE[Raw Source Code .ts/.tsx]
+        BUILD[Docker Build System]
+        CODE --> BUILD
+        BUILD --> |Creates| IMAGE[Production Image]
+        IMAGE --> |Pushes to| REG[Private Docker Registry]
+    end
+
+    subgraph Client_Infrastructure ["Client Infrastructure"]
+        COMPOSE[docker-compose.yml]
+        TOKEN[Registry Access Token]
+        SERVER[Client's Virtual Machine]
+        
+        TOKEN --> SERVER
+        COMPOSE --> SERVER
+        REG --> |Pulls compiled image| SERVER
+    end
+```
+
 ### Workflow:
 1. **Build the Images locally:**
    You create Dockerfiles for the API (`apps/api`), the Web Store (`apps/web-store`), and the Web Admin (`apps/web-admin`).
@@ -32,6 +53,22 @@ Next.js has a built-in feature called `output: 'standalone'` (configured in `nex
 
 When you run `pnpm build`, Next.js automatically traces all necessary dependencies and creates a highly optimized, self-contained Node.js server in the `.next/standalone/` folder.
 
+```mermaid
+sequenceDiagram
+    participant Source as Source Code (.tsx)
+    participant Compiler as Next.js Compiler
+    participant Output as Standalone Output
+    participant Client as Client Server
+
+    Source->>Compiler: pnpm build
+    Compiler->>Compiler: Minify & Obfuscate JS
+    Compiler->>Output: Generate .next/standalone/
+    Output->>Output: Zip file creation
+    Output->>Client: Send .zip via Email/S3
+    Client->>Client: Extract & run `node server.js`
+    Note over Client: Client has NO access to original React components
+```
+
 ### Workflow:
 1. Enable `output: 'standalone'` in `apps/web-store/next.config.js` and `apps/web-admin/next.config.js`.
 2. Run the build command (`pnpm build`).
@@ -45,6 +82,36 @@ When you run `pnpm build`, Next.js automatically traces all necessary dependenci
 ## Strategy 3: SaaS / Managed Hosting Model (Most Secure)
 
 The ultimate way to protect your intellectual property and guarantee recurring royalties is to **never give the client the software at all**.
+
+```mermaid
+flowchart LR
+    subgraph Client_Domains ["Client Domains"]
+        CLIENT1[client-a.com]
+        CLIENT2[client-b.com]
+    end
+
+    subgraph Your_Cloud_Infrastructure ["Your Cloud Infrastructure"]
+        LB[Load Balancer / Ingress]
+        
+        subgraph Tenant_A_Instances ["Tenant A Instances"]
+            APP_A[Sarangi App Instance A]
+            DB_A[(Database A)]
+        end
+        
+        subgraph Tenant_B_Instances ["Tenant B Instances"]
+            APP_B[Sarangi App Instance B]
+            DB_B[(Database B)]
+        end
+        
+        LB --> APP_A
+        LB --> APP_B
+        APP_A --> DB_A
+        APP_B --> DB_B
+    end
+
+    CLIENT1 --> |DNS CNAME| LB
+    CLIENT2 --> |DNS CNAME| LB
+```
 
 ### Workflow:
 Instead of sending files to the client, you host the application on your own cloud infrastructure (e.g., AWS, Vercel, or a VPS).

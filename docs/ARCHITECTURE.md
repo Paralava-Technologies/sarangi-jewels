@@ -8,26 +8,26 @@ Online brand store for fine jewellery, ladies accessories, care products, pendan
 
 ```mermaid
 flowchart TB
-    subgraph Clients
+    subgraph Clients ["Clients"]
         WS[Web Store - Next.js]
         WA[Web Admin - Next.js]
         MS[Mobile Store - Expo RN]
         MA[Mobile Admin - Expo RN]
     end
 
-    subgraph Backend Services
+    subgraph Backend_Services ["Backend Services"]
         API[API Gateway - NestJS]
         GRPC[Custom Logic - gRPC Microservice]
         WORKER[Background Workers - BullMQ]
     end
 
-    subgraph Data Layer
+    subgraph Data_Layer ["Data Layer"]
         DB[(PostgreSQL)]
         REDIS[(Redis Cache/Queue)]
         S3[(S3/CDN Media)]
     end
 
-    subgraph Third-Party
+    subgraph Third_Party ["Third-Party"]
         PG[Payment Gateway]
         WA_API[Meta WhatsApp API]
     end
@@ -97,22 +97,22 @@ The system is designed to be cloud-agnostic and containerized, allowing deployme
 
 ```mermaid
 flowchart LR
-    subgraph Cloud Infrastructure
+    subgraph Cloud_Infrastructure ["Cloud Infrastructure"]
         LB[Load Balancer]
         
-        subgraph Frontend Host
+        subgraph Frontend_Host ["Frontend Host"]
             VERCEL[Vercel / Netlify]
             VERCEL -->|Hosts| WS(Web Store)
             VERCEL -->|Hosts| WA(Web Admin)
         end
         
-        subgraph Backend Cluster
+        subgraph Backend_Cluster ["Backend Cluster"]
             API1(API Container 1)
             API2(API Container 2)
             GRPC(Custom Logic Container)
         end
         
-        subgraph Managed Data Services
+        subgraph Managed_Data_Services ["Managed Data Services"]
             RDS[(Managed PostgreSQL)]
             ELASTICACHE[(Managed Redis)]
             S3[(AWS S3 Media Bucket)]
