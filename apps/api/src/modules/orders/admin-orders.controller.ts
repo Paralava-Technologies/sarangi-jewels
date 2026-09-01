@@ -95,4 +95,13 @@ export class AdminOrdersController {
   ) {
     return this.payments.refundPayment(id, body.reason);
   }
+
+  @Post(':orderId/return-rental/:lineId')
+  @Roles(UserRole.ADMIN, UserRole.FULFILLMENT)
+  async returnRentalLine(
+    @Param('orderId') orderId: string,
+    @Param('lineId') lineId: string,
+  ) {
+    return this.orders.processRentalReturn(orderId, lineId, this.payments);
+  }
 }

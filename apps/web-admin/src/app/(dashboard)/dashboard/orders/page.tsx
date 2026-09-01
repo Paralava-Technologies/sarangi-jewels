@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchOrders, updateOrderStatus, fetchSupportTickets, refundOrder, type Order } from '@/lib/api';
+import { fetchOrders, updateOrderStatus, fetchSupportTickets, refundOrder, returnRentalLine, type Order } from '@/lib/api';
 import { Pagination } from '@/components/Pagination';
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -148,6 +148,20 @@ export default function OrdersPage(): React.JSX.Element {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Refund failed');
       alert(`Refund failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+    } finally {
+      setUpdating(null);
+    }
+  };
+
+  const handleReturnRental = async (orderId: string, lineId: string) => {
+    if (!window.confirm('Process rental return and refund deposit (if any)?')) return;
+    setUpdating(lineId);
+    try {
+      await returnRentalLine(orderId, lineId);
+      await load();
+      alert('Rental return processed successfully');
+    } catch (err) {
+      alert(`Return failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setUpdating(null);
     }
@@ -391,7 +405,12 @@ export default function OrdersPage(): React.JSX.Element {
                       <td colSpan={5} className="px-4 py-4">
                         <div className="flex flex-col md:flex-row gap-8">
                           <div className="flex-1">
-                            <h4 className="font-semibold text-sm mb-2 text-neutral-800">Items</h4>
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-semibold text-sm text-neutral-800">Items</h4>
+                              <span className="text-xs font-medium px-2 py-1 bg-neutral-100 text-neutral-600 rounded">
+                                {order.lines?.some(l => l.isRental) ? (order.lines?.some(l => !l.isRental) ? 'Mixed Order (Rental & Purchase)' : 'Rental Order') : 'Purchase Order'}
+                              </span>
+                            </div>
                             <div className="space-y-2">
                               {order.lines?.map((line, i) => (
                                 <div key={i} className="flex flex-col text-sm border-b border-neutral-100 pb-2 last:border-0 last:pb-0">
@@ -405,10 +424,11 @@ export default function OrdersPage(): React.JSX.Element {
                                         Rental: {line.rentStartDate ? new Date(line.rentStartDate).toLocaleDateString() : ''} - {line.rentEndDate ? new Date(line.rentEndDate).toLocaleDateString() : ''}
                                       </span>
                                       <button 
-                                        className="text-brand-primary hover:underline font-medium"
-                                        onClick={(e) => { e.stopPropagation(); alert('Rental return workflow is triggered here.'); }}
+                                        className="text-brand-primary hover:underline font-medium disabled:opacity-50"
+                                        disabled={updating === line.id}
+                                        onClick={(e) => { e.stopPropagation(); handleReturnRental(order.id, line.id); }}
                                       >
-                                        Process Return / Refund Deposit
+                                        {updating === line.id ? 'Processing...' : 'Process Return / Refund Deposit'}
                                       </button>
                                     </div>
                                   )}

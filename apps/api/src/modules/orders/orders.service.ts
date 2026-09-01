@@ -433,6 +433,37 @@ export class OrdersService {
     return { data: updated };
   }
 
+  async processRentalReturn(orderId: string, lineId: string, paymentsService: any) {
+    const line = await this.prisma.orderLine.findUnique({
+      where: { id: lineId },
+      include: { order: { include: { payment: true } } }
+    });
+
+    if (!line || !line.isRental) {
+      throw new BadRequestException('Not a valid rental line');
+    }
+
+    if (line.orderId !== orderId) {
+      throw new BadRequestException('Line does not belong to the given order');
+    }
+
+    // Refund deposit if it was paid online and is > 0
+    if (line.depositCents > 0 && line.order.payment && line.order.payment.status === 'SUCCESS' && line.order.payment.providerPaymentId) {
+      await paymentsService.refundPartial(line.order.payment.id, line.depositCents, `Rental deposit return for ${line.productName}`);
+    }
+
+    await this.prisma.orderStatusHistory.create({
+      data: {
+        orderId,
+        status: line.order.status,
+        note: `Rental item returned: ${line.quantity} × ${line.productName}. Deposit refunded.`,
+        createdBy: 'SYSTEM'
+      }
+    });
+
+    return { success: true };
+  }
+
   
   
   async createFromCart(userId: string, sessionId: string | undefined, input: PlaceOrderInput) {

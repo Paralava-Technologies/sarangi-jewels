@@ -150,6 +150,22 @@ export async function refundOrder(orderId: string, reason?: string): Promise<any
   return res.json();
 }
 
+export async function returnRentalLine(orderId: string, lineId: string): Promise<any> {
+  const token = getAccessToken();
+  const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
+  const res = await fetchWithAuth(`${API_URL}/admin/orders/${orderId}/return-rental/${lineId}`, {
+    method: 'POST',
+    headers: { 
+      Authorization: `Bearer ${token}`
+    }
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Failed to process rental return');
+  }
+  return res.json();
+}
+
 export interface ProductImage {
   id: string;
   url: string;

@@ -224,4 +224,35 @@ export class PaymentsService {
 
     return { success: true };
   }
+
+  async refundPartial(paymentId: string, amountCents: number, reason?: string) {
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: paymentId },
+      include: { orders: true }
+    });
+
+    if (!payment) {
+      throw new NotFoundException('Payment not found');
+    }
+
+    if (payment.status !== PaymentStatus.SUCCESS) {
+      throw new BadRequestException('Only successful payments can be refunded');
+    }
+
+    if (!this.isMockMode && this.razorpay && payment.providerPaymentId) {
+      try {
+        await this.razorpay.payments.refund(payment.providerPaymentId, {
+          amount: amountCents,
+          notes: {
+            reason: reason || 'Partial refund',
+          }
+        });
+      } catch (err: any) {
+        this.logger.error('Razorpay partial refund failed', err);
+        throw new BadRequestException(err?.message || 'Refund failed at payment gateway');
+      }
+    }
+
+    return { success: true };
+  }
 }
