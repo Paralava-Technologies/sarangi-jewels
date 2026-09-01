@@ -136,6 +136,34 @@ flowchart LR
 - **Backend Hosting:** Docker containers running on AWS Fargate, Google Cloud Run, or Fly.io. The `apps/api` scales horizontally behind a load balancer.
 - **Microservices:** The `custom-logic` gRPC service sits within the same private network, isolated from public internet traffic.
 
+### 3.1 CI/CD Pipeline & Load Balancing Strategy
+
+To ensure zero-downtime deployments and high availability, the platform relies on automated CI/CD and intelligent load balancing.
+
+#### CI/CD Pipeline (GitHub Actions)
+```mermaid
+sequenceDiagram
+    participant Dev as Developer
+    participant Git as GitHub (Main Branch)
+    participant CI as GitHub Actions (CI)
+    participant Registry as Docker Registry
+    participant CD as Deployment (CD)
+    
+    Dev->>Git: Push to `main`
+    Git->>CI: Trigger Build Workflow
+    CI->>CI: 1. Run `pnpm lint` & `pnpm test`
+    CI->>CI: 2. Run Turborepo (`pnpm build`)
+    CI->>Registry: 3. Build & Push Docker Image
+    CI->>CD: 4. Trigger Webhook / Restart Containers
+    CD-->>Dev: Deployment Success / Slack Alert
+```
+*Because the project is a monorepo, **Turborepo** intelligently determines which apps changed (e.g., if only `web-store` changed, it skips building the `api`), drastically reducing deployment times.*
+
+#### Load Balancing & Horizontal Scaling
+- **Traffic Routing:** An AWS Application Load Balancer (ALB) or NGINX ingress controller acts as the entry point. It terminates SSL/TLS and inspects the request paths.
+- **API Auto-Scaling:** As traffic spikes (e.g., during a flash sale), the container orchestration platform (AWS ECS/K8s) spins up additional replica containers of the `api`.
+- **Statelessness:** The NestJS API is completely stateless. Session data and carts are stored in **Redis**, meaning a user's request can hit `API Container 1` and their next request can hit `API Container 2` without losing their login state.
+
 ---
 
 ## 4. Third-Party Integrations
