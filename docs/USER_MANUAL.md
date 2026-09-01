@@ -121,6 +121,26 @@ mindmap
 
 ### 2.2 Managing Orders and Fulfillment
 
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING_PAYMENT
+    PENDING_PAYMENT --> CONFIRMED : Payment Success
+    CONFIRMED --> PROCESSING : Admin Acknowledges
+    PROCESSING --> PICKED : Items Picked
+    PICKED --> PACKED : Items Packed
+    
+    state Dispatch {
+        PACKED --> READY_FOR_PICKUP : If Store Pickup
+        PACKED --> SHIPPED : If Online Delivery
+        READY_FOR_PICKUP --> DELIVERED : Customer Collects
+        SHIPPED --> DELIVERED : Courier Delivers
+    }
+    
+    DELIVERED --> RETURNED : If Rental Item Returned
+    DELIVERED --> [*]
+    RETURNED --> [*]
+```
+
 #### 2.2.1 Viewing the Order Queue
 1. Go to **Dashboard > Orders**.
 2. You will see a real-time list of all incoming orders. Use the filters at the top to filter by status: `CONFIRMED`, `PROCESSING`, `READY_FOR_PICKUP`, `SHIPPED`, `DELIVERED`, or `RETURNED`.
@@ -145,6 +165,20 @@ For orders containing rental items, extra verification and return workflows are 
 3. **Rental Returns:** Next to each rented item in the order, a **"Process Return / Refund Deposit"** button allows you to instantly process the safe return of the jewelry and refund the customer's security deposit.
 
 ### 2.3 COD Reconciliation
+
+```mermaid
+sequenceDiagram
+    participant Admin
+    participant System
+    participant DB
+    Admin->>System: Uploads COD Settlement CSV
+    System->>System: Parse AWB / Order Numbers
+    System->>DB: Find orders with status 'SHIPPED'
+    DB-->>System: Returns matching orders
+    System->>DB: Bulk update status to 'DELIVERED/SUCCESS'
+    System-->>Admin: Displays reconciliation report (Success/Discrepancies)
+```
+
 When delivery partners deposit cash into your bank account for COD orders, you must reconcile them.
 1. Go to **Dashboard > Sales > Reconciliation**.
 2. Click **"Upload Settlement File"**.
@@ -153,6 +187,22 @@ When delivery partners deposit cash into your bank account for COD orders, you m
 5. Review the on-screen report to see if there are any discrepancies (e.g., short payments).
 
 ### 2.4 CRM & Support Inbox (WhatsApp Integration)
+
+```mermaid
+sequenceDiagram
+    participant Customer
+    participant Meta API
+    participant System CRM
+    participant Admin
+    
+    Customer->>Meta API: Sends message to WhatsApp Business
+    Meta API->>System CRM: Webhook Triggered
+    System CRM->>System CRM: Creates/Updates Support Ticket
+    Admin->>System CRM: Types reply & clicks Send
+    System CRM->>Meta API: API Request
+    Meta API->>Customer: Delivers reply as text message
+```
+
 1. Go to **Dashboard > Customers > Inbox**.
 2. **Web Tickets:** You will see support messages initiated by customers from their web accounts. Click a ticket, type your reply in the chat box, and hit send. The customer will receive the reply on their account page.
 3. **WhatsApp Tickets:** If a customer messages your official WhatsApp Business number, the message will appear in this same Inbox, tagged with `WhatsApp Chat with [Phone Number]`.
