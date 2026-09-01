@@ -44,4 +44,21 @@ export class AdminBlogsController {
   async deletePost(@Param('id') id: string) {
     return this.blogsService.deletePost(id);
   }
+
+  @Get('comments/list')
+  @ApiOperation({ summary: 'List all comments for moderation' })
+  async listComments(
+    @Query('page') page?: string,
+    @Query('pageSize') pageSize?: string,
+  ) {
+    const p = page ? parseInt(page, 10) : 1;
+    const ps = pageSize ? parseInt(pageSize, 10) : 20;
+    return this.blogsService.adminListComments(p, ps);
+  }
+
+  @Patch('comments/:id/status')
+  @ApiOperation({ summary: 'Update a comment status (APPROVED, REJECTED)' })
+  async updateCommentStatus(@Param('id') id: string, @Body() body: { status: string }) {
+    return this.blogsService.adminUpdateCommentStatus(id, body.status);
+  }
 }

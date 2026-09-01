@@ -21,6 +21,12 @@ export class WhatsappService {
   }
 
   async processIncomingMessage(body: any) {
+    const settings = await this.prisma.storeSettings.findFirst();
+    if (settings && !settings.whatsappServiceEnabled) {
+      this.logger.warn('WhatsApp service is disabled in settings. Ignoring message.');
+      return;
+    }
+
     if (body.object === 'whatsapp_business_account') {
       for (const entry of body.entry || []) {
         for (const change of entry.changes || []) {
@@ -84,6 +90,46 @@ export class WhatsappService {
           isAdmin: false,
         }
       });
+    }
+  }
+
+  async sendMessage(phoneNumber: string, text: string) {
+    const settings = await this.prisma.storeSettings.findFirst();
+    if (settings && !settings.whatsappServiceEnabled) {
+      this.logger.warn('WhatsApp service is disabled in settings. Cannot send message.');
+      return;
+    }
+
+    const token = this.configService.get<string>('WHATSAPP_TOKEN');
+    const phoneNumberId = this.configService.get<string>('WHATSAPP_PHONE_NUMBER_ID');
+    if (!token || !phoneNumberId) {
+      this.logger.warn('WhatsApp API credentials not configured');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://graph.facebook.com/v17.0/${phoneNumberId}/messages`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: phoneNumber,
+          type: 'text',
+          text: { body: text },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        this.logger.error(`Failed to send WA message to ${phoneNumber}: ${errorData}`);
+      } else {
+        this.logger.log(`Sent WA message to ${phoneNumber}`);
+      }
+    } catch (error) {
+      this.logger.error(`Error sending WA message to ${phoneNumber}:`, error);
     }
   }
 }

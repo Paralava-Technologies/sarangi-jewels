@@ -2,6 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getBlog } from '@/lib/api';
+import { SJBlogComments } from '@/components/atomic/SJBlogComments';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -60,6 +61,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <Link href="/blog" className="inline-block border border-brand-primary text-brand-primary px-8 py-3 hover:bg-brand-primary hover:text-white transition-colors uppercase tracking-widest text-xs font-semibold">
               Back to Journal
             </Link>
+          </div>
+          
+          <div className="text-left mt-16">
+            <SJBlogComments postId={post.id} />
           </div>
         </footer>
       </article>

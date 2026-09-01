@@ -25,6 +25,7 @@ export class SettingsService {
     supportEmail?: string;
     supportPhone?: string;
     whatsappNumber?: string;
+    whatsappServiceEnabled?: boolean;
     facebookLink?: string;
     instagramLink?: string;
     codAllowed?: boolean;

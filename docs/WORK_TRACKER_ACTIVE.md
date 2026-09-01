@@ -53,9 +53,9 @@
 Based on the unchecked items, the focus areas currently pending are:
 
 #### 1. Microservices Integration (Task 57)
-- [ ] 57.1 Create NestJS microservice boilerplate using TCP/Redis transport.
-- [ ] 57.2 Define Protobuf (`.proto`) schemas for custom business logic.
-- [ ] 57.3 Expose gRPC endpoints and implement a sample handler in the `api` app.
+- [x] 57.1 Create NestJS microservice boilerplate using TCP/Redis transport.
+- [x] 57.2 Define Protobuf (`.proto`) schemas for custom business logic.
+- [x] 57.3 Expose gRPC endpoints and implement a sample handler in the `api` app.
 
 #### 2. WhatsApp Commerce (Task 58)
 - [x] 58.1 Set up Meta App for WhatsApp Business API and configure webhook endpoint URL.
@@ -63,12 +63,12 @@ Based on the unchecked items, the focus areas currently pending are:
 - [x] 58.3 Route parsed messages into the `Inbox` system and establish two-way communication capabilities.
 
 #### 3. Blog Enhancements (Tasks 81, 82, 83)
-- [ ] 81.1 Integrate image and video upload handlers for the React-Quill editor in the Web Admin.
-- [ ] 82.1 Update `Post` Prisma schema to include fields for `seoTitle`, `seoDescription`, `tags`, and `categories`.
-- [ ] 82.2 Build UI in Web Admin CMS for editing SEO meta tags and taxonomies.
-- [ ] 83.1 Add `Comment` model to Prisma schema (linked to `Post` and `User`).
-- [ ] 83.2 Create API endpoints for fetching, creating, and moderating blog comments.
-- [ ] 83.3 Implement comment section UI in the storefront `/blog/[slug]` page.
+- [x] 81.1 Integrate image and video upload handlers for the React-Quill editor in the Web Admin.
+- [x] 82.1 Update `Post` Prisma schema to include fields for `seoTitle`, `seoDescription`, `tags`, and `categories`.
+- [x] 82.2 Build UI in Web Admin CMS for editing SEO meta tags and taxonomies.
+- [x] 83.1 Add `Comment` model to Prisma schema (linked to `Post` and `User`).
+- [x] 83.2 Create API endpoints for fetching, creating, and moderating blog comments.
+- [x] 83.3 Implement comment section UI in the storefront `/blog/[slug]` page.
 
 #### 4. COD Reconciliation (Task 109)
 - [x] 109.1 Design reconciliation workflow for Cash on Delivery payments via delivery partners (BlueDart, Delhivery, Porter).
@@ -190,8 +190,10 @@ Based on the unchecked items, the focus areas currently pending are:
   - **Resolution**: Added `UserTier` enum, `tier` field to `User`, and `TieredPrice` model in Prisma schema.
 - [x] 56. **Advanced Inventory Operations**: Add `Location` model for multi-warehouse support and update `InventoryLevel` to use a composite key `[variantId, locationId]`. Implement `SerialNumber` tracking.
   - **Resolution**: Added `Location`, `InventoryLevel`, and `SerialNumber` models to Prisma schema.
-- [ ] 57. **Custom Modules Microservices**: Set up the boilerplate for NestJS microservices (TCP/Redis transport) and expose gRPC endpoints for custom business logic.
-- [ ] 58. **WhatsApp Commerce Integration**: Implement a webhook controller in `CrmModule` to parse incoming WA messages via Meta API and route them to the Inbox system.
+- [x] 57. **Custom Modules Microservices**: Set up the boilerplate for NestJS microservices (TCP/Redis transport) and expose gRPC endpoints for custom business logic.
+  - **Resolution**: Created Protobuf schema `custom-logic.proto`, added `@nestjs/microservices` & `@grpc/grpc-js`, built `CustomLogicModule` & `CustomLogicController`, and attached the gRPC microservice listener in `main.ts`.
+- [x] 58. **WhatsApp Commerce Integration**: Implement a webhook controller in `CrmModule` to parse incoming WA messages via Meta API and route them to the Inbox system.
+  - **Resolution**: Implemented WhatsApp Webhook parsing Meta's messages into `SupportTicket`s. Enhanced `SupportService` to allow Admins answering WhatsApp tickets directly from the dashboard, routing the replies straight to the user via Meta API using `WhatsappService.sendMessage`.
 - [x] 59. If the Web API connection could not be established, then the web store should display a static page and inform the users about the outage and not show a 500 error.
   - **Resolution**: Implemented global `error.tsx` in `web-store` to gracefully catch and display API connection failures.
 - [x] 60. Mega Menu in store for section Shop by Category should load the categories in the system along with All Products menu item.

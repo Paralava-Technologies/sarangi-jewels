@@ -77,6 +77,7 @@ export interface Order {
     provider: string;
   };
   deliveryDate?: string | null;
+  depositCents?: number;
 }
 
 export interface PaginatedResponse<T> {
@@ -284,6 +285,8 @@ export interface StoreSettings {
   gstin?: string;
   marqueeText?: string;
   rentalDeliveryAllowed?: boolean;
+  whatsappServiceEnabled?: boolean;
+  maxRentalDepositCents?: number;
   updatedAt: string;
 }
 

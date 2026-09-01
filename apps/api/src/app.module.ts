@@ -28,6 +28,7 @@ import { BlogsModule } from './modules/blogs/blogs.module';
 import { ShippingModule } from './modules/shipping/shipping.module';
 import { ReconciliationModule } from './modules/reconciliation/reconciliation.module';
 import { MakeupModule } from './modules/makeup/makeup.module';
+import { CustomLogicModule } from './modules/custom-logic/custom-logic.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { MakeupModule } from './modules/makeup/makeup.module';
     ShippingModule,
     ReconciliationModule,
     MakeupModule,
+    CustomLogicModule,
     ScheduleModule.forRoot(),
   ],
 })

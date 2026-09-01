@@ -19,6 +19,7 @@ export default function SettingsPage() {
   const [supportEmail, setSupportEmail] = useState('');
   const [supportPhone, setSupportPhone] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [whatsappServiceEnabled, setWhatsappServiceEnabled] = useState(true);
   const [facebookLink, setFacebookLink] = useState('');
   const [instagramLink, setInstagramLink] = useState('');
   const [codAllowed, setCodAllowed] = useState(false);
@@ -46,6 +47,7 @@ export default function SettingsPage() {
       setSupportEmail(data.supportEmail || '');
       setSupportPhone(data.supportPhone || '');
       setWhatsappNumber(data.whatsappNumber || '');
+      setWhatsappServiceEnabled(data.whatsappServiceEnabled ?? true);
       setFacebookLink(data.facebookLink || '');
       setInstagramLink(data.instagramLink || '');
       setCodAllowed(data.codAllowed || false);
@@ -53,7 +55,7 @@ export default function SettingsPage() {
       setStoreState(data.storeState || 'Kerala');
       setGstin(data.gstin || '');
       setRentalDeliveryAllowed(data.rentalDeliveryAllowed ?? true);
-      setMaxRentalDeposit((data.maxRentalDepositCents / 100).toString());
+      setMaxRentalDeposit(((data.maxRentalDepositCents || 0) / 100).toString());
     } catch (err: any) {
       setError(err.message || 'Failed to load settings');
     } finally {
@@ -76,6 +78,7 @@ export default function SettingsPage() {
         supportEmail: supportEmail || null,
         supportPhone: supportPhone || null,
         whatsappNumber: whatsappNumber || null,
+        whatsappServiceEnabled,
         facebookLink: facebookLink || null,
         instagramLink: instagramLink || null,
         codAllowed,
@@ -151,6 +154,13 @@ export default function SettingsPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
               <input type="text" value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="+91 98765 43210" />
+            </div>
+            <div className="col-span-1 md:col-span-2">
+              <label className="flex items-center space-x-3 cursor-pointer">
+                <input type="checkbox" checked={whatsappServiceEnabled} onChange={(e) => setWhatsappServiceEnabled(e.target.checked)} className="form-checkbox h-5 w-5 text-black border-gray-300 rounded" />
+                <span className="text-sm font-medium text-gray-700">Enable WhatsApp API Service (Automated two-way messages)</span>
+              </label>
+              <p className="text-xs text-gray-500 mt-1 ml-8">Allows the CRM to auto-respond to and manage tickets via WhatsApp. Only Super Admins can save changes to this setting.</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">

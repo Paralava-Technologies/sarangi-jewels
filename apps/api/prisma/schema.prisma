@@ -10,6 +10,7 @@ datasource db {
 enum UserRole {
   CUSTOMER
   ADMIN
+  SUPERADMIN
   FULFILLMENT
   SUPPORT
 }
@@ -377,6 +378,7 @@ model StoreSettings {
   supportEmail           String?  @map("support_email")
   supportPhone           String?  @map("support_phone")
   whatsappNumber         String?  @map("whatsapp_number")
+  whatsappServiceEnabled Boolean  @default(true) @map("whatsapp_service_enabled")
   facebookLink           String?  @map("facebook_link")
   instagramLink          String?  @map("instagram_link")
   codAllowed             Boolean  @default(false) @map("cod_allowed")

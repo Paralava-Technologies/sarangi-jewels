@@ -1,5 +1,7 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Request } from 'express';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { BlogsService } from './blogs.service';
 
 @ApiTags('Storefront Blogs')
@@ -29,5 +31,24 @@ export class BlogsController {
   @ApiOperation({ summary: 'Get a specific published blog post by slug' })
   async getPostBySlug(@Param('slug') slug: string) {
     return this.blogsService.getPublishedPostBySlug(slug);
+  }
+
+  @Get(':postId/comments')
+  @ApiOperation({ summary: 'List approved comments for a post' })
+  async getComments(@Param('postId') postId: string) {
+    return this.blogsService.getCommentsForPost(postId);
+  }
+
+  @Post(':postId/comments')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Add a comment to a post' })
+  async addComment(
+    @Param('postId') postId: string,
+    @Body() body: { content: string },
+    @Req() req: Request & { user?: { id: string } },
+  ) {
+    if (!req.user?.id) throw new Error('Unauthorized');
+    return this.blogsService.addComment(postId, req.user.id, body.content);
   }
 }

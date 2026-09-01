@@ -6,55 +6,73 @@ Online brand store for fine jewellery, ladies accessories, care products, pendan
 
 ## 1. High-level system view
 
-```
-                         ┌─────────────────────────────────────┐
-                         │         Admin operators             │
-                         └──────────────┬──────────────────────┘
-                                        │
-              ┌─────────────────────────┼─────────────────────────┐
-              │                         │                         │
-              ▼                         ▼                         ▼
-     ┌────────────────┐      ┌────────────────┐      ┌────────────────┐
-     │   web-admin    │      │  mobile-admin  │      │  (future tools)  │
-     │  Next.js       │      │  Expo RN       │      │  reports, etc. │
-     └───────┬────────┘      └───────┬────────┘      └────────┬───────┘
-             │                       │                        │
-             └───────────────────────┼────────────────────────┘
-                                     │ HTTPS (REST + optional WS)
-                                     ▼
-                         ┌───────────────────────┐
-                         │      apps/api         │
-                         │  NestJS (modular)     │
-                         │  Auth · Catalog ·     │
-                         │  Cart · Orders ·      │
-                         │  Fulfillment · Notify │
-                         └───────────┬───────────┘
-                                     │
-         ┌───────────────────────────┼───────────────────────────┐
-         │                           │                           │
-         ▼                           ▼                           ▼
-  ┌─────────────┐            ┌─────────────┐            ┌─────────────┐
-  │ PostgreSQL  │            │    Redis    │            │  S3 / CDN   │
-  │  (primary)  │            │ cache/queue │            │  media      │
-  └─────────────┘            └─────────────┘            └─────────────┘
+```mermaid
+flowchart TB
+    subgraph Clients
+        WS[Web Store - Next.js]
+        WA[Web Admin - Next.js]
+        MS[Mobile Store - Expo RN]
+        MA[Mobile Admin - Expo RN]
+    end
 
-                                     ▲
-                                     │ same API contract
-         ┌───────────────────────────┴───────────────────────────┐
-         │                                                       │
-         ▼                                                       ▼
-┌────────────────┐                                    ┌────────────────┐
-│   web-store    │                                    │ mobile-store   │
-│   Next.js      │                                    │ Expo React     │
-│   (customers)  │                                    │ Native         │
-└────────────────┘                                    └────────────────┘
+    subgraph Backend Services
+        API[API Gateway - NestJS]
+        GRPC[Custom Logic - gRPC Microservice]
+        WORKER[Background Workers - BullMQ]
+    end
+
+    subgraph Data Layer
+        DB[(PostgreSQL)]
+        REDIS[(Redis Cache/Queue)]
+        S3[(S3/CDN Media)]
+    end
+
+    subgraph Third-Party
+        PG[Payment Gateway]
+        WA_API[Meta WhatsApp API]
+    end
+
+    WS <-->|REST| API
+    WA <-->|REST| API
+    MS <-->|REST| API
+    MA <-->|REST| API
+    
+    API <--> GRPC
+    API <--> WORKER
+    
+    API <--> DB
+    API <--> REDIS
+    API <--> S3
+    
+    API <--> PG
+    API <--> WA_API
 ```
 
-**Principle:** Mobile and web are thin clients. Business rules, inventory, orders, and admin permissions live only in `apps/api`. Admin changes propagate to all clients on the next API call (and via push/WebSocket where needed).
+**Principle:** Mobile and web are thin clients. Business rules, inventory, orders, and admin permissions live only in `apps/api` and `apps/custom-logic` microservices. Admin changes propagate to all clients on the next API call (and via push/WebSocket where needed). This ensures strict consistency across the entire eCommerce ecosystem.
 
 ---
 
-## 2. Recommended tech stack
+## 2. Platform Frameworks & Tech Stack
+
+```mermaid
+mindmap
+  root((Sarangi Jewels Tech Stack))
+    Frontend Frameworks
+      Next.js 15 App Router (Web Store & Admin)
+      Expo React Native (Mobile Apps)
+      TailwindCSS (Styling)
+    Backend Frameworks
+      NestJS (Core API)
+      gRPC Microservices (Custom Logic)
+      BullMQ (Background Jobs)
+    Data Layer
+      PostgreSQL (Relational DB)
+      Prisma (ORM)
+      Redis (Cache & Queue)
+    DevOps & Tooling
+      Turborepo (Monorepo Management)
+      Docker (Containerization)
+```
 
 | Layer | Choice | Rationale |
 |-------|--------|-----------|
@@ -73,7 +91,110 @@ Online brand store for fine jewellery, ladies accessories, care products, pendan
 
 ---
 
-## 3. Repository folder structure
+## 3. Platform & Deployment Architecture
+
+The system is designed to be cloud-agnostic and containerized, allowing deployment across AWS, GCP, or managed PaaS platforms like Fly.io.
+
+```mermaid
+flowchart LR
+    subgraph Cloud Infrastructure
+        LB[Load Balancer]
+        
+        subgraph Frontend Host
+            VERCEL[Vercel / Netlify]
+            VERCEL -->|Hosts| WS(Web Store)
+            VERCEL -->|Hosts| WA(Web Admin)
+        end
+        
+        subgraph Backend Cluster
+            API1(API Container 1)
+            API2(API Container 2)
+            GRPC(Custom Logic Container)
+        end
+        
+        subgraph Managed Data Services
+            RDS[(Managed PostgreSQL)]
+            ELASTICACHE[(Managed Redis)]
+            S3[(AWS S3 Media Bucket)]
+        end
+    end
+    
+    Internet((Internet Users)) --> LB
+    LB --> VERCEL
+    LB --> API1
+    LB --> API2
+    
+    API1 <--> GRPC
+    API2 <--> GRPC
+    
+    API1 --> RDS
+    API1 --> ELASTICACHE
+    API1 --> S3
+```
+
+- **Frontend Hosting:** Vercel or Netlify is recommended for Next.js to leverage Edge caching and Server-Side Rendering (SSR).
+- **Backend Hosting:** Docker containers running on AWS Fargate, Google Cloud Run, or Fly.io. The `apps/api` scales horizontally behind a load balancer.
+- **Microservices:** The `custom-logic` gRPC service sits within the same private network, isolated from public internet traffic.
+
+---
+
+## 4. Third-Party Integrations
+
+### 4.1 Razorpay Payment Gateway Integration
+
+The checkout process utilizes a secure, server-side verified payment flow with Razorpay.
+
+```mermaid
+sequenceDiagram
+    actor Customer
+    participant WebStore
+    participant API
+    participant Razorpay
+    
+    Customer->>WebStore: Clicks "Complete Purchase"
+    WebStore->>API: POST /checkout (Cart Data)
+    API->>API: Validate Inventory & Prices
+    API->>Razorpay: Create Razorpay Order
+    Razorpay-->>API: Returns order_id
+    API-->>WebStore: Returns order_id & amount
+    WebStore->>Customer: Opens Razorpay Checkout Modal
+    Customer->>Razorpay: Enters Payment Details
+    Razorpay-->>Customer: Payment Success
+    Razorpay->>WebStore: Callback with payment_id & signature
+    WebStore->>API: POST /checkout/verify
+    API->>API: Cryptographically verify signature
+    API->>API: Update Order Status -> CONFIRMED
+    API-->>WebStore: 200 OK
+    WebStore-->>Customer: Order Success Page
+```
+
+### 4.2 Meta WhatsApp Business API Integration
+
+The CRM integrates a bidirectional messaging pipeline with WhatsApp.
+
+```mermaid
+sequenceDiagram
+    actor User as WhatsApp User
+    participant Meta as Meta Graph API
+    participant API as Sarangi API
+    actor Admin as Admin Dashboard
+    
+    User->>Meta: Sends WhatsApp Message
+    Meta->>API: POST /webhooks/whatsapp (Inbound)
+    API->>API: Parse Message & Check Settings
+    API->>API: Create Support Ticket Reply
+    API-->>Meta: 200 OK
+    API-->>Admin: Real-time update in Inbox
+    
+    Admin->>API: Types Reply in Dashboard
+    API->>API: Save Reply to DB
+    API->>Meta: POST /messages (Outbound)
+    Meta->>User: Delivers WhatsApp Message
+```
+
+---
+
+## 5. Repository folder structure
 
 ```
 noeve/                              # repo root (this Code/ directory)
@@ -268,25 +389,29 @@ Guards enforce **role + scope**: a customer token cannot call `/admin/orders`.
 
 ## 5. Data model (core entities)
 
+```mermaid
+erDiagram
+    CATEGORY ||--o{ PRODUCT : contains
+    PRODUCT ||--o{ PRODUCT_VARIANT : has
+    PRODUCT ||--o{ PRODUCT_IMAGE : displays
+    PRODUCT_VARIANT ||--o{ INVENTORY_ITEM : tracks
+    INVENTORY_ITEM ||--o{ SERIAL_NUMBER : physical_units
+    
+    USER ||--o{ ADDRESS : saves
+    USER ||--o{ ORDER : places
+    USER ||--o{ CART : owns
+    
+    ORDER ||--o{ ORDER_LINE : contains
+    ORDER ||--|| PAYMENT : processed_via
+    ORDER ||--o{ SHIPMENT : dispatched_via
+    ORDER ||--o{ ORDER_STATUS_HISTORY : logs
+    
+    PROMOTION ||--o{ COUPON : issues
 ```
-Category ──< Product ──< ProductVariant (size, metal, stone)
-                │
-                └──< ProductImage
-                └──< InventoryItem (sku, quantity, warehouse)
 
-User ──< Address
-     └──< Cart ──< CartLine
-     └──< Order ──< OrderLine
-              │
-              ├── Payment
-              ├── Shipment (carrier, trackingNumber, events)
-              └── OrderStatusHistory (audit)
-
-Promotion ──< Coupon
-AdminUser (extends User with roles: SUPER_ADMIN, CATALOG, FULFILLMENT, SUPPORT)
-```
-
-**Jewellery-specific fields on Product/Variant:** material, purity (e.g. 18K), gemstone, weight, care instructions, certificate URL, collection tag (e.g. pendants, care-accessories).
+**Jewellery & Rental specific fields:** 
+- **Product/Variant:** material, purity (e.g. 18K), gemstone, weight, care instructions, certificate URL, collection tag (e.g. pendants, care-accessories).
+- **Rentals:** `SERIAL_NUMBER` tracks individual physical units. Orders block out `startDate` and `endDate` against these specific serials to prevent double-booking.
 
 ---
 
@@ -304,25 +429,28 @@ Roles: `CUSTOMER`, `ADMIN`, `FULFILLMENT`, `SUPPORT`. NestJS `@Roles()` + policy
 
 ## 7. Order fulfillment architecture
 
-```
-Customer places order
-        │
-        ▼
-checkout module ──► payment webhook ──► order CONFIRMED
-        │
-        ▼
-fulfillment queue (admin + mobile-admin)
-        │
-        ├── PROCESSING (assigned picker)
-        ├── PICKED (barcode scan)
-        ├── PACKED (weight, package photo optional)
-        └── SHIPPED (carrier API → tracking number)
-                │
-                ▼
-        notifications → customer web/mobile push
+```mermaid
+stateDiagram-v2
+    [*] --> CHECKOUT: Customer places order
+    CHECKOUT --> PENDING_PAYMENT: Awaiting Razorpay/COD
+    PENDING_PAYMENT --> CONFIRMED: Payment Success / COD Selected
+    
+    state AdminFulfillmentQueue {
+        CONFIRMED --> PROCESSING: Assigned to Picker
+        PROCESSING --> PICKED: Barcode Scanned
+        PICKED --> PACKED: Weight & Photo Logged
+        PACKED --> SHIPPED: Carrier API Tracking Added
+    }
+    
+    SHIPPED --> DELIVERED: Notifications & Webhooks
+    DELIVERED --> SUCCESS: COD Reconciled
+    SUCCESS --> [*]
+    
+    CONFIRMED --> REFUNDED: Admin Cancellation
+    REFUNDED --> [*]
 ```
 
-**Idempotency:** Payment and webhook handlers use idempotency keys. Status transitions validate allowed edges server-side.
+**Idempotency:** Payment and webhook handlers use idempotency keys to ensure multiple pings do not duplicate orders. Status transitions validate allowed edges server-side (e.g., an order cannot jump from `CONFIRMED` to `DELIVERED` without a tracking number in `SHIPPED`).
 
 ---
 
@@ -381,3 +509,10 @@ PostgreSQL Seed complete.
   Admin:    admin@noeve.local / Admin123!
   Customer: customer@noeve.local / Customer123!
 
+
+## 14. Modern Upgrades (Phase 5+)
+- **Microservices & gRPC**: The monolithic API has been extended to support high-performance microservices (TCP/Redis/gRPC transport) inside the `@noeve/custom-logic` module. This allows custom business logic to scale independently.
+- **WhatsApp CRM**: Integrated Meta Graph API bidirectional messaging. Inbound WhatsApp messages are parsed via webhook into the Inbox/Support system. Admin replies auto-dispatch outbound messages to customers.
+- **Rental & Makeup Booking**: Advanced inventory control allowing date-based bookings (start/end dates) mapped to physical serial numbers, blocking stock across calendars.
+- **Atomic Design System**: Web-store fully migrated to an atomic components architecture (`src/components/atomic/`) encapsulating logic and presentation into Molecules and Organisms.
+- **Blog CMS**: Fully integrated markdown/HTML rich-text blogging platform with SEO metadata and community commenting engine (approval/rejection moderation).

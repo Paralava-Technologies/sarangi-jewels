@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createBlog } from '@/lib/api';
 import dynamic from 'next/dynamic';
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+const ReactQuill: any = dynamic(() => import('react-quill-new'), { ssr: false });
 import 'react-quill-new/dist/quill.snow.css';
 
 export default function NewPostPage() {
@@ -18,6 +18,9 @@ export default function NewPostPage() {
     author: 'Admin',
     excerpt: '',
     content: '',
+    seoTitle: '',
+    seoDescription: '',
+    tags: '',
     published: false,
   });
 
@@ -29,11 +32,72 @@ export default function NewPostPage() {
     }));
   };
 
+  const quillRef = useRef<any>(null);
+
+  const imageHandler = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files ? input.files[0] : null;
+      if (!file) return;
+
+      const formDataData = new FormData();
+      formDataData.append('file', file);
+
+      try {
+        const token = localStorage.getItem('noeve_admin_token');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/catalog/upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formDataData
+        });
+
+        if (!res.ok) throw new Error('Upload failed');
+        const json = await res.json();
+        const url = json.data.url;
+
+        const quill = quillRef.current?.getEditor();
+        if (quill) {
+          const range = quill.getSelection(true);
+          quill.insertEmbed(range.index, 'image', url);
+          quill.setSelection(range.index + 1);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Image upload failed');
+      }
+    };
+  };
+
+  const modules = useMemo(() => ({
+    toolbar: {
+      container: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        ['link', 'image', 'video'],
+        ['clean']
+      ],
+      handlers: {
+        image: imageHandler
+      }
+    }
+  }), []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await createBlog(formData);
+      const payload = {
+        ...formData,
+        tags: formData.tags ? formData.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+      };
+      await createBlog(payload);
       router.push('/dashboard/content');
     } catch (err) {
       console.error(err);
@@ -109,16 +173,52 @@ export default function NewPostPage() {
                   />
                 ) : (
                   <ReactQuill
-                    theme="snow"
-                    value={formData.content}
-                    onChange={(value) => setFormData((prev) => ({ ...prev, content: value }))}
-                    style={{ height: '300px', marginBottom: '40px' }}
-                  />
+                      ref={quillRef}
+                      theme="snow"
+                      modules={modules}
+                      value={formData.content}
+                      onChange={(value: string) => setFormData((prev) => ({ ...prev, content: value }))}
+                      style={{ height: '300px', marginBottom: '40px' }}
+                    />
                 )}
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 pt-2">
+            <div className="space-y-4 border-t border-neutral-200 pt-6 mt-6">
+              <h3 className="text-lg font-semibold">SEO & Metadata</h3>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">SEO Title</label>
+                <input
+                  name="seoTitle"
+                  value={formData.seoTitle}
+                  onChange={handleChange}
+                  className="flex h-10 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                  placeholder="Optimal length: 50-60 characters"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">SEO Description</label>
+                <textarea
+                  name="seoDescription"
+                  value={formData.seoDescription}
+                  onChange={handleChange}
+                  className="flex min-h-[80px] w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                  placeholder="Optimal length: 150-160 characters"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Tags (comma-separated)</label>
+                <input
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  className="flex h-10 w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+                  placeholder="e.g. jewelry, wedding, fashion"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2 pt-4">
               <input
                 type="checkbox"
                 id="published"

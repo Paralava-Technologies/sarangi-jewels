@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 // Trigger restart
 import type { NextFunction, Request, Response } from 'express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 import { ZodFilter } from './common/filters/zod.filter';
 
@@ -57,6 +58,16 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      package: 'customlogic',
+      protoPath: path.join(__dirname, 'proto/custom-logic.proto'),
+      url: 'localhost:50051',
+    },
+  });
+
+  await app.startAllMicroservices();
   const port = process.env.API_PORT ?? 3001;
   const publicUrl = process.env.API_URL ?? `http://localhost:${port}`;
   await app.listen(port);

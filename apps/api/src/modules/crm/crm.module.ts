@@ -6,6 +6,7 @@ import { WhatsappService } from './whatsapp.service';
 
 @Module({
   controllers: [AdminCrmController, WhatsappController],
-  providers: [CrmService, WhatsappService]
+  providers: [CrmService, WhatsappService],
+  exports: [WhatsappService]
 })
 export class CrmModule {}

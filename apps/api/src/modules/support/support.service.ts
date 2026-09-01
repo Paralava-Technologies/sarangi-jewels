@@ -1,12 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
+import { WhatsappService } from '../crm/whatsapp.service';
+import { forwardRef, Inject } from '@nestjs/common';
 
 @Injectable()
 export class SupportService {
   constructor(
     private prisma: PrismaService,
-    private mailService: MailService
+    private mailService: MailService,
+    @Inject(forwardRef(() => WhatsappService))
+    private whatsappService: WhatsappService
   ) {}
 
   async createTicket(data: { name: string; email: string; subject: string; message: string; userId?: string }) {
@@ -55,9 +59,16 @@ export class SupportService {
   async addReply(id: string, message: string, isAdmin = true) {
     const ticket = await this.prisma.supportTicket.findUnique({ where: { id } });
     if (!ticket) throw new NotFoundException('Ticket not found');
-    return this.prisma.supportTicketReply.create({
+    const reply = await this.prisma.supportTicketReply.create({
       data: { ticketId: id, message, isAdmin },
     });
+
+    if (isAdmin && ticket.subject.startsWith('WhatsApp Chat with ')) {
+      const phoneNumber = ticket.subject.replace('WhatsApp Chat with ', '').trim();
+      await this.whatsappService.sendMessage(phoneNumber, message);
+    }
+
+    return reply;
   }
 
   async updateTicketStatus(id: string, status: string) {

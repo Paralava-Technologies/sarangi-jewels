@@ -41,6 +41,28 @@ export class BlogsService {
     return { data: post };
   }
 
+  async getCommentsForPost(postId: string) {
+    const comments = await this.prisma.comment.findMany({
+      where: { postId, status: 'APPROVED' },
+      include: { user: { select: { firstName: true, lastName: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    return { data: comments };
+  }
+
+  async addComment(postId: string, userId: string, content: string) {
+    const comment = await this.prisma.comment.create({
+      data: {
+        postId,
+        userId,
+        content,
+        status: 'PENDING',
+      },
+      include: { user: { select: { firstName: true, lastName: true } } },
+    });
+    return { data: comment };
+  }
+
   async listCategories() {
     const categories = await this.prisma.blogCategory.findMany({
       orderBy: { name: 'asc' },
@@ -107,5 +129,31 @@ export class BlogsService {
   async deletePost(id: string) {
     await this.prisma.post.delete({ where: { id } });
     return { success: true };
+  }
+
+  async adminListComments(page = 1, pageSize = 20) {
+    const [comments, total] = await Promise.all([
+      this.prisma.comment.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { createdAt: 'desc' },
+        include: { user: { select: { firstName: true, lastName: true } }, post: { select: { title: true, slug: true } } },
+      }),
+      this.prisma.comment.count(),
+    ]);
+
+    return {
+      data: comments,
+      meta: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) },
+    };
+  }
+
+  async adminUpdateCommentStatus(id: string, status: any) {
+    const comment = await this.prisma.comment.update({
+      where: { id },
+      data: { status },
+      include: { user: { select: { firstName: true, lastName: true } }, post: { select: { title: true, slug: true } } },
+    });
+    return { data: comment };
   }
 }

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package customlogic;
+
+service CustomLogicService {
+  rpc ProcessTask (TaskRequest) returns (TaskResponse) {}
+}
+
+message TaskRequest {
+  string taskId = 1;
+  string payload = 2;
+}
+
+message TaskResponse {
+  bool success = 1;
+  string result = 2;
+}
