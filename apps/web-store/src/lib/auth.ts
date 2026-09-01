@@ -85,3 +85,39 @@ export async function registerStore(input: {
 export function logout() {
   clearAccessToken();
 }
+
+export async function sendOtp(phone: string): Promise<void> {
+  const res = await fetch(`${API_URL}/store/auth/send-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone }),
+  });
+  if (!res.ok) {
+    let msg = 'Failed to send OTP';
+    try {
+      const err = await res.json();
+      msg = err.message || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+}
+
+export async function verifyOtp(phone: string, code: string): Promise<AuthTokens> {
+  const res = await fetch(`${API_URL}/store/auth/verify-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone, code }),
+  });
+  if (!res.ok) {
+    let msg = 'Invalid OTP';
+    try {
+      const err = await res.json();
+      msg = err.message || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+  const json = await res.json();
+  const tokens = json.data as AuthTokens;
+  setAccessToken(tokens.accessToken);
+  return tokens;
+}

@@ -77,8 +77,9 @@ enum CODSettlementStatus {
 
 model User {
   id                   String   @id @default(uuid())
-  email                String   @unique
-  passwordHash         String   @map("password_hash")
+  email                String?  @unique
+  phone                String?  @unique
+  passwordHash         String?  @map("password_hash")
   firstName            String?  @map("first_name")
   lastName             String?  @map("last_name")
   role                 UserRole @default(CUSTOMER)
@@ -663,4 +664,15 @@ model MakeupPackage {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("makeup_packages")
+}
+
+model OtpToken {
+  id        String   @id @default(uuid())
+  phone     String?
+  email     String?
+  code      String
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otp_tokens")
 }

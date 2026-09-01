@@ -69,8 +69,61 @@ export class AuthService {
     return this.issueTokens(user.id, user.email, user.role);
   }
 
-  private async issueTokens(userId: string, email: string, role: UserRole) {
-    const payload = { sub: userId, email, role };
+  async sendOtp(input: import('@sarangi/validation').SendOtpInput) {
+    const data = import('@sarangi/validation').then(m => m.sendOtpSchema.parse(input));
+    // In a real application, send the OTP via Twilio or AWS SNS
+    // For this mock, we will generate a 6-digit OTP and print it to the console
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(`[MOCK SMS] Sending OTP ${code} to ${input.phone}`);
+
+    await this.prisma.otpToken.create({
+      data: {
+        phone: input.phone,
+        code,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
+      }
+    });
+
+    return { message: 'OTP sent successfully' };
+  }
+
+  async verifyOtp(input: import('@sarangi/validation').VerifyOtpInput) {
+    const otp = await this.prisma.otpToken.findFirst({
+      where: {
+        phone: input.phone,
+        code: input.code,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (!otp) {
+      throw new UnauthorizedException('Invalid or expired OTP');
+    }
+
+    // Find user or create one
+    let user = await this.prisma.user.findUnique({ where: { phone: input.phone } });
+    if (!user) {
+      user = await this.prisma.user.create({
+        data: {
+          phone: input.phone,
+          role: UserRole.CUSTOMER,
+        },
+      });
+      // Try sending welcome SMS (if we had an SMS service)
+      console.log(`[MOCK SMS] Welcome to Sarangi Jewels! Sent to ${input.phone}`);
+    }
+
+    // Clean up used OTPs
+    await this.prisma.otpToken.deleteMany({
+      where: { phone: input.phone }
+    });
+
+    return this.issueTokens(user.id, user.email || user.phone || '', user.role);
+  }
+
+  private async issueTokens(userId: string, identifier: string, role: UserRole) {
+    const payload = { sub: userId, email: identifier, role };
     const accessToken = await this.jwt.signAsync(payload);
     return {
       data: {

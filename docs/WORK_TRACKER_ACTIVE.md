@@ -419,5 +419,5 @@ message not shown as session expired and need to take to login
 - [x] BUG05 - http://localhost:3000/privacy-policy page needs designing and layout fixes.
 - [x] BUG06 - Demo passwords and usernames can be removed from site pages.
 - [x] BUG07 - Register User page, Error message section where Email already registered, etc message are shown needs some designing and layout fixes.
-- [ ] BUG08 - While creating a new user, how to register a user, if the user does not have any email account? - Provide Mobile OTP / Email OTP authentication for creating a new user account.
-- [ ] BUG09 - If user is signing in using mobile number, then provide option to either using password or login using OTP.
+- [x] BUG08 - While creating a new user, how to register a user, if the user does not have any email account? - Provide Mobile OTP / Email OTP authentication for creating a new user account.
+- [x] BUG09 - If user is signing in using mobile number, then provide option to either using password or login using OTP.

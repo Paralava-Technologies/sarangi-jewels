@@ -17,8 +17,58 @@ export function SJRegisterForm(): React.JSX.Element {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
+  const [regMethod, setRegMethod] = useState<'EMAIL' | 'PHONE'>('EMAIL');
+  const [phone, setPhone] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [loadingOtp, setLoadingOtp] = useState(false);
+
+  const handleSendOtp = async () => {
+    setError(null);
+    if (!phone || phone.length < 10) {
+      setError('Please enter a valid phone number (at least 10 digits).');
+      return;
+    }
+    setLoadingOtp(true);
+    try {
+      const { sendOtp } = await import('@/lib/auth');
+      await sendOtp(phone);
+      setOtpSent(true);
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send OTP.');
+    } finally {
+      setLoadingOtp(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (!otp || otp.length !== 6) {
+      setError('Please enter a valid 6-digit OTP.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { verifyOtp } = await import('@/lib/auth');
+      await verifyOtp(phone, otp);
+      setSuccess(true);
+      setTimeout(() => router.push('/account'), 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to verify OTP.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (regMethod === 'PHONE') {
+      if (otpSent) return handleVerifyOtp(e);
+      return;
+    }
+
     setError(null);
 
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -54,7 +104,7 @@ export function SJRegisterForm(): React.JSX.Element {
           </div>
           
           <h1 className="mb-6 font-serif text-3xl tracking-tight text-stone-900 md:text-4xl lg:text-5xl" style={{ fontFamily: 'var(--font-serif)' }}>
-            Hello {firstName}!
+            Hello {firstName || 'there'}!
           </h1>
           
           <div className="mx-auto max-w-2xl text-left text-base leading-relaxed text-stone-600 md:text-lg space-y-4">
@@ -110,73 +160,126 @@ export function SJRegisterForm(): React.JSX.Element {
             Already have an account? <Link href="/login" style={{ color: 'var(--wine)', borderBottom: '1px solid var(--gold)' }}>Sign in</Link>
           </p>
 
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+            <button 
+              type="button" 
+              onClick={() => { setRegMethod('EMAIL'); setError(null); }}
+              className={`btn ${regMethod === 'EMAIL' ? 'btn-gold' : ''}`}
+              style={{ flex: 1, padding: '10px', fontSize: '0.8rem', background: regMethod === 'EMAIL' ? undefined : 'transparent', border: regMethod === 'EMAIL' ? undefined : '1px solid var(--bone)' }}
+            >
+              Sign Up with Email
+            </button>
+            <button 
+              type="button" 
+              onClick={() => { setRegMethod('PHONE'); setError(null); }}
+              className={`btn ${regMethod === 'PHONE' ? 'btn-gold' : ''}`}
+              style={{ flex: 1, padding: '10px', fontSize: '0.8rem', background: regMethod === 'PHONE' ? undefined : 'transparent', border: regMethod === 'PHONE' ? undefined : '1px solid var(--bone)' }}
+            >
+              Sign Up with Phone
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} noValidate>
-            <div className="field-row" style={{ display: 'flex', gap: '15px' }}>
-              <div className="field" style={{ flex: 1 }}>
-                <label htmlFor="firstName">First Name</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  placeholder="Your first name"
-                  autoComplete="given-name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="field" style={{ flex: 1 }}>
-                <label htmlFor="lastName">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  placeholder="Your last name"
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+            {regMethod === 'EMAIL' ? (
+              <>
+                <div className="field-row" style={{ display: 'flex', gap: '15px' }}>
+                  <div className="field" style={{ flex: 1 }}>
+                    <label htmlFor="firstName">First Name</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      placeholder="Your first name"
+                      autoComplete="given-name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="field" style={{ flex: 1 }}>
+                    <label htmlFor="lastName">Last Name</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      placeholder="Your last name"
+                      autoComplete="family-name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="field">
-              <label htmlFor="regEmail">Email Address</label>
-              <input
-                type="email"
-                id="regEmail"
-                placeholder="you@example.com"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
+                <div className="field">
+                  <label htmlFor="regEmail">Email Address</label>
+                  <input
+                    type="email"
+                    id="regEmail"
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
 
-            <div className="field-row" style={{ display: 'flex', gap: '15px' }}>
-              <div className="field" style={{ flex: 1 }}>
-                <label htmlFor="regPassword">Password</label>
-                <input
-                  type="password"
-                  id="regPassword"
-                  placeholder="Min. 8 characters"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="field" style={{ flex: 1 }}>
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Re-enter password"
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-              </div>
-            </div>
+                <div className="field-row" style={{ display: 'flex', gap: '15px' }}>
+                  <div className="field" style={{ flex: 1 }}>
+                    <label htmlFor="regPassword">Password</label>
+                    <input
+                      type="password"
+                      id="regPassword"
+                      placeholder="Min. 8 characters"
+                      autoComplete="new-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="field" style={{ flex: 1 }}>
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Re-enter password"
+                      autoComplete="new-password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="field">
+                  <label htmlFor="regPhone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="regPhone"
+                    placeholder="e.g. 9876543210"
+                    autoComplete="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={otpSent}
+                    required
+                  />
+                </div>
+                {otpSent && (
+                  <div className="field">
+                    <label htmlFor="regOtp">Enter 6-Digit OTP</label>
+                    <input
+                      type="text"
+                      id="regOtp"
+                      placeholder="XXXXXX"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      maxLength={6}
+                      required
+                    />
+                  </div>
+                )}
+              </>
+            )}
 
             <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '.8rem', color: '#6b5a4d', marginBottom: '22px', lineHeight: 1.6 }}>
               <input type="checkbox" style={{ marginTop: '3px' }} required />
@@ -190,9 +293,21 @@ export function SJRegisterForm(): React.JSX.Element {
               </div>
             )}
 
-            <button type="submit" disabled={loading} className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }}>
-              {loading ? 'Creating Account…' : 'Create Account'}
-            </button>
+            {regMethod === 'EMAIL' ? (
+              <button type="submit" disabled={loading} className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }}>
+                {loading ? 'Creating Account…' : 'Create Account'}
+              </button>
+            ) : (
+              !otpSent ? (
+                <button type="button" onClick={handleSendOtp} disabled={loadingOtp} className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }}>
+                  {loadingOtp ? 'Sending…' : 'Send OTP via SMS'}
+                </button>
+              ) : (
+                <button type="submit" disabled={loading} className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }}>
+                  {loading ? 'Verifying…' : 'Verify & Create Account'}
+                </button>
+              )
+            )}
           </form>
           <p className="switch">Planning to rent bridal jewellery or dance costumes? You can add ID verification later from your account, before your first rental booking.</p>
         </div>

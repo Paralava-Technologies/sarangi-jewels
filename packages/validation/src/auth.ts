@@ -12,5 +12,16 @@ export const registerSchema = z.object({
   lastName: z.string().min(1, 'Last name is required').max(100, 'Last name is too long').optional(),
 });
 
+export const sendOtpSchema = z.object({
+  phone: z.string({ required_error: 'Phone number is required' }).min(10, 'Phone number must be at least 10 digits'),
+});
+
+export const verifyOtpSchema = z.object({
+  phone: z.string({ required_error: 'Phone number is required' }),
+  code: z.string({ required_error: 'OTP code is required' }).length(6, 'OTP must be exactly 6 digits'),
+});
+
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type SendOtpInput = z.infer<typeof sendOtpSchema>;
+export type VerifyOtpInput = z.infer<typeof verifyOtpSchema>;
