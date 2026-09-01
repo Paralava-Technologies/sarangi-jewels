@@ -137,6 +137,12 @@ mindmap
 2. Scroll to the bottom and click the red **"Refund Order"** button.
 3. Enter a reason (e.g., "Customer requested cancellation") and confirm. The system will automatically communicate with the Razorpay gateway to reverse the funds.
 
+#### 2.2.4 Rental Workflow & ID Verification
+For orders containing rental items, extra verification and return workflows are available.
+1. **ID Verification:** When you expand a rental order, a new **"ID Verification"** panel appears. You can view the customer's uploaded ID document (e.g., Aadhar/PAN) and click **"Approve ID"** or **"Reject ID"**. The checkout process mandates this verification for high-value rentals.
+2. **Store Pickup Details:** If a customer selected Store Pickup during checkout, the Shipping Address section will prominently display a **"Delivery Type: Store Pickup"** badge so your team knows not to ship it.
+3. **Rental Returns:** Next to each rented item in the order, a **"Process Return / Refund Deposit"** button allows you to instantly process the safe return of the jewelry and refund the customer's security deposit.
+
 ### 2.3 COD Reconciliation
 When delivery partners deposit cash into your bank account for COD orders, you must reconcile them.
 1. Go to **Dashboard > Sales > Reconciliation**.
