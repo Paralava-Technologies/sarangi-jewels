@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <main className="wrap pb-20">
-      <div className="page-head">
-        <div className="eyebrow">Legal</div>
-        <h1>Privacy Policy</h1>
+      <div className="page-head" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div className="eyebrow" style={{ color: 'var(--gold-light)' }}>Legal</div>
+        <h1 style={{ fontFamily: 'var(--display)', fontSize: '2.5rem' }}>Privacy Policy</h1>
       </div>
 
-      <div className="max-w-3xl">
+      <div className="max-w-3xl mx-auto" style={{ backgroundColor: '#fff', padding: '3rem', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
             SARANGI respects your privacy and is committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website.

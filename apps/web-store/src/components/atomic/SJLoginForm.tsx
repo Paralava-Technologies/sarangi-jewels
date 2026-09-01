@@ -112,7 +112,12 @@ export function SJLoginForm(): React.JSX.Element {
               />
             </div>
 
-            {error && <p style={{ fontSize: '.76rem', color: 'var(--oxblood)', marginBottom: '1.2rem' }}>{error}</p>}
+            {error && (
+              <div style={{ backgroundColor: '#fef2f2', border: '1px solid #f87171', color: '#b91c1c', padding: '12px 16px', borderRadius: '6px', marginBottom: '1.5rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {error}
+              </div>
+            )}
 
             <div className="form-row-between" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', fontSize: '.85rem' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', textTransform: 'none', fontFamily: 'var(--sans)', letterSpacing: '0' }}>
@@ -131,9 +136,7 @@ export function SJLoginForm(): React.JSX.Element {
             Continue as Guest
           </Link>
 
-          <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.72rem', color: 'rgba(33,29,25,0.4)' }}>
-            Demo: customer@sarangi.local / Customer123!
-          </p>
+
           <p className="switch" style={{ marginTop: '2rem' }}>
             By continuing, you agree to Sarangi&apos;s <Link href="/terms">Terms &amp; Conditions</Link> and <Link href="/privacy-policy">Privacy Policy</Link>.
           </p>

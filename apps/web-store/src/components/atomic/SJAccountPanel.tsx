@@ -386,16 +386,7 @@ export function SJAccountPanel(): React.JSX.Element {
               Continue as Guest
             </Link>
 
-            <p
-              style={{
-                textAlign: 'center',
-                marginTop: '1rem',
-                fontSize: '.72rem',
-                color: 'rgba(33,29,25,.4)',
-              }}
-            >
-              Demo: customer@sarangi.local / Customer123!
-            </p>
+
             <p className="switch" style={{ marginTop: '2rem' }}>
               By continuing, you agree to Sarangi&apos;s{' '}
               <Link href="/terms">Terms &amp; Conditions</Link> and{' '}
@@ -1867,13 +1858,13 @@ export function SJAccountPanel(): React.JSX.Element {
                   >
                     Choose what you&apos;d like to hear from us about.
                   </p>
-                  <div className="checkbox-row" style={{ marginBottom: '1rem' }}>
-                    <input type="checkbox" id="prefDrops" defaultChecked />
-                    <label htmlFor="prefDrops">New drops, early access and seasonal notes.</label>
+                  <div className="checkbox-row" style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <input type="checkbox" id="prefDrops" defaultChecked style={{ margin: 0 }} />
+                    <label htmlFor="prefDrops" style={{ margin: 0, cursor: 'pointer' }}>New drops, early access and seasonal notes.</label>
                   </div>
-                  <div className="checkbox-row">
-                    <input type="checkbox" id="prefSms" />
-                    <label htmlFor="prefSms">SMS order and shipping updates.</label>
+                  <div className="checkbox-row" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <input type="checkbox" id="prefSms" style={{ margin: 0 }} />
+                    <label htmlFor="prefSms" style={{ margin: 0, cursor: 'pointer' }}>SMS order and shipping updates.</label>
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem', paddingTop: '1rem' }}>

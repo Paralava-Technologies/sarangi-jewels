@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 export default function TermsOfUsePage() {
   return (
     <main className="wrap pb-20">
-      <div className="page-head">
-        <div className="eyebrow">Legal</div>
-        <h1>Terms of Use</h1>
+      <div className="page-head" style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <div className="eyebrow" style={{ color: 'var(--gold-light)' }}>Legal</div>
+        <h1 style={{ fontFamily: 'var(--display)', fontSize: '2.5rem' }}>Terms of Use</h1>
       </div>
 
-      <div className="max-w-3xl">
+      <div className="max-w-3xl mx-auto" style={{ backgroundColor: '#fff', padding: '3rem', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
             Welcome to SARANGI. By accessing or using our website, you agree to comply with and be bound by the following Terms of Use. Please read them carefully.

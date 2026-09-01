@@ -12,6 +12,8 @@
 - **URL**: http://localhost:3002
 - **Credentials**: `admin@sarangi.local` / `Admin123!`
 
+curl -s "http://localhost:3001/v1/admin/orders/rentals?page=1&pageSize=100" -H "Authorization: Bearer $(pnpm -s exec node test-login.js)"
+
 ### Instructions
 
 - When marking or moving completed items from active to completed, give details of the issues and the details of the resolutions.
@@ -53,16 +55,19 @@
 Based on the unchecked items, the focus areas currently pending are:
 
 #### 1. Microservices Integration (Task 57)
+
 - [x] 57.1 Create NestJS microservice boilerplate using TCP/Redis transport.
 - [x] 57.2 Define Protobuf (`.proto`) schemas for custom business logic.
 - [x] 57.3 Expose gRPC endpoints and implement a sample handler in the `api` app.
 
 #### 2. WhatsApp Commerce (Task 58)
+
 - [x] 58.1 Set up Meta App for WhatsApp Business API and configure webhook endpoint URL.
 - [x] 58.2 Create a `WebhookController` in `CrmModule` to receive and parse incoming WhatsApp messages.
 - [x] 58.3 Route parsed messages into the `Inbox` system and establish two-way communication capabilities.
 
 #### 3. Blog Enhancements (Tasks 81, 82, 83)
+
 - [x] 81.1 Integrate image and video upload handlers for the React-Quill editor in the Web Admin.
 - [x] 82.1 Update `Post` Prisma schema to include fields for `seoTitle`, `seoDescription`, `tags`, and `categories`.
 - [x] 82.2 Build UI in Web Admin CMS for editing SEO meta tags and taxonomies.
@@ -71,6 +76,7 @@ Based on the unchecked items, the focus areas currently pending are:
 - [x] 83.3 Implement comment section UI in the storefront `/blog/[slug]` page.
 
 #### 4. COD Reconciliation (Task 109)
+
 - [x] 109.1 Design reconciliation workflow for Cash on Delivery payments via delivery partners (BlueDart, Delhivery, Porter).
 - [x] 109.2 Create API endpoint for uploading or parsing settlement reports from aggregators.
 - [x] 109.3 Add UI in the Web Admin dashboard to track and mark COD orders as "Settled" / "Reconciled".
@@ -403,3 +409,15 @@ message not shown as session expired and need to take to login
 - [x] 114. When the payment is done and order is cancelled, there is no option to refund the amount in the order.
 
 - [x] 115. If the payment is done and order is delivered and due to some reason, customer want refund. How to handle?
+
+### Bugs
+
+- [x] BUG01 - Welcome still shows Noeve Logo
+- [x] BUG02 - Download Invoice still shows Noeve Logo
+- [x] BUG03 - My Account profile page - Email Preferences - Fix the spacing of the check boxes.
+- [x] BUG04 - http://localhost:3000/terms page needs designing and layout fixes.
+- [x] BUG05 - http://localhost:3000/privacy-policy page needs designing and layout fixes.
+- [x] BUG06 - Demo passwords and usernames can be removed from site pages.
+- [x] BUG07 - Register User page, Error message section where Email already registered, etc message are shown needs some designing and layout fixes.
+- [ ] BUG08 - While creating a new user, how to register a user, if the user does not have any email account? - Provide Mobile OTP / Email OTP authentication for creating a new user account.
+- [ ] BUG09 - If user is signing in using mobile number, then provide option to either using password or login using OTP.
