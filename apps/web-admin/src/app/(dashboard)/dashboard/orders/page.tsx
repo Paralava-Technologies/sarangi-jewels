@@ -11,8 +11,10 @@ const STATUS_OPTIONS = [
   'PROCESSING',
   'PICKED',
   'PACKED',
+  'READY_FOR_PICKUP',
   'SHIPPED',
   'DELIVERED',
+  'RETURNED',
   'CANCELLED',
 ] as const;
 
@@ -21,8 +23,10 @@ const NEXT_STATUS: Record<string, string[]> = {
   CONFIRMED: ['PROCESSING', 'CANCELLED'],
   PROCESSING: ['PICKED', 'CANCELLED'],
   PICKED: ['PACKED'],
-  PACKED: ['SHIPPED'],
+  PACKED: ['SHIPPED', 'READY_FOR_PICKUP'],
+  READY_FOR_PICKUP: ['DELIVERED'],
   SHIPPED: ['DELIVERED'],
+  DELIVERED: ['RETURNED'],
 };
 
 function formatPrice(cents: number, currency = 'INR') {
@@ -288,7 +292,12 @@ export default function OrdersPage(): React.JSX.Element {
             </thead>
             <tbody>
               {filteredAndSortedOrders.map((order) => {
-                const next = NEXT_STATUS[order.status] ?? [];
+                let next = NEXT_STATUS[order.status] ?? [];
+                if (order.status === 'PACKED') {
+                  next = order.isPickup ? ['READY_FOR_PICKUP'] : ['SHIPPED'];
+                } else if (order.status === 'DELIVERED') {
+                  next = order.lines?.some(l => l.isRental) ? ['RETURNED'] : [];
+                }
                 const isOpen = openOrder === order.id;
                 
                 // Check if there is an open ticket for this user or order

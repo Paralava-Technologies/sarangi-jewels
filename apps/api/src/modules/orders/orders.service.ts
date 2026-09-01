@@ -11,8 +11,10 @@ const FULFILLMENT_TRANSITIONS: Partial<Record<OrderStatus, OrderStatus[]>> = {
   [OrderStatus.CONFIRMED]: [OrderStatus.PROCESSING, OrderStatus.CANCELLED],
   [OrderStatus.PROCESSING]: [OrderStatus.PICKED, OrderStatus.CANCELLED],
   [OrderStatus.PICKED]: [OrderStatus.PACKED],
-  [OrderStatus.PACKED]: [OrderStatus.SHIPPED],
+  [OrderStatus.PACKED]: [OrderStatus.SHIPPED, OrderStatus.READY_FOR_PICKUP],
+  [OrderStatus.READY_FOR_PICKUP]: [OrderStatus.DELIVERED],
   [OrderStatus.SHIPPED]: [OrderStatus.DELIVERED],
+  [OrderStatus.DELIVERED]: [OrderStatus.RETURNED],
 };
 
 import * as path from 'path';
@@ -178,6 +180,7 @@ export class OrdersService {
             select: {
               orderNumber: true,
               status: true,
+              isPickup: true,
               user: {
                 select: { firstName: true, lastName: true, email: true }
               }

@@ -123,14 +123,15 @@ mindmap
 
 #### 2.2.1 Viewing the Order Queue
 1. Go to **Dashboard > Orders**.
-2. You will see a real-time list of all incoming orders. Use the tabs at the top to filter by status: `CONFIRMED`, `PROCESSING`, `SHIPPED`, or `COMPLETED`.
+2. You will see a real-time list of all incoming orders. Use the filters at the top to filter by status: `CONFIRMED`, `PROCESSING`, `READY_FOR_PICKUP`, `SHIPPED`, `DELIVERED`, or `RETURNED`.
 3. Click on any row to open the full order details.
 
 #### 2.2.2 Processing an Order
-1. **Acknowledge Order:** Open a newly `CONFIRMED` order. Click the "Update Status" button and change it to `PROCESSING` to signify your team is working on it.
-2. **Shipping:** Once the item is packed and handed to the courier (e.g., BlueDart), change the status to `SHIPPED`.
-3. **Tracking Info:** A modal will appear asking for the Carrier Name and Tracking Number. Enter these details so the customer can track their package.
-4. **Delivery Date:** If you know when it will arrive, use the calendar picker under "Estimated Delivery" to set the date.
+1. **Acknowledge Order:** Open a newly `CONFIRMED` order. Change the status to `PROCESSING` to signify your team is working on it, then to `PACKED` once it is ready.
+2. **Dispatching (Store Pickup vs Shipping):** 
+   - If it is a **Store Pickup**, change the status from `PACKED` to `READY_FOR_PICKUP`. Once the customer collects it, mark it as `DELIVERED`.
+   - If it is for **Shipping**, change the status from `PACKED` to `SHIPPED`. A modal will appear asking for the Carrier Name and Tracking Number. Enter these details so the customer can track their package.
+3. **Delivery Date:** Use the calendar picker under "Estimated Delivery" to set the final date before marking an order as `DELIVERED`.
 
 #### 2.2.3 Issuing Refunds
 1. Open an order that has already been paid online.
