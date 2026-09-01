@@ -16,7 +16,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    AsyncStorage.getItem('noeve_access_token').then((token) => {
+    AsyncStorage.getItem('sarangi_access_token').then((token) => {
       setIsAuthenticated(!!token);
       setIsLoading(false);
     });

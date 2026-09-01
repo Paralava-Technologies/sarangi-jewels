@@ -144,7 +144,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Support Email</label>
-            <input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="support@noeve.com" />
+            <input type="email" value={supportEmail} onChange={(e) => setSupportEmail(e.target.value)} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-black" placeholder="support@sarangi.com" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>

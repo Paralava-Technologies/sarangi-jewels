@@ -394,7 +394,7 @@ export function SJAccountPanel(): React.JSX.Element {
                 color: 'rgba(33,29,25,.4)',
               }}
             >
-              Demo: customer@noeve.local / Customer123!
+              Demo: customer@sarangi.local / Customer123!
             </p>
             <p className="switch" style={{ marginTop: '2rem' }}>
               By continuing, you agree to Sarangi&apos;s{' '}
@@ -415,7 +415,7 @@ export function SJAccountPanel(): React.JSX.Element {
             <div className="name">
               {user ? `${user.firstName} ${user.lastName || ''}` : 'Member'}
             </div>
-            <div className="email">{user?.email || email || 'customer@noeve.local'}</div>
+            <div className="email">{user?.email || email || 'customer@sarangi.local'}</div>
           </div>
           <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
             <li>
@@ -1750,7 +1750,7 @@ export function SJAccountPanel(): React.JSX.Element {
                   {user ? `${user.firstName} ${user.lastName || ''}` : 'Member'}
                 </h3>
                 <p style={{ color: 'rgba(33,29,25,.6)', fontSize: '.9rem' }}>
-                  {user?.email || email || 'customer@noeve.local'}
+                  {user?.email || email || 'customer@sarangi.local'}
                 </p>
                 <p style={{ marginTop: '1rem', fontSize: '.8rem', color: 'rgba(33,29,25,.4)' }}>
                   Member Since{' '}
@@ -1804,7 +1804,7 @@ export function SJAccountPanel(): React.JSX.Element {
                     <label>Email Address</label>
                     <input
                       type="email"
-                      defaultValue={email || 'customer@noeve.local'}
+                      defaultValue={email || 'customer@sarangi.local'}
                       style={{ background: 'var(--ivory)' }}
                     />
                   </div>

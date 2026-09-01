@@ -1,6 +1,6 @@
 # Sarangi Jewels — Customer Storefront UI/UX Design Layout Specification
 
-This document details the visual style, design patterns, layout templates, and component trees for both **Sarangi Jewels Webstore** (Next.js 15) and **Sarangi Jewels Mobile Store** (Expo React Native). It translates the architecture definitions in `docs/ARCHITECTURE.md` and design tokens in `@noeve/ui-tokens` into concrete UI layouts.
+This document details the visual style, design patterns, layout templates, and component trees for both **Sarangi Jewels Webstore** (Next.js 15) and **Sarangi Jewels Mobile Store** (Expo React Native). It translates the architecture definitions in `docs/ARCHITECTURE.md` and design tokens in `@sarangi/ui-tokens` into concrete UI layouts.
 
 ---
 

@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | NOEVE',
-  description: 'Privacy Policy for the NOEVE online store.',
+  title: 'Privacy Policy | SARANGI',
+  description: 'Privacy Policy for the SARANGI online store.',
 };
 
 export default function PrivacyPolicyPage() {
@@ -17,7 +17,7 @@ export default function PrivacyPolicyPage() {
       <div className="max-w-3xl">
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            NOEVE respects your privacy and is committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website.
+            SARANGI respects your privacy and is committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website.
           </p>
         </section>
 

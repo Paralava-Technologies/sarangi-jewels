@@ -1,5 +1,5 @@
 
-> @noeve/web-store@0.0.1 build
+> @sarangi/web-store@0.0.1 build
 > next build
 
  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
@@ -7,7 +7,7 @@
  To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
    See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
  Detected additional lockfiles: 
-   * /home/digeeshs/Work/paralava/Projects/noeve/Code/pnpm-lock.yaml
+   * /home/digeeshs/Work/paralava/Projects/sarangi/Code/pnpm-lock.yaml
 
    ▲ Next.js 15.5.18
    - Environments: .env.local

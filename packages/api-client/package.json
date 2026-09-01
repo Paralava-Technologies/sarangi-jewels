@@ -1,5 +1,5 @@
 {
-  "name": "@noeve/api-client",
+  "name": "@sarangi/api-client",
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
@@ -17,10 +17,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@noeve/shared-types": "workspace:*"
+    "@sarangi/shared-types": "workspace:*"
   },
   "devDependencies": {
-    "@noeve/config-typescript": "workspace:*",
+    "@sarangi/config-typescript": "workspace:*",
     "typescript": "^5.7.2"
   }
 }

@@ -14,7 +14,7 @@ import { useCart } from '../../src/context/cart-context';
 import { getProduct, getWishlist, addToWishlist, removeFromWishlist } from '../../src/lib/api';
 import { formatPrice } from '../../src/lib/format';
 import type { Product } from '../../src/lib/types';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import { useAuth } from '../../src/context/auth-context';
 
 export default function ProductDetailScreen() {

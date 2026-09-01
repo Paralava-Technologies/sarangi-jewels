@@ -115,7 +115,7 @@ You can use standard API testing tools to send POST requests to your local API (
 
 A testing script (`test-webhooks.js`) is included in the root of the repository to rapidly fire test payloads at the webhook endpoints.
 
-1. Edit `/home/digeeshs/Work/paralava/Projects/noeve/Code/test-webhooks.js`.
+1. Edit `/home/digeeshs/Work/paralava/Projects/sarangi/Code/test-webhooks.js`.
 2. Replace the dummy `waybill`, `AWBNo`, and `orderId` values with actual pending COD order numbers from your local database.
 3. Run the script:
    ```bash

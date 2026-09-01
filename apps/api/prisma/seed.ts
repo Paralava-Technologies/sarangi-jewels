@@ -170,10 +170,10 @@ async function main() {
   const customerPassword = await bcrypt.hash('Customer123!', 12);
 
   await prisma.user.upsert({
-    where: { email: 'admin@noeve.local' },
+    where: { email: 'admin@sarangi.local' },
     update: {},
     create: {
-      email: 'admin@noeve.local',
+      email: 'admin@sarangi.local',
       passwordHash: adminPassword,
       firstName: 'Sarangi Jewels',
       lastName: 'Admin',
@@ -182,10 +182,10 @@ async function main() {
   });
 
   await prisma.user.upsert({
-    where: { email: 'customer@noeve.local' },
+    where: { email: 'customer@sarangi.local' },
     update: {},
     create: {
-      email: 'customer@noeve.local',
+      email: 'customer@sarangi.local',
       passwordHash: customerPassword,
       firstName: 'Demo',
       lastName: 'Customer',
@@ -282,8 +282,8 @@ async function main() {
   }
 
   console.log(`Seed complete — ${PRODUCTS.length} products.`);
-  console.log('  Admin:    admin@noeve.local / Admin123!');
-  console.log('  Customer: customer@noeve.local / Customer123!');
+  console.log('  Admin:    admin@sarangi.local / Admin123!');
+  console.log('  Customer: customer@sarangi.local / Customer123!');
 }
 
 main()

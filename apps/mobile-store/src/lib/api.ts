@@ -1,10 +1,10 @@
 import Constants from 'expo-constants';
-import { SarangiJewelsApiClient } from '@noeve/api-client';
-import type { Category, Product, WishlistItem } from '@noeve/shared-types';
+import { SarangiJewelsApiClient } from '@sarangi/api-client';
+import type { Category, Product, WishlistItem } from '@sarangi/shared-types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const SESSION_KEY = 'noeve_cart_session';
-export const TOKEN_KEY = 'noeve_access_token';
+export const SESSION_KEY = 'sarangi_cart_session';
+export const TOKEN_KEY = 'sarangi_access_token';
 
 let currentSessionId: string | null = null;
 let currentAccessToken: string | null = null;

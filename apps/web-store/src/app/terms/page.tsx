@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Use | NOEVE',
-  description: 'Terms and conditions for using the NOEVE web store.',
+  title: 'Terms of Use | SARANGI',
+  description: 'Terms and conditions for using the SARANGI web store.',
 };
 
 export default function TermsOfUsePage() {
@@ -17,14 +17,14 @@ export default function TermsOfUsePage() {
       <div className="max-w-3xl">
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            Welcome to NOEVE. By accessing or using our website, you agree to comply with and be bound by the following Terms of Use. Please read them carefully.
+            Welcome to SARANGI. By accessing or using our website, you agree to comply with and be bound by the following Terms of Use. Please read them carefully.
           </p>
         </section>
 
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4">1. General</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            The platform is operated by NOEVE, a complete ladies&apos; store offering premium apparel, beauty, and lifestyle products. The terms &quot;we&quot;, &quot;us&quot;, and &quot;our&quot; refer to NOEVE.
+            The platform is operated by SARANGI, a complete ladies&apos; store offering premium apparel, beauty, and lifestyle products. The terms &quot;we&quot;, &quot;us&quot;, and &quot;our&quot; refer to SARANGI.
           </p>
         </section>
 
@@ -45,7 +45,7 @@ export default function TermsOfUsePage() {
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4">4. Intellectual Property</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            All content included on this site, such as text, graphics, logos, images, and software, is the property of NOEVE or its content suppliers and protected by international copyright laws.
+            All content included on this site, such as text, graphics, logos, images, and software, is the property of SARANGI or its content suppliers and protected by international copyright laws.
           </p>
         </section>
 

@@ -43,7 +43,7 @@ We will convert each Atomic element into a React Component under `src/components
 
 ## Phase 3: Data Binding & State Integration
 1. **Cart & Commerce:**
-   - Map `SJProductDetail` props to the `@noeve/api-client` response payloads.
+   - Map `SJProductDetail` props to the `@sarangi/api-client` response payloads.
    - Wire the "Buy — Own It" vs "Rent — Wear It" toggle state directly into React state, passing the correct mode to the cart action.
 2. **Authentication Flow:**
    - The ATOMIC Auth layouts (found in `login.html`, `register.html`) must wrap the existing authentication logic. 
@@ -81,7 +81,7 @@ By translating the Atomic Design blueprints into native Next.js React components
 3. **TypeScript & Next.js 15 Updates:**
    - Fixed `compareAtPriceCents` missing properties in the `Product` interfaces.
    - Re-typed `searchParams` and `params` to be `Promise<{...}>` according to Next 15 standards on the Blog and Shop pages.
-   - Removed unused NOEVE hooks and variables from the newly migrated client components.
+   - Removed unused SARANGI hooks and variables from the newly migrated client components.
 4. **Advanced Rental Flow:**
    - Implemented the "ID Verification" flow in the account dashboard.
    - Wired the Date Picker in the PDP to the Cart and backend reservation system to calculate valid days and pricing dynamically.
@@ -94,4 +94,4 @@ By translating the Atomic Design blueprints into native Next.js React components
 2. **Mobile Navigation (`SJHeader`):**
    - Ensure the mobile burger menu and navigation slider is perfectly connected to React state and is fully responsive.
 3. **Testing & QA:**
-   - Run a full End-to-End visual regression pass across devices to catch any remaining legacy NOEVE styles that conflict with ATOMIC layouts.
+   - Run a full End-to-End visual regression pass across devices to catch any remaining legacy SARANGI styles that conflict with ATOMIC layouts.

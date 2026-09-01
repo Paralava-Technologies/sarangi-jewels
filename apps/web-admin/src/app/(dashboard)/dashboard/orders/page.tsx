@@ -149,7 +149,7 @@ export default function OrdersPage(): React.JSX.Element {
     }
   };
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [sortOrder, setSortOrder] = useState('newest');
 
   const filteredAndSortedOrders = React.useMemo(() => {
@@ -385,9 +385,24 @@ export default function OrdersPage(): React.JSX.Element {
                             <h4 className="font-semibold text-sm mb-2 text-neutral-800">Items</h4>
                             <div className="space-y-2">
                               {order.lines?.map((line, i) => (
-                                <div key={i} className="flex justify-between text-sm">
-                                  <span className="text-neutral-600">{line.quantity} × {line.productName}</span>
-                                  <span className="font-medium">{formatPrice(line.lineTotalCents, order.currency)}</span>
+                                <div key={i} className="flex flex-col text-sm border-b border-neutral-100 pb-2 last:border-0 last:pb-0">
+                                  <div className="flex justify-between">
+                                    <span className="text-neutral-600">{line.quantity} × {line.productName}</span>
+                                    <span className="font-medium">{formatPrice(line.lineTotalCents, order.currency)}</span>
+                                  </div>
+                                  {line.isRental && (
+                                    <div className="mt-1 flex items-center justify-between text-xs">
+                                      <span className="text-violet-600 font-medium bg-violet-50 px-2 py-0.5 rounded">
+                                        Rental: {line.rentStartDate ? new Date(line.rentStartDate).toLocaleDateString() : ''} - {line.rentEndDate ? new Date(line.rentEndDate).toLocaleDateString() : ''}
+                                      </span>
+                                      <button 
+                                        className="text-brand-primary hover:underline font-medium"
+                                        onClick={(e) => { e.stopPropagation(); alert('Rental return workflow is triggered here.'); }}
+                                      >
+                                        Process Return / Refund Deposit
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               ))}
                             </div>
@@ -432,8 +447,14 @@ export default function OrdersPage(): React.JSX.Element {
                               />
                             </div>
                             
-                            <h4 className="font-semibold text-sm mb-2 mt-6 text-neutral-800">Shipping Address</h4>
-                            {order.user?.addresses?.[0] ? (
+                            <h4 className="font-semibold text-sm mb-2 mt-6 text-neutral-800">
+                              {order.isPickup ? 'Delivery Type: Store Pickup' : 'Shipping Address'}
+                            </h4>
+                            {order.isPickup ? (
+                              <div className="text-sm text-neutral-600 bg-violet-50 text-violet-800 px-3 py-2 rounded-md font-medium border border-violet-100 inline-block mb-2">
+                                Customer will pick up from store.
+                              </div>
+                            ) : order.user?.addresses?.[0] ? (
                               <div className="text-sm text-neutral-600 space-y-1">
                                 <p className="font-medium text-neutral-800">{order.user.addresses[0].name}</p>
                                 <p>{order.user.addresses[0].streetLine1}</p>
@@ -447,6 +468,61 @@ export default function OrdersPage(): React.JSX.Element {
                             )}
                           </div>
                           <div className="flex-1">
+                            <h4 className="font-semibold text-sm mb-2 text-neutral-800">ID Verification (For Rentals)</h4>
+                            <div className="text-sm bg-white border border-neutral-200 p-3 rounded-md shadow-sm mb-6">
+                              {order.user?.idDocumentUrl ? (
+                                <div className="space-y-3">
+                                  <div className="flex items-center justify-between">
+                                    <span className="font-medium text-neutral-700">Status:</span>
+                                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${order.user.idVerificationStatus === 'VERIFIED' ? 'bg-green-100 text-green-700' : order.user.idVerificationStatus === 'REJECTED' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                      {order.user.idVerificationStatus || 'PENDING'}
+                                    </span>
+                                  </div>
+                                  <a href={order.user.idDocumentUrl} target="_blank" rel="noreferrer" className="block text-brand-primary hover:underline font-medium text-sm">
+                                    View Uploaded ID Document
+                                  </a>
+                                  <div className="flex gap-2 pt-2 border-t border-neutral-100">
+                                    <button 
+                                      className="flex-1 bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 py-1.5 rounded-md font-medium transition-colors"
+                                      disabled={updating === order.user.id}
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        setUpdating(order.user!.id);
+                                        try {
+                                          const { updateUser } = await import('@/lib/api');
+                                          await updateUser(order.user!.id, { idVerificationStatus: 'VERIFIED' });
+                                          await load();
+                                        } catch(err) {
+                                          setError('Failed to verify ID');
+                                        } finally {
+                                          setUpdating(null);
+                                        }
+                                      }}
+                                    >Approve ID</button>
+                                    <button 
+                                      className="flex-1 bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 py-1.5 rounded-md font-medium transition-colors"
+                                      disabled={updating === order.user.id}
+                                      onClick={async (e) => {
+                                        e.stopPropagation();
+                                        setUpdating(order.user!.id);
+                                        try {
+                                          const { updateUser } = await import('@/lib/api');
+                                          await updateUser(order.user!.id, { idVerificationStatus: 'REJECTED' });
+                                          await load();
+                                        } catch(err) {
+                                          setError('Failed to reject ID');
+                                        } finally {
+                                          setUpdating(null);
+                                        }
+                                      }}
+                                    >Reject ID</button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-neutral-500 italic">No ID uploaded by customer.</p>
+                              )}
+                            </div>
+
                             <h4 className="font-semibold text-sm mb-2 text-neutral-800">Tracking Info</h4>
                             {order.trackingNumber ? (
                               <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 space-y-2">

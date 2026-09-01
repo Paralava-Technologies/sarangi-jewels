@@ -132,7 +132,7 @@ export function SJLoginForm(): React.JSX.Element {
           </Link>
 
           <p style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.72rem', color: 'rgba(33,29,25,0.4)' }}>
-            Demo: customer@noeve.local / Customer123!
+            Demo: customer@sarangi.local / Customer123!
           </p>
           <p className="switch" style={{ marginTop: '2rem' }}>
             By continuing, you agree to Sarangi&apos;s <Link href="/terms">Terms &amp; Conditions</Link> and <Link href="/privacy-policy">Privacy Policy</Link>.

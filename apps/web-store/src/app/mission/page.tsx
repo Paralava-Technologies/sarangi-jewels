@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Mission | NOEVE',
-  description: 'The Mission of NOEVE.',
+  title: 'Mission | SARANGI',
+  description: 'The Mission of SARANGI.',
 };
 
 export default function MissionPage() {

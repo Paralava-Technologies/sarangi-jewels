@@ -1,5 +1,5 @@
 {
-  "extends": "@noeve/config-typescript/nestjs.json",
+  "extends": "@sarangi/config-typescript/nestjs.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",

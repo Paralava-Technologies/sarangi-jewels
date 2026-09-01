@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useRouter } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
-import { colors } from '@noeve/ui-tokens';
+import { colors } from '@sarangi/ui-tokens';
 
 export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
@@ -12,7 +12,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     async function checkAuth() {
-      const token = await SecureStore.getItemAsync('noeve_admin_token');
+      const token = await SecureStore.getItemAsync('sarangi_admin_token');
       setIsReady(true);
       if (!token) {
         // Must use setImmediate or setTimeout to redirect outside of render cycle in expo-router

@@ -1,7 +1,7 @@
 
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import { formatPrice } from '../lib/format';
 import type { Product } from '../lib/types';
 

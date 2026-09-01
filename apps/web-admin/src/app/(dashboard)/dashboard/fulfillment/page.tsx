@@ -153,7 +153,7 @@ export default function FulfillmentPage(): React.JSX.Element {
   <div class="label">
     <div class="header">
       <div>
-        <div class="brand">NOEVE</div>
+        <div class="brand">SARANGI</div>
         <div class="brand-sub">Premium Jewellery</div>
       </div>
       <div>

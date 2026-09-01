@@ -1,4 +1,4 @@
-const email = "customer@noeve.local";
+const email = "customer@sarangi.local";
 const password = "Customer123!";
 fetch("http://localhost:3001/v1/store/auth/login", {
   method: "POST",

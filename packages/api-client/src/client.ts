@@ -1,4 +1,4 @@
-import type { ApiErrorBody, ApiResponse, AuthTokens, LoginRequest, RegisterRequest, Category, Product, Cart, Order, WishlistItem, PaginationQuery } from '@noeve/shared-types';
+import type { ApiErrorBody, ApiResponse, AuthTokens, LoginRequest, RegisterRequest, Category, Product, Cart, Order, WishlistItem, PaginationQuery } from '@sarangi/shared-types';
 
 export interface ApiClientConfig {
   baseUrl: string;

@@ -25,16 +25,16 @@ sudo usermod -aG docker $USER
 
 Create the deployment directory:
 ```bash
-sudo mkdir -p /opt/noeve/infrastructure/docker
-sudo mkdir -p /opt/noeve/infrastructure/nginx
-sudo mkdir -p /opt/noeve/infrastructure/certs
-sudo chown -R $USER:$USER /opt/noeve
-cd /opt/noeve
+sudo mkdir -p /opt/sarangi/infrastructure/docker
+sudo mkdir -p /opt/sarangi/infrastructure/nginx
+sudo mkdir -p /opt/sarangi/infrastructure/certs
+sudo chown -R $USER:$USER /opt/sarangi
+cd /opt/sarangi
 ```
 
 ## 2. Configuration
 
-Copy the production environment variables template (`.env.production.example` to `.env.production`) to your server at `/opt/noeve/.env.production`.
+Copy the production environment variables template (`.env.production.example` to `.env.production`) to your server at `/opt/sarangi/.env.production`.
 
 ```bash
 nano .env.production
@@ -42,12 +42,12 @@ nano .env.production
 *Fill in **strong** passwords for Postgres, Redis, MinIO, and a long random string for `JWT_SECRET`.*
 
 Copy the Docker Compose and Nginx files to your server:
-*   `infrastructure/docker/docker-compose.prod.yml` -> `/opt/noeve/infrastructure/docker/docker-compose.prod.yml`
-*   `infrastructure/nginx/nginx.prod.conf` -> `/opt/noeve/infrastructure/nginx/nginx.prod.conf`
+*   `infrastructure/docker/docker-compose.prod.yml` -> `/opt/sarangi/infrastructure/docker/docker-compose.prod.yml`
+*   `infrastructure/nginx/nginx.prod.conf` -> `/opt/sarangi/infrastructure/nginx/nginx.prod.conf`
 
 ## 3. SSL/TLS Certificates (Let's Encrypt)
 
-Before starting the full stack, you need SSL certificates. The `docker-compose.prod.yml` file mounts the certs from `/opt/noeve/infrastructure/certs`.
+Before starting the full stack, you need SSL certificates. The `docker-compose.prod.yml` file mounts the certs from `/opt/sarangi/infrastructure/certs`.
 
 If you are using Certbot locally on the host:
 ```bash
@@ -57,7 +57,7 @@ sudo certbot certonly --standalone -d sarangijewels.com -d www.sarangijewels.com
 Then symlink or copy them into the certs directory:
 ```bash
 # Example
-sudo cp -r /etc/letsencrypt/archive/sarangijewels.com/* /opt/noeve/infrastructure/certs/
+sudo cp -r /etc/letsencrypt/archive/sarangijewels.com/* /opt/sarangi/infrastructure/certs/
 ```
 
 *Alternatively, the docker-compose file has an Nginx/Certbot setup you can use for webroot challenges.*
@@ -78,7 +78,7 @@ To use this, set the following secrets in your GitHub repository:
 If you prefer to deploy manually or pull the pre-built images:
 
 ```bash
-cd /opt/noeve
+cd /opt/sarangi
 
 # Pull latest images (assuming they are pushed to a registry)
 # Or build them locally if you cloned the repo:
@@ -94,10 +94,10 @@ On the very first deployment, you need to run the database migrations to set up 
 
 ```bash
 # Run migrations inside the API container
-docker exec -it noeve-api npx prisma migrate deploy
+docker exec -it sarangi-api npx prisma migrate deploy
 
 # (Optional) Seed the database with initial products/admin user
-docker exec -it noeve-api npm run db:seed
+docker exec -it sarangi-api npm run db:seed
 ```
 
 ## 7. Verifying the Deployment

@@ -3,7 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { UserRole } from '@prisma/client';
-import type { CreateProductInput, UpdateProductInput, CreateCategoryInput, UpdateCategoryInput } from '@noeve/validation';
+import type { CreateProductInput, UpdateProductInput, CreateCategoryInput, UpdateCategoryInput } from '@sarangi/validation';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';

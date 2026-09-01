@@ -1,7 +1,7 @@
 'use client';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
-const TOKEN_KEY = 'noeve_access_token';
+const TOKEN_KEY = 'sarangi_access_token';
 
 export interface AuthTokens {
   accessToken: string;

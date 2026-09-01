@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Size Guide | NOEVE',
-  description: 'Size Guide for NOEVE apparel.',
+  title: 'Size Guide | SARANGI',
+  description: 'Size Guide for SARANGI apparel.',
 };
 
 export default function SizeGuidePage() {

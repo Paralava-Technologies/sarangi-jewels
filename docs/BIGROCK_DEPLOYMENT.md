@@ -27,20 +27,20 @@ Open your terminal locally in the `Code` directory and run:
 ```bash
 pnpm install
 npx prisma generate
-pnpm --filter @noeve/api build
+pnpm --filter @sarangi/api build
 ```
 
 ### 2. Build the Web Store (Next.js)
 The Web Store is configured to use Next.js `standalone` mode, which creates a highly optimized, self-contained server ideal for shared hosting.
 ```bash
 export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com
-pnpm --filter @noeve/web-store build
+pnpm --filter @sarangi/web-store build
 ```
 
 ### 3. Build the Web Admin (Next.js)
 ```bash
 export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com
-pnpm --filter @noeve/web-admin build
+pnpm --filter @sarangi/web-admin build
 ```
 
 ---
@@ -49,8 +49,8 @@ pnpm --filter @noeve/web-admin build
 
 Before uploading, package the built files into structured folders on your local machine so they are ready for cPanel.
 
-### Prepare the API Folder (`noeve-api.zip`)
-Create a local folder named `noeve-api` and copy the following into it:
+### Prepare the API Folder (`sarangi-api.zip`)
+Create a local folder named `sarangi-api` and copy the following into it:
 1. `apps/api/dist/` (The entire compiled folder)
 2. `apps/api/package.json`
 3. `apps/api/prisma/` (To run database migrations)
@@ -60,7 +60,7 @@ Create a local folder named `noeve-api` and copy the following into it:
    JWT_SECRET="your-secure-secret-key"
    PORT=3001
    ```
-*Zip this folder into `noeve-api.zip`.*
+*Zip this folder into `sarangi-api.zip`.*
 
 ### Prepare the Web Store Folder (`sarangijewels.com.zip`)
 1. Create a local folder named `sarangijewels.com`.
@@ -74,9 +74,9 @@ Create a local folder named `noeve-api` and copy the following into it:
    ```
 *Zip this folder into `sarangijewels.com.zip`.*
 
-### Prepare the Web Admin Folder (`noeve-admin.zip`)
+### Prepare the Web Admin Folder (`sarangi-admin.zip`)
 Repeat the exact same process as the Web Store, but using files from `apps/web-admin/`.
-*Zip this folder into `noeve-admin.zip`.*
+*Zip this folder into `sarangi-admin.zip`.*
 
 ---
 
@@ -85,9 +85,9 @@ Repeat the exact same process as the Web Store, but using files from `apps/web-a
 1. Log in to your **Bigrock cPanel**.
 2. Go to **File Manager**.
 3. Create three new directories in your home root (outside of `public_html` for better security):
-   - `/home/username/noeve-api`
+   - `/home/username/sarangi-api`
    - `/home/username/sarangijewels.com`
-   - `/home/username/noeve-admin`
+   - `/home/username/sarangi-admin`
 4. Upload and extract your zip files into their respective directories.
 
 ---
@@ -99,7 +99,7 @@ In your cPanel dashboard, navigate to **Software > Setup Node.js App**. You will
 ### 1. Configure the API
 - **Node.js Version:** 20.x
 - **Application Mode:** Production
-- **Application Root:** `noeve-api`
+- **Application Root:** `sarangi-api`
 - **Application URL:** `api.sarangijewels.com`
 - **Application Startup File:** `dist/main.js`
 - **Action:** Click "Create". 
@@ -116,7 +116,7 @@ In your cPanel dashboard, navigate to **Software > Setup Node.js App**. You will
 ### 3. Configure the Web Admin
 - **Node.js Version:** 20.x
 - **Application Mode:** Production
-- **Application Root:** `noeve-admin`
+- **Application Root:** `sarangi-admin`
 - **Application URL:** `admin.sarangijewels.com`
 - **Application Startup File:** `server.js`
 - **Action:** Click "Create".
@@ -137,7 +137,7 @@ npx prisma migrate deploy
 If you have SSH access to your Bigrock cPanel account:
 ```bash
 ssh username@sarangijewels.com
-cd ~/noeve-api
+cd ~/sarangi-api
 npx prisma migrate deploy
 ```
 

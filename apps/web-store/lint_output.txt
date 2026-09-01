@@ -1,5 +1,5 @@
 
-> @noeve/web-store@0.0.1 lint /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store
+> @sarangi/web-store@0.0.1 lint /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store
 > next lint
 
 `next lint` is deprecated and will be removed in Next.js 16.

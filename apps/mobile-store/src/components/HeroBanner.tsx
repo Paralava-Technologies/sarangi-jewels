@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
-import { colors, spacing, typography } from '@noeve/ui-tokens';
+import { colors, spacing, typography } from '@sarangi/ui-tokens';
 
 export function HeroBanner() {
   return (
     <View style={styles.wrap}>
-      <Text style={styles.eyebrow}>NOEVE</Text>
+      <Text style={styles.eyebrow}>SARANGI</Text>
       <Text style={styles.title}>Jewellery that speaks quietly, shines boldly</Text>
       <Text style={styles.sub}>
         Pendants, fine gold pieces, and curated care accessories.

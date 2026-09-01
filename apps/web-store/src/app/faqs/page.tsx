@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'FAQs | NOEVE',
-  description: 'Frequently Asked Questions about NOEVE.',
+  title: 'FAQs | SARANGI',
+  description: 'Frequently Asked Questions about SARANGI.',
 };
 
 export default function FAQsPage() {

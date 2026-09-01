@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, RefreshControl, TouchableOpacity, Modal, ScrollView, Button } from 'react-native';
 import { useState, useEffect } from 'react';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import { fetchOrders } from '../lib/api';
 
 export default function OrdersScreen() {

@@ -11,7 +11,7 @@ COPY packages/api-client/package.json    ./packages/api-client/
 COPY packages/ui-tokens/package.json     ./packages/ui-tokens/
 COPY packages/config-typescript/package.json ./packages/config-typescript/
 
-RUN pnpm install --frozen-lockfile --filter @noeve/web-store...
+RUN pnpm install --frozen-lockfile --filter @sarangi/web-store...
 
 # ─── Stage 2: build ─────────────────────────────────────────────────────────
 FROM deps AS builder

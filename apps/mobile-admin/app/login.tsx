@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/v1';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('admin@noeve.local');
+  const [email, setEmail] = useState('admin@sarangi.local');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function LoginScreen() {
       }
 
       const { accessToken } = data.data;
-      await SecureStore.setItemAsync('noeve_admin_token', accessToken);
+      await SecureStore.setItemAsync('sarangi_admin_token', accessToken);
       
       router.replace('/');
     } catch (error: any) {
@@ -56,7 +56,7 @@ export default function LoginScreen() {
           style={styles.input}
           value={email}
           onChangeText={setEmail}
-          placeholder="admin@noeve.local"
+          placeholder="admin@sarangi.local"
           keyboardType="email-address"
           autoCapitalize="none"
         />
@@ -82,7 +82,7 @@ export default function LoginScreen() {
           )}
         </TouchableOpacity>
         
-        <Text style={styles.hint}>Demo: admin@noeve.local / Admin123!</Text>
+        <Text style={styles.hint}>Demo: admin@sarangi.local / Admin123!</Text>
       </View>
     </View>
   );

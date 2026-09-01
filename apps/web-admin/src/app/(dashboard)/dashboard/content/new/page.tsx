@@ -48,7 +48,7 @@ export default function NewPostPage() {
       formDataData.append('file', file);
 
       try {
-        const token = localStorage.getItem('noeve_admin_token');
+        const token = localStorage.getItem('sarangi_admin_token');
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/catalog/upload`, {
           method: 'POST',
           headers: {

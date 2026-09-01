@@ -1,5 +1,5 @@
 {
-  "name": "@noeve/web-admin",
+  "name": "@sarangi/web-admin",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -11,9 +11,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@noeve/api-client": "workspace:*",
-    "@noeve/shared-types": "workspace:*",
-    "@noeve/ui-tokens": "workspace:*",
+    "@sarangi/api-client": "workspace:*",
+    "@sarangi/shared-types": "workspace:*",
+    "@sarangi/ui-tokens": "workspace:*",
     "lucide-react": "^1.24.0",
     "next": "^15.1.3",
     "nextjs-toploader": "^3.9.17",
@@ -25,7 +25,7 @@
     "recharts": "^3.9.2"
   },
   "devDependencies": {
-    "@noeve/config-typescript": "workspace:*",
+    "@sarangi/config-typescript": "workspace:*",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

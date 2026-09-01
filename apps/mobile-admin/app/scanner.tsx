@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import { useCameraPermissions, CameraView } from 'expo-camera';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 
 export default function ScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();

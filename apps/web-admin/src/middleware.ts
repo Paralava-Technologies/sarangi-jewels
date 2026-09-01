@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
 
   // Dashboard protection
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    const token = request.cookies.get('noeve_admin_token');
+    const token = request.cookies.get('sarangi_admin_token');
     if (!token) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = '/login';

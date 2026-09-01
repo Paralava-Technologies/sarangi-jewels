@@ -9,8 +9,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getBlog(slug);
   if (!post) return { title: 'Not Found' };
   return {
-    title: `${post.title} | NOEVE Journal`,
-    description: post.excerpt || `Read ${post.title} on the NOEVE Journal.`,
+    title: `${post.title} | SARANGI Journal`,
+    description: post.excerpt || `Read ${post.title} on the SARANGI Journal.`,
   };
 }
 

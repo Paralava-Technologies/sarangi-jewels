@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { SJProductCard } from '@/components/atomic/SJProductCard';
-import type { Category, Product } from '@noeve/shared-types';
+import type { Category, Product } from '@sarangi/shared-types';
 
 interface ShopFilterClientProps {
   initialProducts: Product[];

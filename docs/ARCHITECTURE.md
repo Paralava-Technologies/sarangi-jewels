@@ -225,7 +225,7 @@ sequenceDiagram
 ## 5. Repository folder structure
 
 ```
-noeve/                              # repo root (this Code/ directory)
+sarangi/                              # repo root (this Code/ directory)
 ├── apps/
 │   ├── api/                        # Single backend — source of truth
 │   ├── web-store/                  # Customer storefront (Next.js)
@@ -318,7 +318,7 @@ apps/web-store/
 │   │   ├── cart/
 │   │   └── layout/
 │   ├── lib/
-│   │   ├── api.ts                  # uses @noeve/api-client
+│   │   ├── api.ts                  # uses @sarangi/api-client
 │   │   └── auth.ts
 │   └── styles/
 └── public/
@@ -363,7 +363,7 @@ apps/mobile-store/
 │   ├── components/
 │   ├── hooks/                      # useCart, useAuth from api-client
 │   ├── services/                   # SecureStore tokens, push registration
-│   └── theme/                      # from @noeve/ui-tokens
+│   └── theme/                      # from @sarangi/ui-tokens
 └── app.json
 ```
 
@@ -386,9 +386,9 @@ apps/mobile-admin/
 
 ### 4.1 Versioning and contract
 
-- Base path: `https://api.noeve.com/v1`
+- Base path: `https://api.sarangi.com/v1`
 - OpenAPI spec generated from NestJS → published to `docs/api/openapi.yaml`
-- **`@noeve/shared-types`** and **`@noeve/validation`** generated or hand-maintained from the same Zod schemas the API uses
+- **`@sarangi/shared-types`** and **`@sarangi/validation`** generated or hand-maintained from the same Zod schemas the API uses
 
 ### 4.2 Audience-specific routes (same backend)
 
@@ -529,17 +529,17 @@ stateDiagram-v2
 
 1. Initialize monorepo (`pnpm init`, Turborepo, workspace packages).
 2. Scaffold `apps/api` with `auth`, `catalog`, `orders` modules and Prisma schema.
-3. Define OpenAPI + `@noeve/shared-types` from day one.
+3. Define OpenAPI + `@sarangi/shared-types` from day one.
 4. Build web-store MVP, then web-admin order queue, then mobile apps against frozen API v1.
 
 ## 13. Credentials
 PostgreSQL Seed complete.
-  Admin:    admin@noeve.local / Admin123!
-  Customer: customer@noeve.local / Customer123!
+  Admin:    admin@sarangi.local / Admin123!
+  Customer: customer@sarangi.local / Customer123!
 
 
 ## 14. Modern Upgrades (Phase 5+)
-- **Microservices & gRPC**: The monolithic API has been extended to support high-performance microservices (TCP/Redis/gRPC transport) inside the `@noeve/custom-logic` module. This allows custom business logic to scale independently.
+- **Microservices & gRPC**: The monolithic API has been extended to support high-performance microservices (TCP/Redis/gRPC transport) inside the `@sarangi/custom-logic` module. This allows custom business logic to scale independently.
 - **WhatsApp CRM**: Integrated Meta Graph API bidirectional messaging. Inbound WhatsApp messages are parsed via webhook into the Inbox/Support system. Admin replies auto-dispatch outbound messages to customers.
 - **Rental & Makeup Booking**: Advanced inventory control allowing date-based bookings (start/end dates) mapped to physical serial numbers, blocking stock across calendars.
 - **Atomic Design System**: Web-store fully migrated to an atomic components architecture (`src/components/atomic/`) encapsulating logic and presentation into Molecules and Organisms.

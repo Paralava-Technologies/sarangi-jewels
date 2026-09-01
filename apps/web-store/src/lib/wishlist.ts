@@ -1,7 +1,7 @@
 'use client';
 
 import { apiClient } from './api';
-import type { WishlistItem } from '@noeve/shared-types';
+import type { WishlistItem } from '@sarangi/shared-types';
 
 export type { WishlistItem };
 

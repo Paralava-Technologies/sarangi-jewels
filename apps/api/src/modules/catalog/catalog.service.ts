@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ProductStatus, ReviewStatus } from '@prisma/client';
-import { createProductSchema, updateProductSchema, createCategorySchema, updateCategorySchema } from '@noeve/validation';
-import type { CreateProductInput, UpdateProductInput, CreateCategoryInput, UpdateCategoryInput } from '@noeve/validation';
-import { paginationQuerySchema } from '@noeve/validation';
+import { createProductSchema, updateProductSchema, createCategorySchema, updateCategorySchema } from '@sarangi/validation';
+import type { CreateProductInput, UpdateProductInput, CreateCategoryInput, UpdateCategoryInput } from '@sarangi/validation';
+import { paginationQuerySchema } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()

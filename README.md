@@ -20,7 +20,7 @@ docker compose -f infrastructure/docker/docker-compose.yml up -d
 # Default host ports (avoid conflicts with local services):
 #   Postgres 5433  (system Postgres often uses 5432)
 #   Redis    6380  (system Redis often uses 6379)
-# Override: NOEVE_POSTGRES_PORT=5432 NOEVE_REDIS_PORT=6379 docker compose ...
+# Override: SARANGI_POSTGRES_PORT=5432 SARANGI_REDIS_PORT=6379 docker compose ...
 
 # Configure API
 cp .env.example apps/api/.env
@@ -28,7 +28,7 @@ cp .env.example apps/api/.env
 # Database
 pnpm db:generate
 pnpm db:migrate
-# If guest-cart schema changed, also run: pnpm --filter @noeve/api exec prisma db push
+# If guest-cart schema changed, also run: pnpm --filter @sarangi/api exec prisma db push
 pnpm db:seed
 
 # Run all apps (or individually)
@@ -39,11 +39,11 @@ pnpm dev
 
 | App | Package | Dev URL | Description |
 |-----|---------|---------|-------------|
-| API | `@noeve/api` | http://localhost:3001 | NestJS backend |
-| Web store | `@noeve/web-store` | http://localhost:3000 | Customer storefront |
-| Web admin | `@noeve/web-admin` | http://localhost:3002 | Admin dashboard |
-| Mobile store | `@noeve/mobile-store` | Expo dev tools | Customer mobile |
-| Mobile admin | `@noeve/mobile-admin` | Expo dev tools | Fulfillment mobile |
+| API | `@sarangi/api` | http://localhost:3001 | NestJS backend |
+| Web store | `@sarangi/web-store` | http://localhost:3000 | Customer storefront |
+| Web admin | `@sarangi/web-admin` | http://localhost:3002 | Admin dashboard |
+| Mobile store | `@sarangi/mobile-store` | Expo dev tools | Customer mobile |
+| Mobile admin | `@sarangi/mobile-admin` | Expo dev tools | Fulfillment mobile |
 
 ## HTTPS (production)
 
@@ -55,7 +55,7 @@ Local development uses **http://localhost**. In production:
 
 ## Brand theme
 
-Purple & gold tokens live in `@noeve/ui-tokens` (primary `#4A148C`, accent `#D4AF37`).
+Purple & gold tokens live in `@sarangi/ui-tokens` (primary `#4A148C`, accent `#D4AF37`).
 
 ## Scripts
 

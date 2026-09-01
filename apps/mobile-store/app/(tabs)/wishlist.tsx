@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
-import { colors } from '@noeve/ui-tokens';
+import { colors } from '@sarangi/ui-tokens';
 import { getWishlist, removeFromWishlist } from '../../src/lib/api';
 import { formatPrice } from '../../src/lib/format';
 import { useAuth } from '../../src/context/auth-context';

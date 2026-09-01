@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, spacing, typography } from '@noeve/ui-tokens';
+import { colors, spacing, typography } from '@sarangi/ui-tokens';
 
 interface ScreenHeaderProps {
   eyebrow?: string;

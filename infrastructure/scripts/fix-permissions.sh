@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Run as root once to fix ownership after pnpm/docker was run with su/root:
 #   su -
-#   bash /home/digeeshs/Work/paralava/Projects/noeve/Code/infrastructure/scripts/fix-permissions.sh
+#   bash /home/digeeshs/Work/paralava/Projects/sarangi/Code/infrastructure/scripts/fix-permissions.sh
 
 set -euo pipefail
 
-PROJECT_DIR="/home/digeeshs/Work/paralava/Projects/noeve/Code"
+PROJECT_DIR="/home/digeeshs/Work/paralava/Projects/sarangi/Code"
 OWNER="digeeshs:digeeshs"
 
 if [[ "$(id -u)" -ne 0 ]]; then

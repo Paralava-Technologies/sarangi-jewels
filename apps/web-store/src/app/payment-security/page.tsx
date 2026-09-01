@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Payment Security | NOEVE',
-  description: 'Information regarding secure payments at NOEVE store.',
+  title: 'Payment Security | SARANGI',
+  description: 'Information regarding secure payments at SARANGI store.',
 };
 
 export default function PaymentSecurityPage() {
@@ -17,14 +17,14 @@ export default function PaymentSecurityPage() {
       <div className="max-w-3xl">
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-6 text-lg">
-            At NOEVE, your trust and security are our highest priorities. We employ industry-leading standards to ensure that your shopping experience is safe and your personal information is protected.
+            At SARANGI, your trust and security are our highest priorities. We employ industry-leading standards to ensure that your shopping experience is safe and your personal information is protected.
           </p>
         </section>
 
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4">100% Secure Transactions</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            All transactions on NOEVE are processed through a secure payment gateway. We use 256-bit Secure Sockets Layer (SSL) encryption to protect your personal and payment details during the checkout process.
+            All transactions on SARANGI are processed through a secure payment gateway. We use 256-bit Secure Sockets Layer (SSL) encryption to protect your personal and payment details during the checkout process.
           </p>
         </section>
 
@@ -38,7 +38,7 @@ export default function PaymentSecurityPage() {
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4">No Storage of Card Details</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            NOEVE does not store your complete credit card information on our servers. When you choose to save a card for faster checkout, it is tokenized and securely stored by our certified payment gateway partners.
+            SARANGI does not store your complete credit card information on our servers. When you choose to save a card for faster checkout, it is tokenized and securely stored by our certified payment gateway partners.
           </p>
         </section>
 

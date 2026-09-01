@@ -10,7 +10,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import type { AddToCartInput, UpdateCartLineInput } from '@noeve/validation';
+import type { AddToCartInput, UpdateCartLineInput } from '@sarangi/validation';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { JwtOptionalAuthGuard } from '../../common/guards/jwt-optional-auth.guard';
 import { CartService } from './cart.service';

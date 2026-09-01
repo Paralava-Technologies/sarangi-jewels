@@ -1,5 +1,5 @@
 {
-  "name": "@noeve/shared-types",
+  "name": "@sarangi/shared-types",
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
@@ -17,7 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@noeve/config-typescript": "workspace:*",
+    "@sarangi/config-typescript": "workspace:*",
     "typescript": "^5.7.2"
   }
 }

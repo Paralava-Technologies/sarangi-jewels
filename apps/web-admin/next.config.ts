@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   // Required for Docker multi-stage standalone build
   output: isProd ? 'standalone' : undefined,
 
-  transpilePackages: ['@noeve/api-client', '@noeve/shared-types', '@noeve/ui-tokens'],
+  transpilePackages: ['@sarangi/api-client', '@sarangi/shared-types', '@sarangi/ui-tokens'],
   async headers() {
     if (!isProd) return [];
     return [

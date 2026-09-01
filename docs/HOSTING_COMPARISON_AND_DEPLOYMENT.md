@@ -246,10 +246,10 @@ ssh root@<your-vps-ip>
 Create the deployment directory:
 
 ```bash
-mkdir -p /opt/noeve/infrastructure/docker
-mkdir -p /opt/noeve/infrastructure/nginx
-mkdir -p /opt/noeve/infrastructure/certs
-cd /opt/noeve
+mkdir -p /opt/sarangi/infrastructure/docker
+mkdir -p /opt/sarangi/infrastructure/nginx
+mkdir -p /opt/sarangi/infrastructure/certs
+cd /opt/sarangi
 ```
 
 ---
@@ -259,15 +259,15 @@ cd /opt/noeve
 Clone the repository directly on the server:
 
 ```bash
-git clone https://github.com/digeesh09/sarangijewels.com.git /opt/noeve
-cd /opt/noeve
+git clone https://github.com/digeesh09/sarangijewels.com.git /opt/sarangi
+cd /opt/sarangi
 ```
 
 Or if you prefer to deploy from your local machine, copy the files via SCP:
 
 ```bash
 # From your local machine
-scp -r /home/digeeshs/Work/paralava/Projects/noeve/Code/* root@<your-vps-ip>:/opt/noeve/
+scp -r /home/digeeshs/Work/paralava/Projects/sarangi/Code/* root@<your-vps-ip>:/opt/sarangi/
 ```
 
 ---
@@ -332,7 +332,7 @@ certbot certonly --standalone \
 Copy certificates to the certs directory expected by Docker Compose:
 
 ```bash
-cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/noeve/infrastructure/certs/
+cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/sarangi/infrastructure/certs/
 ```
 
 ---
@@ -340,7 +340,7 @@ cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/noeve/infrastructure/certs/
 ### Step 6: Deploy the Stack
 
 ```bash
-cd /opt/noeve
+cd /opt/sarangi
 
 # Start everything
 docker compose -f infrastructure/docker/docker-compose.prod.yml \
@@ -353,7 +353,7 @@ Check that all containers are running:
 docker ps
 ```
 
-You should see all 7 containers: `noeve-postgres`, `noeve-redis`, `noeve-minio`, `noeve-api`, `noeve-web-store`, `noeve-web-admin`, `noeve-nginx`.
+You should see all 7 containers: `sarangi-postgres`, `sarangi-redis`, `sarangi-minio`, `sarangi-api`, `sarangi-web-store`, `sarangi-web-admin`, `sarangi-nginx`.
 
 ---
 
@@ -362,13 +362,13 @@ You should see all 7 containers: `noeve-postgres`, `noeve-redis`, `noeve-minio`,
 Run Prisma migrations to set up the database schema:
 
 ```bash
-docker exec -it noeve-api npx prisma migrate deploy
+docker exec -it sarangi-api npx prisma migrate deploy
 ```
 
 Optionally seed the database with initial data:
 
 ```bash
-docker exec -it noeve-api npm run db:seed
+docker exec -it sarangi-api npm run db:seed
 ```
 
 ---
@@ -396,7 +396,7 @@ crontab -e
 Add the following line (renews every 2 months, reloads nginx):
 
 ```bash
-0 3 1 */2 * certbot renew --quiet && docker exec noeve-nginx nginx -s reload
+0 3 1 */2 * certbot renew --quiet && docker exec sarangi-nginx nginx -s reload
 ```
 
 ---
@@ -413,7 +413,7 @@ Add the following line (renews every 2 months, reloads nginx):
 - [ ] Seed data loaded (if needed)
 - [ ] MinIO accessible and images can be uploaded
 - [ ] CORS configured correctly (API accepts requests from store & admin domains)
-- [ ] Logging configured (check logs with `docker logs noeve-api`)
+- [ ] Logging configured (check logs with `docker logs sarangi-api`)
 
 ---
 
@@ -452,11 +452,11 @@ Add the following line (renews every 2 months, reloads nginx):
 docker ps
 
 # View logs for a service
-docker logs noeve-api
-docker logs noeve-web-store
+docker logs sarangi-api
+docker logs sarangi-web-store
 
 # Restart a service
-docker restart noeve-api
+docker restart sarangi-api
 
 # Stop the entire stack
 docker compose -f infrastructure/docker/docker-compose.prod.yml down
@@ -466,7 +466,7 @@ docker compose -f infrastructure/docker/docker-compose.prod.yml pull
 docker compose -f infrastructure/docker/docker-compose.prod.yml up -d
 
 # Run migrations after update
-docker exec noeve-api npx prisma migrate deploy
+docker exec sarangi-api npx prisma migrate deploy
 ```
 
 ### Useful Monitoring Commands

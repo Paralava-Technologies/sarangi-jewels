@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ProductStatus } from '@prisma/client';
-import { addToCartSchema, updateCartLineSchema } from '@noeve/validation';
-import type { AddToCartInput, UpdateCartLineInput } from '@noeve/validation';
+import { addToCartSchema, updateCartLineSchema } from '@sarangi/validation';
+import type { AddToCartInput, UpdateCartLineInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
 import { randomUUID } from 'crypto';

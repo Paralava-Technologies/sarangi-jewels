@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { AddressInput } from '@noeve/validation';
+import { AddressInput } from '@sarangi/validation';
 
 @Controller('store/user')
 @UseGuards(JwtAuthGuard)

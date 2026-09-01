@@ -25,7 +25,7 @@ Shared hosting servers often have limited CPU and memory, which can crash during
 cd Code
 pnpm install
 npx prisma generate
-pnpm --filter @noeve/api build
+pnpm --filter @sarangi/api build
 ```
 
 ### 2. Build the Web Store
@@ -33,14 +33,14 @@ pnpm --filter @noeve/api build
 ```bash
 # In your local terminal
 export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com/v1
-pnpm --filter @noeve/web-store build
+pnpm --filter @sarangi/web-store build
 ```
 
 ### 3. Build the Web Admin
 *Ensure `output: 'standalone'` is set in `apps/web-admin/next.config.ts`.*
 ```bash
 export NEXT_PUBLIC_API_URL=https://api.sarangijewels.com/v1
-pnpm --filter @noeve/web-admin build
+pnpm --filter @sarangi/web-admin build
 ```
 
 ---
@@ -48,11 +48,11 @@ pnpm --filter @noeve/web-admin build
 ## Step 2: Upload Files via cPanel/FTP
 
 You will set up three separate Node.js applications in your control panel. Create three folders in your hosting root (e.g., outside `public_html` for security):
-- `~/noeve-api`
+- `~/sarangi-api`
 - `~/sarangijewels.com`
-- `~/noeve-admin`
+- `~/sarangi-admin`
 
-### API Upload (`~/noeve-api`)
+### API Upload (`~/sarangi-api`)
 Upload the following from `apps/api/`:
 - The `dist/` folder.
 - The `node_modules/` folder (or run `npm install --production` via SSH on the server).
@@ -66,8 +66,8 @@ Because we use Next.js standalone mode, you only need to upload the standalone o
 3. Copy `apps/web-store/.next/static/` into `~/sarangijewels.com/.next/static/`.
 4. Create a `.env.production` file here with your environment variables.
 
-### Web Admin Upload (`~/noeve-admin`)
-Follow the exact same standalone upload steps as the Web Store, but from `apps/web-admin/` to `~/noeve-admin`.
+### Web Admin Upload (`~/sarangi-admin`)
+Follow the exact same standalone upload steps as the Web Store, but from `apps/web-admin/` to `~/sarangi-admin`.
 
 ---
 
@@ -78,7 +78,7 @@ Go to your hosting control panel and find the **"Setup Node.js App"** (or simila
 ### 1. The NestJS API (`api.sarangijewels.com`)
 - **Node.js Version:** 20 (or 18 minimum)
 - **Application Mode:** Production
-- **Application Root:** `noeve-api`
+- **Application Root:** `sarangi-api`
 - **Application URL:** `api.sarangijewels.com`
 - **Application Startup File:** `dist/main.js`
 
@@ -92,7 +92,7 @@ Go to your hosting control panel and find the **"Setup Node.js App"** (or simila
 ### 3. The Web Admin (`admin.sarangijewels.com`)
 - **Node.js Version:** 20 (or 18 minimum)
 - **Application Mode:** Production
-- **Application Root:** `noeve-admin`
+- **Application Root:** `sarangi-admin`
 - **Application URL:** `admin.sarangijewels.com`
 - **Application Startup File:** `server.js`
 
@@ -104,7 +104,7 @@ You must apply your Prisma schema to your PostgreSQL database.
 If you have SSH access to your cPanel account:
 
 ```bash
-cd ~/noeve-api
+cd ~/sarangi-api
 npx prisma migrate deploy
 ```
 

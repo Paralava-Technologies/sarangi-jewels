@@ -2,8 +2,8 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import { UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { registerSchema, loginSchema } from '@noeve/validation';
-import type { LoginInput, RegisterInput } from '@noeve/validation';
+import { registerSchema, loginSchema } from '@sarangi/validation';
+import type { LoginInput, RegisterInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
 

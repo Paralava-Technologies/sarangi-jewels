@@ -63,18 +63,18 @@ importers:
       '@nestjs/swagger':
         specifier: ^11.4.5
         version: 11.4.5(@nestjs/common@10.4.22(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.22)(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)
-      '@noeve/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@noeve/validation':
-        specifier: workspace:*
-        version: link:../../packages/validation
       '@prisma/adapter-pg':
         specifier: ^7.8.0
         version: 7.8.0
       '@prisma/client':
         specifier: ^6.19.3
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
+      '@sarangi/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
+      '@sarangi/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -139,7 +139,7 @@ importers:
       '@nestjs/testing':
         specifier: ^10.4.15
         version: 10.4.22(@nestjs/common@10.4.22(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.22)(@nestjs/microservices@10.4.22)(@nestjs/platform-express@10.4.22)
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@swc/core':
@@ -193,13 +193,13 @@ importers:
 
   apps/mobile-admin:
     dependencies:
-      '@noeve/api-client':
+      '@sarangi/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
-      '@noeve/shared-types':
+      '@sarangi/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
-      '@noeve/ui-tokens':
+      '@sarangi/ui-tokens':
         specifier: workspace:*
         version: link:../../packages/ui-tokens
       expo:
@@ -239,7 +239,7 @@ importers:
       '@babel/core':
         specifier: ^7.26.0
         version: 7.29.7
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@types/react':
@@ -257,18 +257,18 @@ importers:
       '@expo/metro-runtime':
         specifier: ~4.0.1
         version: 4.0.1(react-native@0.76.5(@babel/core@7.29.7)(@babel/preset-env@7.29.7(@babel/core@7.29.7))(@types/react@18.3.29)(react@18.3.1))
-      '@noeve/api-client':
-        specifier: workspace:*
-        version: link:../../packages/api-client
-      '@noeve/shared-types':
-        specifier: workspace:*
-        version: link:../../packages/shared-types
-      '@noeve/ui-tokens':
-        specifier: workspace:*
-        version: link:../../packages/ui-tokens
       '@react-native-async-storage/async-storage':
         specifier: 1.23.1
         version: 1.23.1(react-native@0.76.5(@babel/core@7.29.7)(@babel/preset-env@7.29.7(@babel/core@7.29.7))(@types/react@18.3.29)(react@18.3.1))
+      '@sarangi/api-client':
+        specifier: workspace:*
+        version: link:../../packages/api-client
+      '@sarangi/shared-types':
+        specifier: workspace:*
+        version: link:../../packages/shared-types
+      '@sarangi/ui-tokens':
+        specifier: workspace:*
+        version: link:../../packages/ui-tokens
       expo:
         specifier: ~52.0.23
         version: 52.0.49(@babel/core@7.29.7)(@babel/preset-env@7.29.7(@babel/core@7.29.7))(@expo/metro-runtime@4.0.1(react-native@0.76.5(@babel/core@7.29.7)(@babel/preset-env@7.29.7(@babel/core@7.29.7))(@types/react@18.3.29)(react@18.3.1)))(react-native@0.76.5(@babel/core@7.29.7)(@babel/preset-env@7.29.7(@babel/core@7.29.7))(@types/react@18.3.29)(react@18.3.1))(react@18.3.1)
@@ -306,7 +306,7 @@ importers:
       '@babel/core':
         specifier: ^7.26.0
         version: 7.29.7
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@types/react':
@@ -318,13 +318,13 @@ importers:
 
   apps/web-admin:
     dependencies:
-      '@noeve/api-client':
+      '@sarangi/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
-      '@noeve/shared-types':
+      '@sarangi/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
-      '@noeve/ui-tokens':
+      '@sarangi/ui-tokens':
         specifier: workspace:*
         version: link:../../packages/ui-tokens
       lucide-react:
@@ -355,7 +355,7 @@ importers:
         specifier: ^3.9.2
         version: 3.9.2(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react-is@19.2.6)(react@19.2.6)(redux@5.0.1)
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@testing-library/dom':
@@ -409,13 +409,13 @@ importers:
 
   apps/web-store:
     dependencies:
-      '@noeve/api-client':
+      '@sarangi/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
-      '@noeve/shared-types':
+      '@sarangi/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
-      '@noeve/ui-tokens':
+      '@sarangi/ui-tokens':
         specifier: workspace:*
         version: link:../../packages/ui-tokens
       '@tailwindcss/typography':
@@ -437,7 +437,7 @@ importers:
         specifier: ^19.0.0
         version: 19.2.6(react@19.2.6)
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@testing-library/dom':
@@ -488,11 +488,11 @@ importers:
 
   packages/api-client:
     dependencies:
-      '@noeve/shared-types':
+      '@sarangi/shared-types':
         specifier: workspace:*
         version: link:../shared-types
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
@@ -503,7 +503,7 @@ importers:
 
   packages/shared-types:
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
@@ -512,7 +512,7 @@ importers:
 
   packages/ui-tokens:
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
@@ -525,7 +525,7 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
     devDependencies:
-      '@noeve/config-typescript':
+      '@sarangi/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
       typescript:
@@ -1424,7 +1424,7 @@ packages:
 
   '@expo/bunyan@4.0.1':
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
 
   '@expo/cli@0.22.28':
     resolution: {integrity: sha512-lvt72KNitGuixYD2l3SZmRKVu2G4zJpmg5V7WfUBNpmUU5oODBw/6qmiJ6kSLAlfDozscUk+BBGknBBzxUrwrA==}

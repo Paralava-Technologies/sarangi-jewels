@@ -1,5 +1,5 @@
 {
-  "extends": "@noeve/config-typescript/base.json",
+  "extends": "@sarangi/config-typescript/base.json",
   "compilerOptions": {
     "lib": ["ES2022", "DOM"],
     "outDir": "dist",

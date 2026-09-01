@@ -9,7 +9,7 @@ services:
       POSTGRES_DB: sarangijewels
     # Host 5433 — 5432 is often taken by system PostgreSQL
     ports:
-      - '${NOEVE_POSTGRES_PORT:-5433}:5432'
+      - '${SARANGI_POSTGRES_PORT:-5433}:5432'
     volumes:
       - sarangijewels_pg_data:/var/lib/postgresql/data
     healthcheck:
@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     # Host 6380 — 6379 is often taken by a system/local Redis
     ports:
-      - '${NOEVE_REDIS_PORT:-6380}:6379'
+      - '${SARANGI_REDIS_PORT:-6380}:6379'
     volumes:
       - sarangijewels_redis_data:/data
     healthcheck:

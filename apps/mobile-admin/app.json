@@ -1,16 +1,16 @@
 {
   "expo": {
     "name": "Sarangi Jewels Admin",
-    "slug": "noeve-admin",
+    "slug": "sarangi-admin",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "noeve-admin",
+    "scheme": "sarangi-admin",
     "userInterfaceStyle": "light",
     "ios": {
-      "bundleIdentifier": "com.noeve.admin"
+      "bundleIdentifier": "com.sarangi.admin"
     },
     "android": {
-      "package": "com.noeve.admin"
+      "package": "com.sarangi.admin"
     },
     "plugins": [
       "expo-router",

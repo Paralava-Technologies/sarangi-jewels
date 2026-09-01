@@ -45,11 +45,11 @@ A native mobile application for iOS and Android.
 - **Styling/Theme:** Shared UI tokens from the monorepo workspace.
 
 ### Shared Packages (`packages/`)
-- **`@noeve/api-client`**: A shared HTTP client and React Query hooks wrapper used by all frontends.
-- **`@noeve/shared-types`**: TypeScript interfaces and enums shared between the API and frontends.
-- **`@noeve/ui-tokens`**: Design system tokens (colors, typography) shared across web and mobile.
-- **`@noeve/validation`**: Shared Zod validation schemas.
-- **`@noeve/config-typescript`**: Centralized `tsconfig`.
+- **`@sarangi/api-client`**: A shared HTTP client and React Query hooks wrapper used by all frontends.
+- **`@sarangi/shared-types`**: TypeScript interfaces and enums shared between the API and frontends.
+- **`@sarangi/ui-tokens`**: Design system tokens (colors, typography) shared across web and mobile.
+- **`@sarangi/validation`**: Shared Zod validation schemas.
+- **`@sarangi/config-typescript`**: Centralized `tsconfig`.
 
 ## 3. Architecture Patterns
 

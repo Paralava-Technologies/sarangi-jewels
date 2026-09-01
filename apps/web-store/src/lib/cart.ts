@@ -1,7 +1,7 @@
 import { apiClient } from './api';
-import type { Cart, CartLine } from '@noeve/shared-types';
+import type { Cart, CartLine } from '@sarangi/shared-types';
 
-const SESSION_KEY = 'noeve_cart_session';
+const SESSION_KEY = 'sarangi_cart_session';
 
 export type { Cart, CartLine };
 

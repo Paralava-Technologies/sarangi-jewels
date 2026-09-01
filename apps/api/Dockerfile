@@ -12,7 +12,7 @@ COPY packages/shared-types/package.json ./packages/shared-types/
 COPY packages/validation/package.json ./packages/validation/
 COPY packages/config-typescript/package.json ./packages/config-typescript/
 
-RUN pnpm install --frozen-lockfile --filter @noeve/api...
+RUN pnpm install --frozen-lockfile --filter @sarangi/api...
 
 # ─── Stage 2: build ─────────────────────────────────────────────────────────
 FROM deps AS builder

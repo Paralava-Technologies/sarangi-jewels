@@ -5,12 +5,12 @@
 ### Store
 
 - **URL**: http://localhost:3000
-- **Credentials**: `customer@noeve.local` / `Customer123!`
+- **Credentials**: `customer@sarangi.local` / `Customer123!`
 
 ### Admin
 
 - **URL**: http://localhost:3002
-- **Credentials**: `admin@noeve.local` / `Admin123!`
+- **Credentials**: `admin@sarangi.local` / `Admin123!`
 
 ### Instructions
 
@@ -104,7 +104,7 @@ Based on the unchecked items, the focus areas currently pending are:
 - [x] 23. **Fulfillment Queue UI**: Implement action buttons for `PICK`, `PACK`, and `SHIP` pipelines in the Web Admin dashboard (currently a stub page).
   - **Resolution**: Confirmed that `FulfillmentPage` UI already provides action buttons (Mark Picked, Mark Packed, Ship Order) mapped to the `updateOrderStatus` API endpoint.
 - [x] 24. **Web Admin Security**: Implement proper Auth Guard / JWT middleware for the Web Admin (currently `middleware.ts` is HTTPS-only).
-  - **Resolution**: Modified `lib/auth.ts` to sync the JWT to a `noeve_admin_token` cookie. Updated `middleware.ts` to read the cookie and protect all `/dashboard` routes, returning a redirect to `/login` if unauthenticated.
+  - **Resolution**: Modified `lib/auth.ts` to sync the JWT to a `sarangi_admin_token` cookie. Updated `middleware.ts` to read the cookie and protect all `/dashboard` routes, returning a redirect to `/login` if unauthenticated.
 
 ### Core API Expansion
 
@@ -137,9 +137,9 @@ Based on the unchecked items, the focus areas currently pending are:
 
 ### Shared Packages
 
-- [x] 35. **Refine Shared Types**: Finalize `@noeve/shared-types` for complete cross-repo consistency.
-  - **Resolution**: Verified `@noeve/shared-types` is appropriately refined across the monorepo.
-- [x] 36. **Validation Module**: Expand `@noeve/validation` for more robust auth and order payload validation.
+- [x] 35. **Refine Shared Types**: Finalize `@sarangi/shared-types` for complete cross-repo consistency.
+  - **Resolution**: Verified `@sarangi/shared-types` is appropriately refined across the monorepo.
+- [x] 36. **Validation Module**: Expand `@sarangi/validation` for more robust auth and order payload validation.
   - **Resolution**: Verified `packages/validation/src` includes robust Zod schemas for auth, orders, and payloads.
 
 ### Phase 5: Enterprise & B2B (Storefront & Checkout)
@@ -216,7 +216,7 @@ Based on the unchecked items, the focus areas currently pending are:
   - **Resolution**: Updated `fetchWishlist` in `apps/web-store/src/lib/wishlist.ts` to explicitly check `isLoggedIn()` before fetching and handle potential API 401 errors gracefully (returning an empty array instead of throwing), preventing unhandled promise rejections.
 - [x] 69. Make the progress bar spinner of color var(--oxblood); and increase its thickness.
   - **Resolution**: Updated `NextTopLoader` in `apps/web-store/src/app/layout.tsx` to use `color="var(--oxblood)"`, `height={4}` (thicker), and enabled `showSpinner={true}`.
-- [x] 70. The pdf invoice should have the noeve logo, name, company address, email etc. It should look more professional.
+- [x] 70. The pdf invoice should have the sarangi logo, name, company address, email etc. It should look more professional.
   - **Resolution**: Enhanced the PDF generation in `orders.service.ts` to include the actual `logo.png` from `apps/api/public/images/logo.png`, company address, contact email, phone number, and GSTIN. Added a professional footer with return policy and support email.
   - [x] 71. http://localhost:3002/dashboard/content
         ./src/app/(dashboard)/dashboard/content/page.tsx:5:1
@@ -251,7 +251,7 @@ etc, whatever is relevant. Apply the settings in the store, api, and admin.
 - [x] 75. Based on the current codebase and docs in docs folder, generate the user manual for admin and store. Include diagrams as much as possible.
   - **Resolution**: Completely rewrote `docs/USER_MANUAL.md` to reflect the latest state of the codebase. Added comprehensive sections for the new features (Global Settings, CRM/Inbox, COD support) and included mermaid diagrams to illustrate the Customer Order Workflow and Admin Dashboard Architecture.
 
-- [x] 76. hello@noeve email is hardcoded.
+- [x] 76. hello@sarangi email is hardcoded.
   - **Resolution**: Updated the PDF invoice generation in `orders.service.ts` to dynamically use `supportEmail` and `supportPhone` from `StoreSettings` instead of hardcoded values, falling back gracefully if not set.
 - [x] 77. Checkout page shouldprovide option for customer to select whether it is Online Payment or COD and the order and order details should reflect the payment status.
   - **Resolution**: Added a payment method selection to `checkout/page.tsx` that lets users choose between Online Payment and COD if COD is enabled in store settings.
@@ -300,7 +300,7 @@ etc, whatever is relevant. Apply the settings in the store, api, and admin.
       ./src/app/(dashboard)/dashboard/page.tsx
 
 Error: × Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
-╭─[/home/digeeshs/Work/paralava/Projects/noeve/Code/apps/web-admin/src/app/(dashboard)/dashboard/page.tsx:306:1]
+╭─[/home/digeeshs/Work/paralava/Projects/sarangi/Code/apps/web-admin/src/app/(dashboard)/dashboard/page.tsx:306:1]
 303 │ </div>
 304 │ </div>
 305 │ );
@@ -308,7 +308,7 @@ Error: × Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
 · ▲
 ╰────
 × Unexpected eof
-╭─[/home/digeeshs/Work/paralava/Projects/noeve/Code/apps/web-admin/src/app/(dashboard)/dashboard/page.tsx:306:3]
+╭─[/home/digeeshs/Work/paralava/Projects/sarangi/Code/apps/web-admin/src/app/(dashboard)/dashboard/page.tsx:306:3]
 304 │ </div>
 305 │ );
 306 │ }

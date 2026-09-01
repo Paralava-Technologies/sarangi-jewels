@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import * as SecureStore from 'expo-secure-store';
 
 export default function AdminHome() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await SecureStore.deleteItemAsync('noeve_admin_token');
+    await SecureStore.deleteItemAsync('sarangi_admin_token');
     router.replace('/login');
   };
 

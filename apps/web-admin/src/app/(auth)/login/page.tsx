@@ -6,7 +6,7 @@ import { loginAdmin } from '@/lib/auth';
 
 function AdminLoginForm(): React.JSX.Element {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@noeve.local');
+  const [email, setEmail] = useState('admin@sarangi.local');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ function AdminLoginForm(): React.JSX.Element {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 w-full rounded border border-neutral-300 px-3 py-2 text-sm"
-              placeholder="admin@noeve.local"
+              placeholder="admin@sarangi.local"
             />
           </div>
           <div>
@@ -76,7 +76,7 @@ function AdminLoginForm(): React.JSX.Element {
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
-        <p className="mt-4 text-xs text-neutral-500">Demo: admin@noeve.local / Admin123!</p>
+        <p className="mt-4 text-xs text-neutral-500">Demo: admin@sarangi.local / Admin123!</p>
       </div>
     </div>
   );

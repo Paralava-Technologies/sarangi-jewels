@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert, Modal, ActivityIndicator } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import { useCart } from '../../src/context/cart-context';
 import { useAuth } from '../../src/context/auth-context';
 import { apiClient } from '../../src/lib/api';
@@ -47,7 +47,7 @@ export default function CheckoutScreen() {
       } else {
         const options = {
           description: `Order ${order.orderNumber}`,
-          image: 'https://noeve.com/logo.png', // Replace with actual logo URL
+          image: 'https://sarangi.com/logo.png', // Replace with actual logo URL
           currency: session.currency,
           key: session.keyId,
           amount: session.amount,

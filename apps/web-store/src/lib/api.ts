@@ -1,7 +1,7 @@
-import { SarangiJewelsApiClient } from '@noeve/api-client';
+import { SarangiJewelsApiClient } from '@sarangi/api-client';
 import { getCartSessionId } from './cart';
 import { getAccessToken } from './auth';
-import type { Category, Product } from '@noeve/shared-types';
+import type { Category, Product } from '@sarangi/shared-types';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
 

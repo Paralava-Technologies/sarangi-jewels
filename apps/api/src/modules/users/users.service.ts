@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
-import { paginationQuerySchema } from '@noeve/validation';
-import type { AddressInput } from '@noeve/validation';
+import { paginationQuerySchema } from '@sarangi/validation';
+import type { AddressInput } from '@sarangi/validation';
 
 @Injectable()
 export class UsersService {

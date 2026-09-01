@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'E-Waste Compliance | NOEVE',
-  description: 'E-Waste compliance and disposal guidelines for NOEVE lifestyle products.',
+  title: 'E-Waste Compliance | SARANGI',
+  description: 'E-Waste compliance and disposal guidelines for SARANGI lifestyle products.',
 };
 
 export default function EWasteCompliancePage() {
@@ -17,14 +17,14 @@ export default function EWasteCompliancePage() {
       <div className="max-w-3xl">
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4 text-lg">
-            As a brand committed to considered lifestyle and sustainability, NOEVE takes its environmental responsibilities seriously.
+            As a brand committed to considered lifestyle and sustainability, SARANGI takes its environmental responsibilities seriously.
           </p>
         </section>
 
         <section className="mb-10">
           <h2 className="font-display text-2xl mb-4">Our Commitment</h2>
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            In accordance with E-waste (Management) Rules, NOEVE ensures the environmentally sound management of all electrical and electronic equipment (EEE) sold on our platform, including lifestyle accessories, beauty tools, and smart wearables.
+            In accordance with E-waste (Management) Rules, SARANGI ensures the environmentally sound management of all electrical and electronic equipment (EEE) sold on our platform, including lifestyle accessories, beauty tools, and smart wearables.
           </p>
         </section>
 
@@ -42,7 +42,7 @@ export default function EWasteCompliancePage() {
           </p>
           <ul className="list-disc pl-5 text-[rgba(33,29,25,0.78)] space-y-2">
             <li>Drop off the product at an authorized e-waste collection center.</li>
-            <li>Contact our support team for guidance on recycling NOEVE electronic products.</li>
+            <li>Contact our support team for guidance on recycling SARANGI electronic products.</li>
           </ul>
         </section>
 

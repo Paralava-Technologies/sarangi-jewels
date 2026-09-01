@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { Link } from 'expo-router';
 import { ScreenHeader } from '../../src/components/ScreenHeader';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import { useAuth } from '../../src/context/auth-context';
 import { useEffect, useState } from 'react';
 import { getWishlist, removeFromWishlist, apiClient } from '../../src/lib/api';
-import type { WishlistItem, Order } from '@noeve/shared-types';
+import type { WishlistItem, Order } from '@sarangi/shared-types';
 import { formatPrice } from '../../src/lib/format';
 
 const STATUS_LABELS: Record<string, { label: string; color: string; bg: string }> = {
@@ -98,7 +98,7 @@ export default function AccountScreen() {
           <Pressable style={styles.btn} onPress={handleLogin} disabled={isLoading}>
             <Text style={styles.btnText}>{isLoading ? 'Signing in...' : 'Sign in'}</Text>
           </Pressable>
-          <Text style={styles.hint}>Demo: customer@noeve.local / Customer123!</Text>
+          <Text style={styles.hint}>Demo: customer@sarangi.local / Customer123!</Text>
         </View>
       ) : (
         <View style={styles.form}>

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchReviews, updateReviewStatus, deleteReview } from '@/lib/api';
-import type { ReviewResponse } from '@noeve/shared-types';
+import type { ReviewResponse } from '@sarangi/shared-types';
 import { Pagination } from '@/components/Pagination';
 
 export default function ReviewsPage(): React.JSX.Element {

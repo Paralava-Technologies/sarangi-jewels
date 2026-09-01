@@ -4,6 +4,6 @@ import { Controller, Get } from '@nestjs/common';
 export class AdminHealthController {
   @Get()
   check() {
-    return { data: { status: 'ok', service: 'noeve-admin' } };
+    return { data: { status: 'ok', service: 'sarangi-admin' } };
   }
 }

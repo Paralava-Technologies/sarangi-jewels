@@ -4,11 +4,11 @@
 
 ### Store
 - **URL**: http://localhost:3000
-- **Credentials**: `customer@noeve.local` / `Customer123!`
+- **Credentials**: `customer@sarangi.local` / `Customer123!`
 
 ### Admin
 - **URL**: http://localhost:3002
-- **Credentials**: `admin@noeve.local` / `Admin123!`
+- **Credentials**: `admin@sarangi.local` / `Admin123!`
 
 ## Completed Works
 *(Logs of works completed that are moved from the active work tracker will be placed here)*

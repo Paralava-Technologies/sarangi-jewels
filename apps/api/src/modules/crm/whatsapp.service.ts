@@ -12,7 +12,7 @@ export class WhatsappService {
   ) {}
 
   verifyWebhook(mode: string, token: string, challenge: string): string | null {
-    const verifyToken = this.configService.get<string>('WHATSAPP_VERIFY_TOKEN') || 'noeve_secret_token';
+    const verifyToken = this.configService.get<string>('WHATSAPP_VERIFY_TOKEN') || 'sarangi_secret_token';
     if (mode === 'subscribe' && token === verifyToken) {
       this.logger.log('WhatsApp Webhook verified.');
       return challenge;

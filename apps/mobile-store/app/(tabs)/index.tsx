@@ -13,7 +13,7 @@ import { ProductCard } from '../../src/components/ProductCard';
 import { TrustRow } from '../../src/components/TrustRow';
 import { getCategories, getProducts } from '../../src/lib/api';
 import type { Category, Product } from '../../src/lib/types';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 
 export default function HomeScreen() {
   const [products, setProducts] = useState<Product[]>([]);

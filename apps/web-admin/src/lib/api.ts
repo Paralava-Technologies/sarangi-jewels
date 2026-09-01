@@ -1,7 +1,7 @@
 'use client';
 
 import { getAccessToken, clearAccessToken } from './auth';
-import { SarangiJewelsApiClient } from '@noeve/api-client';
+import { SarangiJewelsApiClient } from '@sarangi/api-client';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/v1';
 
@@ -54,6 +54,8 @@ export interface OrderUser {
   firstName: string | null;
   lastName: string | null;
   addresses?: OrderUserAddress[];
+  idVerificationStatus?: string | null;
+  idDocumentUrl?: string | null;
 }
 
 export interface Order {
@@ -78,6 +80,7 @@ export interface Order {
   };
   deliveryDate?: string | null;
   depositCents?: number;
+  isPickup?: boolean;
 }
 
 export interface PaginatedResponse<T> {
@@ -321,7 +324,7 @@ export async function deleteMarketingSubscriber(id: string) {
   await apiClient.admin.deleteMarketingSubscriber(id);
 }
 
-import type { ReviewResponse } from '@noeve/shared-types';
+import type { ReviewResponse } from '@sarangi/shared-types';
 
 export async function fetchReviews(page = 1, pageSize = 20): Promise<PaginatedResponse<ReviewResponse>> {
   const res = await apiClient.admin.getReviews({ page, pageSize });
@@ -571,4 +574,8 @@ export async function updateMakeupPackage(id: string, data: any): Promise<any> {
 
 export async function deleteMakeupPackage(id: string): Promise<void> {
   await apiClient.admin.deleteMakeupPackage(id);
+}
+export async function updateUser(userId: string, data: Partial<{ idVerificationStatus: string; idDocumentUrl: string; role: string; }>) {
+  const res = await apiClient.patch<{ data: any }>(`/admin/users/${userId}`, data);
+  return res.data;
 }

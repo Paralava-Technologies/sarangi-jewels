@@ -11,7 +11,7 @@ import { Link } from 'expo-router';
 import { ScreenHeader } from '../../src/components/ScreenHeader';
 import { useCart } from '../../src/context/cart-context';
 import { formatPrice } from '../../src/lib/format';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 
 export default function CartScreen() {
   const { cart, loading, updateQuantity, removeItem } = useCart();

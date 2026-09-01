@@ -1,5 +1,5 @@
 
-> @noeve/web-store@0.0.1 build /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store
+> @sarangi/web-store@0.0.1 build /home/digeeshs/Work/paralava/Projects/sarangi-jewels/sarangi-ecom/apps/web-store
 > next build
 
  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.

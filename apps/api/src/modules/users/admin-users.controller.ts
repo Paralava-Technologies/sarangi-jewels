@@ -17,6 +17,14 @@ class UpdateUserDto {
   @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole;
+
+  @IsString()
+  @IsOptional()
+  idVerificationStatus?: string;
+
+  @IsString()
+  @IsOptional()
+  idDocumentUrl?: string;
 }
 
 @ApiTags('Admin Users')

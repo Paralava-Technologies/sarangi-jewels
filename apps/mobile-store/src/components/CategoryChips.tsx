@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 import type { Category } from '../lib/types';
 
 interface CategoryChipsProps {

@@ -1,5 +1,5 @@
 {
-  "name": "@noeve/mobile-admin",
+  "name": "@sarangi/mobile-admin",
   "version": "0.0.1",
   "private": true,
   "main": "expo-router/entry",
@@ -11,9 +11,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@noeve/api-client": "workspace:*",
-    "@noeve/shared-types": "workspace:*",
-    "@noeve/ui-tokens": "workspace:*",
+    "@sarangi/api-client": "workspace:*",
+    "@sarangi/shared-types": "workspace:*",
+    "@sarangi/ui-tokens": "workspace:*",
     "expo": "~52.0.23",
     "expo-camera": "~16.0.18",
     "expo-constants": "~17.0.3",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
-    "@noeve/config-typescript": "workspace:*",
+    "@sarangi/config-typescript": "workspace:*",
     "@types/react": "~18.3.12",
     "typescript": "^5.7.2"
   }

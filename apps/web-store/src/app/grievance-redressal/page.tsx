@@ -2,8 +2,8 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Grievance Redressal | NOEVE',
-  description: 'Grievance Redressal Mechanism for NOEVE store.',
+  title: 'Grievance Redressal | SARANGI',
+  description: 'Grievance Redressal Mechanism for SARANGI store.',
 };
 
 export default function GrievanceRedressalPage() {
@@ -17,7 +17,7 @@ export default function GrievanceRedressalPage() {
       <div className="max-w-3xl">
         <section className="mb-10">
           <p className="text-[rgba(33,29,25,0.78)] mb-4">
-            At NOEVE, we believe in providing a premium experience not just in our products, but in our service. If your experience has fallen short of expectations, our Grievance Redressal Mechanism is here to help resolve your concerns promptly and fairly.
+            At SARANGI, we believe in providing a premium experience not just in our products, but in our service. If your experience has fallen short of expectations, our Grievance Redressal Mechanism is here to help resolve your concerns promptly and fairly.
           </p>
         </section>
 

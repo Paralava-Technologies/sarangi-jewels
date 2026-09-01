@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import type { LoginInput, RegisterInput } from '@noeve/validation';
+import type { LoginInput, RegisterInput } from '@sarangi/validation';
 import { AuthService } from './auth.service';
 
 @Controller('store/auth')

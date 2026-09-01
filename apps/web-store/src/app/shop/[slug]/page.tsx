@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   if (!product) {
     return {
-      title: 'Product Not Found | NOEVE',
+      title: 'Product Not Found | SARANGI',
       description: 'The requested product could not be found.',
     };
   }
@@ -19,17 +19,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const image = product.images?.[0]?.url || 'https://sarangijewels.com/images/logo.png';
   
   return {
-    title: `${product.name} | NOEVE`,
-    description: product.description || `Shop ${product.name} at NOEVE.`,
+    title: `${product.name} | SARANGI`,
+    description: product.description || `Shop ${product.name} at SARANGI.`,
     openGraph: {
-      title: `${product.name} | NOEVE`,
-      description: product.description || `Shop ${product.name} at NOEVE.`,
+      title: `${product.name} | SARANGI`,
+      description: product.description || `Shop ${product.name} at SARANGI.`,
       images: [{ url: image }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${product.name} | NOEVE`,
-      description: product.description || `Shop ${product.name} at NOEVE.`,
+      title: `${product.name} | SARANGI`,
+      description: product.description || `Shop ${product.name} at SARANGI.`,
       images: [image],
     },
   };

@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { colors } from '@noeve/ui-tokens';
+import { colors } from '@sarangi/ui-tokens';
 import { CartProvider } from '../src/context/cart-context';
 import { AuthProvider } from '../src/context/auth-context';
 

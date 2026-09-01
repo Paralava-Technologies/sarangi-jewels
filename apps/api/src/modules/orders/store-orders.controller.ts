@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Headers, Param, Post, Query, Req, UseGuards, StreamableFile, Res } from '@nestjs/common';
-import type { PlaceOrderInput } from '@noeve/validation';
+import type { PlaceOrderInput } from '@sarangi/validation';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { OrdersService } from './orders.service';
 

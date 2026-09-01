@@ -79,7 +79,7 @@ export default function RentalsPage() {
                           {rental.productName}
                         </div>
                         <div className="flex items-center gap-2 mt-1 text-xs text-neutral-500">
-                          <Link href={`/dashboard/orders/${rental.order.orderNumber}`} className="text-violet-600 hover:underline">
+                          <Link href={`/dashboard/orders?search=${rental.order.orderNumber}`} className="text-violet-600 hover:underline">
                             {rental.order.orderNumber}
                           </Link>
                           <span>•</span>

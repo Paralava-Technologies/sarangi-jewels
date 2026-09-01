@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { getBlogs } from '@/lib/api';
 
 export const metadata = {
-  title: 'Journal | NOEVE',
-  description: 'Read the latest stories, styling tips, and news from NOEVE.',
+  title: 'Journal | SARANGI',
+  description: 'Read the latest stories, styling tips, and news from SARANGI.',
 };
 
 export default async function BlogIndexPage({ searchParams }: { searchParams: Promise<{ page?: string, category?: string }> }) {

@@ -10,7 +10,7 @@ This guide provides step-by-step instructions to deploy your frontend applicatio
 
 Since you are using a monorepo with `turbo` and `pnpm`, it is highly recommended to add a `netlify.toml` file at the root of your project to tell Netlify exactly how to build and where to look for your apps.
 
-Create a `netlify.toml` at the root (`/home/digeeshs/Work/paralava/Projects/noeve/Code/netlify.toml`):
+Create a `netlify.toml` at the root (`/home/digeeshs/Work/paralava/Projects/sarangi/Code/netlify.toml`):
 
 ```toml
 # Configuration for web-store
@@ -35,13 +35,13 @@ Create a `netlify.toml` at the root (`/home/digeeshs/Work/paralava/Projects/noev
 1. Log in to [Netlify](https://app.netlify.com/).
 2. Click **"Add new site"** > **"Import an existing project"**.
 3. Select your Git provider (GitHub, GitLab, etc.) and authorize Netlify.
-4. Select your `noeve` repository.
+4. Select your `sarangi` repository.
 
 ### Step 3.2: Configure the `web-store` Deployment
 Netlify will ask for your build settings. Because this is a monorepo, configure it as follows:
 
 - **Base directory:** `apps/web-store` (the folder containing your store's `package.json`).
-- **Build command:** `pnpm run build` (or `npx turbo run build --filter=@noeve/web-store`).
+- **Build command:** `pnpm run build` (or `npx turbo run build --filter=@sarangi/web-store`).
 - **Publish directory:** 
   - If Next.js: `.next`
   - If Vite/React: `dist`
@@ -56,7 +56,7 @@ Click **Deploy Site**.
 To deploy the admin dashboard:
 1. Go back to your Netlify Team overview.
 2. Click **"Add new site"** > **"Import an existing project"**.
-3. Select the **same** `noeve` repository again.
+3. Select the **same** `sarangi` repository again.
 4. This time, configure it for the admin:
    - **Base directory:** `apps/web-admin`
    - **Build command:** `pnpm run build`
@@ -75,7 +75,7 @@ You do not need any custom installation scripts for pnpm.
 Once deployed, Netlify gives you a random URL (e.g., `fancy-unicorn-1234.netlify.app`). 
 1. Go to **Site settings** > **Domain management**.
 2. Click **Add custom domain**.
-3. Enter your domain (e.g., `store.noeve.com` or `admin.noeve.com`).
+3. Enter your domain (e.g., `store.sarangi.com` or `admin.sarangi.com`).
 4. Follow the instructions to update your DNS records (CNAME) with your domain provider. Netlify automatically provides free SSL certificates via Let's Encrypt.
 
 ## Troubleshooting Builds

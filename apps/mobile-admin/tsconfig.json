@@ -1,5 +1,5 @@
 {
-  "extends": "@noeve/config-typescript/react-native.json",
+  "extends": "@sarangi/config-typescript/react-native.json",
   "include": [
     "**/*.ts",
     "**/*.tsx"

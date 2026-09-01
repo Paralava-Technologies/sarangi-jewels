@@ -10,7 +10,7 @@ COPY packages/shared-types/package.json  ./packages/shared-types/
 COPY packages/api-client/package.json    ./packages/api-client/
 COPY packages/config-typescript/package.json ./packages/config-typescript/
 
-RUN pnpm install --frozen-lockfile --filter @noeve/web-admin...
+RUN pnpm install --frozen-lockfile --filter @sarangi/web-admin...
 
 # ─── Stage 2: build ─────────────────────────────────────────────────────────
 FROM deps AS builder

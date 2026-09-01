@@ -171,8 +171,8 @@ Log into your domain registrar for `sarangijewels.com` and create four **A Recor
 
 1. Create working directories:
    ```bash
-   mkdir -p /opt/noeve/infrastructure/certs
-   cd /opt/noeve
+   mkdir -p /opt/sarangi/infrastructure/certs
+   cd /opt/sarangi
    ```
 
 2. Clone the repository:
@@ -210,7 +210,7 @@ Log into your domain registrar for `sarangijewels.com` and create four **A Recor
 
 2. Copy certificates into the expected infrastructure folder:
    ```bash
-   cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/noeve/infrastructure/certs/
+   cp -r /etc/letsencrypt/live/sarangijewels.com/* /opt/sarangi/infrastructure/certs/
    ```
 
 ---
@@ -226,7 +226,7 @@ Log into your domain registrar for `sarangijewels.com` and create four **A Recor
    ```bash
    docker ps
    ```
-   *You should see 7 running services (`noeve-postgres`, `noeve-redis`, `noeve-minio`, `noeve-api`, `noeve-web-store`, `noeve-web-admin`, `noeve-nginx`).*
+   *You should see 7 running services (`sarangi-postgres`, `sarangi-redis`, `sarangi-minio`, `sarangi-api`, `sarangi-web-store`, `sarangi-web-admin`, `sarangi-nginx`).*
 
 ---
 
@@ -234,7 +234,7 @@ Log into your domain registrar for `sarangijewels.com` and create four **A Recor
 
 1. Run database migrations:
    ```bash
-   docker exec -it noeve-api npx prisma migrate deploy
+   docker exec -it sarangi-api npx prisma migrate deploy
    ```
 
 2. Verify endpoint accessibility:
@@ -254,7 +254,7 @@ crontab -e
 
 Add the following line to check for renewals bi-monthly:
 ```cron
-0 3 1 */2 * certbot renew --quiet && docker exec noeve-nginx nginx -s reload
+0 3 1 */2 * certbot renew --quiet && docker exec sarangi-nginx nginx -s reload
 ```
 
 ---

@@ -46,7 +46,7 @@ Living document for project progress. Update this file at the end of each work s
 | Fulfillment module (dedicated routes) | 🟡 | Logic embedded in orders service only |
 | Users, addresses, inventory, promotions, notifications, analytics, jobs | ⬜ | |
 | Prisma schema | 🟡 | User, Category, Product, Variant, Image, Cart, Order, Payment entities; no Address, Shipment |
-| Seed data | ✅ | `admin@noeve.local` / `customer@noeve.local` + 12 sample products |
+| Seed data | ✅ | `admin@sarangi.local` / `customer@sarangi.local` + 12 sample products |
 | Redis integration | ⬜ | In docker-compose; unused in code |
 | Prisma version pinned | ✅ | Locked to `^6.19.3` via pnpm overrides in root `package.json` |
 | Static File Serving | ✅ | `@nestjs/serve-static` added to serve uploaded product images from `public/uploads` |
@@ -55,7 +55,7 @@ Living document for project progress. Update this file at the end of each work s
 
 ---
 
-## 2. Web Store (`apps/web-store`) — `@noeve/web-store` :3000 (Production: https://sarangijewels.com)
+## 2. Web Store (`apps/web-store`) — `@sarangi/web-store` :3000 (Production: https://sarangijewels.com)
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -74,7 +74,7 @@ Living document for project progress. Update this file at the end of each work s
 
 ---
 
-## 3. Web Admin (`apps/web-admin`) — `@noeve/web-admin` :3002
+## 3. Web Admin (`apps/web-admin`) — `@sarangi/web-admin` :3002
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -119,11 +119,11 @@ Living document for project progress. Update this file at the end of each work s
 
 | Package | Status | Notes |
 |---------|--------|-------|
-| `@noeve/ui-tokens` | ✅ | Refined colors and typography configuration |
-| `@noeve/shared-types` | 🟡 | Re-exports cleanly across monorepo |
-| `@noeve/validation` | 🟡 | Auth and order validations |
-| `@noeve/api-client` | ✅ | Auth, catalog, cart, orders, admin client |
-| `@noeve/config-typescript` | ✅ | |
+| `@sarangi/ui-tokens` | ✅ | Refined colors and typography configuration |
+| `@sarangi/shared-types` | 🟡 | Re-exports cleanly across monorepo |
+| `@sarangi/validation` | 🟡 | Auth and order validations |
+| `@sarangi/api-client` | ✅ | Auth, catalog, cart, orders, admin client |
+| `@sarangi/config-typescript` | ✅ | |
 
 ---
 
@@ -197,8 +197,8 @@ Living document for project progress. Update this file at the end of each work s
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | `admin@noeve.local` | `Admin123!` |
-| Customer | `customer@noeve.local` | `Customer123!` |
+| Admin | `admin@sarangi.local` | `Admin123!` |
+| Customer | `customer@sarangi.local` | `Customer123!` |
 
 ---
 
@@ -236,8 +236,8 @@ pnpm dev:web-admin    # http://localhost:3002
 | 2026-06-14 | Project analysis + work tracker | Analyzed README, ARCHITECTURE, UI_DESIGN_LAYOUT vs codebase; created `docs/WORK_TRACKER.md` | Commit UI redesign; start checkout API + wire admin orders |
 | 2026-06-14 | Fix errors + checkout MVP | Fixed Prisma client + mobile/web TS errors; `POST /store/orders`; web-store auth/checkout; web-admin login + orders table | Admin products CRUD; mobile auth/checkout; payments |
 | 2026-06-14 | Web admin products | Implemented Web Admin Products page with List and Create forms using API endpoints. Fixed layout typing error. | Mobile auth/checkout; payments |
-| 2026-06-22 | Finish Web Store | Added Wishlist UI placeholder to PDP and refactored API fetch calls to use `@noeve/api-client`. | Mobile auth/checkout; payments |
-| 2026-06-22 | Mobile Store Auth | Migrated Mobile Store `cart.ts` and `api.ts` to use `@noeve/api-client`, created `auth-context.tsx`, and wired up Account login screen. | Mobile checkout; payments |
+| 2026-06-22 | Finish Web Store | Added Wishlist UI placeholder to PDP and refactored API fetch calls to use `@sarangi/api-client`. | Mobile auth/checkout; payments |
+| 2026-06-22 | Mobile Store Auth | Migrated Mobile Store `cart.ts` and `api.ts` to use `@sarangi/api-client`, created `auth-context.tsx`, and wired up Account login screen. | Mobile checkout; payments |
 | 2026-06-22 | Mobile Store Checkout | Implemented the Mobile Checkout screen to ensure feature parity with the web-store MVP. Wired the cart 'Proceed to checkout' button. | Phase 2: Live Payments |
 | 2026-06-24 | TypeScript fixes + Prisma pin | Fixed mobile checkout import paths, registered checkout Stack.Screen, wired auth token in web-store apiClient, added `category` to shared Product type, deduplicated mobile types.ts to re-export from shared-types, pinned Prisma to ^6.19.3 via pnpm overrides. Both apps TypeScript-clean. | Commit changes; verify end-to-end run; mobile variant selection; Razorpay payments |
 | 2026-06-26 | Sarangi Jewels Visual Parity & Sync | Standardized login, registration, cart, product detail, account, and checkout layouts using global CSS classes matching ReferenceDesign. Updated shared UI tokens color theme and fully styled the mobile-store applications screens. Staged & committed changes. | Phase 2: Payment Gateway Integration |

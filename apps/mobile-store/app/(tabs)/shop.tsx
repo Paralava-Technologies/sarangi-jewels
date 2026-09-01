@@ -12,7 +12,7 @@ import { ProductCard } from '../../src/components/ProductCard';
 import { ScreenHeader } from '../../src/components/ScreenHeader';
 import { filterByCategory, getCategories, getProducts } from '../../src/lib/api';
 import type { Category, Product } from '../../src/lib/types';
-import { colors, spacing } from '@noeve/ui-tokens';
+import { colors, spacing } from '@sarangi/ui-tokens';
 
 export default function ShopScreen() {
   const [products, setProducts] = useState<Product[]>([]);

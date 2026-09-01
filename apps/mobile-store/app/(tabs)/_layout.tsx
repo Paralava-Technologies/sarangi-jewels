@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Text, View } from 'react-native';
-import { colors } from '@noeve/ui-tokens';
+import { colors } from '@sarangi/ui-tokens';
 import { useCart } from '../../src/context/cart-context';
 
 function BagTabIcon({ color }: { color: string }) {

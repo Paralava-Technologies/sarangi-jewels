@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { OrderStatus } from '@prisma/client';
-import { paginationQuerySchema, placeOrderSchema } from '@noeve/validation';
-import type { PlaceOrderInput } from '@noeve/validation';
+import { paginationQuerySchema, placeOrderSchema } from '@sarangi/validation';
+import type { PlaceOrderInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CartService } from '../cart/cart.service';
 import { MailService } from '../mail/mail.service';
@@ -117,6 +117,8 @@ export class OrdersService {
               email: true,
               firstName: true,
               lastName: true,
+              idVerificationStatus: true,
+              idDocumentUrl: true,
               addresses: { where: { isDefault: true }, take: 1 },
             },
           },
@@ -218,9 +220,9 @@ export class OrdersService {
     }
 
     const settings = await this.prisma.storeSettings.findFirst();
-    const supportEmail = settings?.supportEmail || 'hello@noeve.com';
+    const supportEmail = settings?.supportEmail || 'hello@sarangi.com';
     const supportPhone = settings?.supportPhone || '+91 98765 43210';
-    const storeName = settings?.storeName || 'NOEVE';
+    const storeName = settings?.storeName || 'SARANGI';
 
     const doc = new PDFDocument({ margin: 50 });
 
