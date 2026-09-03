@@ -592,6 +592,16 @@ export async function deleteMakeupPackage(id: string): Promise<void> {
   await apiClient.admin.deleteMakeupPackage(id);
 }
 export async function updateUser(userId: string, data: Partial<{ idVerificationStatus: string; idDocumentUrl: string; role: string; }>) {
-  const res = await apiClient.patch<{ data: any }>(`/admin/users/${userId}`, data);
-  return res.data;
+  const token = getAccessToken();
+  const res = await fetchWithAuth(`${API_URL}/admin/users/${userId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Failed to update user');
+  const json = await res.json();
+  return json.data;
 }

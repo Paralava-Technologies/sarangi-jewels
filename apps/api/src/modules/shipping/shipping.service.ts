@@ -31,7 +31,7 @@ export class ShippingService {
         throw new Error(`Delhivery API Error: ${response.statusText}`);
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as any[];
       
       return {
         rates: [

@@ -7,7 +7,9 @@ import { MailService } from '../mail/mail.service';
 export class CartProcessor extends WorkerHost {
   private readonly logger = new Logger(CartProcessor.name);
 
-  constructor(private readonly mailService: MailService) {}
+  constructor(private readonly mailService: MailService) {
+    super();
+  }
 
   async process(job: Job<{ email: string; cartUrl: string }>) {
     if (job.name === 'abandoned-cart') {

@@ -214,7 +214,7 @@ export class UsersService {
 
     const emailSet = new Set([
       ...activeSubscribers.map(s => s.email),
-      ...users.map(u => u.email)
+      ...users.map(u => u.email).filter(Boolean) as string[]
     ]);
 
     // Remove explicitly unsubscribed emails

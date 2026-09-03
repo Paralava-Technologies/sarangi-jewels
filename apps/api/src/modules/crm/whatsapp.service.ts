@@ -77,7 +77,7 @@ export class WhatsappService {
         data: {
           userId: user.id,
           name: `${user.firstName} ${user.lastName}`,
-          email: user.email,
+          email: user.email || '',
           subject: `WhatsApp Chat with ${phoneNumber}`,
           message: text,
         }

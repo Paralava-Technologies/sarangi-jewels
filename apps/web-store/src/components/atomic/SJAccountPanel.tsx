@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { isLoggedIn, loginStore, logout } from '@/lib/auth';
+import { isLoggedIn, loginStore, logout, getAccessToken } from '@/lib/auth';
 import { fetchMyOrders, downloadInvoice, type Order } from '@/lib/orders';
 import { formatPrice } from '@/lib/format';
 import { fetchWishlist, removeFromWishlist, type WishlistItem } from '@/lib/wishlist';
@@ -1941,9 +1941,44 @@ export function SJAccountPanel(): React.JSX.Element {
                   <form
                     onSubmit={async (e) => {
                       e.preventDefault();
-                      alert('ID Upload simulated for demo.');
-                      // Update local state to simulate submission
-                      setUser({ ...user, idVerificationStatus: 'PENDING' });
+                      const fileInput = e.currentTarget.querySelector('input[type="file"]') as HTMLInputElement;
+                      const file = fileInput?.files?.[0];
+                      if (!file) {
+                        alert('Please select a file');
+                        return;
+                      }
+                      
+                      const submitBtn = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement;
+                      const originalText = submitBtn.innerText;
+                      submitBtn.innerText = 'Uploading...';
+                      submitBtn.disabled = true;
+
+                      try {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        
+                        const token = getAccessToken();
+                        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1';
+                        
+                        const res = await fetch(`${API_URL}/store/user/me/id-document`, {
+                          method: 'POST',
+                          headers: {
+                            Authorization: `Bearer ${token}`
+                          },
+                          body: formData
+                        });
+                        
+                        if (!res.ok) throw new Error('Upload failed');
+                        
+                        alert('ID Upload successful.');
+                        setUser({ ...user, idVerificationStatus: 'PENDING' });
+                      } catch (err) {
+                        alert('Failed to upload ID document. Please try again.');
+                        console.error(err);
+                      } finally {
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                      }
                     }}
                   >
                     <div

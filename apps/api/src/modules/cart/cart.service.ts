@@ -9,7 +9,6 @@ import { ProductStatus } from '@prisma/client';
 import { addToCartSchema, updateCartLineSchema } from '@sarangi/validation';
 import type { AddToCartInput, UpdateCartLineInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
-import { MailService } from '../mail/mail.service';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { randomUUID } from 'crypto';
@@ -25,7 +24,6 @@ export class CartService {
 
   constructor(
     private prisma: PrismaService,
-    private mailService: MailService,
     @InjectQueue('email-queue') private emailQueue: Queue,
   ) {}
 
@@ -35,6 +33,9 @@ export class CartService {
 
   private async resolveCart(ctx: CartContext) {
     if (ctx.userId) {
+      if (ctx.sessionId) {
+        await this.mergeSessionToUser(ctx.userId, ctx.sessionId);
+      }
       let cart = await this.prisma.cart.findUnique({ where: { userId: ctx.userId } });
       if (!cart) {
         cart = await this.prisma.cart.create({ data: { userId: ctx.userId } });

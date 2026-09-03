@@ -34,11 +34,11 @@ export class AuthService {
     });
 
     // Send the beautifully crafted welcome email asynchronously
-    this.mailService.sendWelcomeEmail(user.email, user.firstName).catch(err => {
+    this.mailService.sendWelcomeEmail(user.email ?? data.email, user.firstName ?? data.firstName ?? null).catch(err => {
       console.error('Failed to send welcome email:', err);
     });
 
-    return this.issueTokens(user.id, user.email, user.role);
+    return this.issueTokens(user.id, user.email ?? data.email, user.role);
   }
 
   async loginStore(input: LoginInput) {
@@ -61,12 +61,16 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    if (!user.passwordHash) {
+      throw new UnauthorizedException('Please use OTP to login');
+    }
+
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.issueTokens(user.id, user.email, user.role);
+    return this.issueTokens(user.id, user.email || '', user.role);
   }
 
   async sendOtp(input: SendOtpInput) {

@@ -48,7 +48,7 @@ import { CustomLogicModule } from './modules/custom-logic/custom-logic.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        redis: {
+        connection: {
           host: config.get('REDIS_HOST') || 'localhost',
           port: config.get('REDIS_PORT') || 6380,
         },

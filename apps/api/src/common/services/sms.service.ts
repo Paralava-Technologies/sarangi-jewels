@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as twilio from 'twilio';
+import { Twilio } from 'twilio';
 
 @Injectable()
 export class SmsService {
-  private readonly twilioClient: twilio.Twilio;
+  private readonly twilioClient?: Twilio;
   private readonly logger = new Logger(SmsService.name);
   private readonly fromNumber: string;
   private readonly isEnabled: boolean;
@@ -15,7 +15,7 @@ export class SmsService {
     this.fromNumber = this.configService.get<string>('TWILIO_FROM_NUMBER') || '';
     
     if (accountSid && authToken && this.fromNumber) {
-      this.twilioClient = twilio(accountSid, authToken);
+      this.twilioClient = new Twilio(accountSid, authToken);
       this.isEnabled = true;
     } else {
       this.logger.warn('Twilio credentials not fully configured. SMS notifications are disabled.');
@@ -30,7 +30,7 @@ export class SmsService {
     }
 
     try {
-      const message = await this.twilioClient.messages.create({
+      const message = await this.twilioClient!.messages.create({
         body,
         from: this.fromNumber,
         to,
