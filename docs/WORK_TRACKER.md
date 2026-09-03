@@ -8,17 +8,17 @@ Living document for project progress. Update this file at the end of each work s
 
 ---
 
-## Overall progress (as of 2026-06-26)
+## Overall progress (as of 2026-09-03)
 
 | Phase | Scope | Status | Estimate |
 |-------|--------|--------|----------|
 | **MVP** | API + web-store + web-admin: catalog, cart, checkout, orders, manual fulfillment | ✅ **Done** | 100% |
-| **Phase 2** | mobile-store polish, live payments, email notifications | **In progress** | ~85% |
-| **Phase 3** | mobile-admin scanning, push tracking, promotions | **Not started** | ~5% |
-| **Phase 4** | Search, analytics, multi-warehouse, loyalty | **Not started** | 0% |
-| **Phase 5** | Enterprise & B2B: Mega menu, blogs, custom modules, B2B quotes, advanced workflows | **Not started** | 0% |
+| **Phase 2** | mobile-store polish, live payments, email notifications | ✅ **Done** | 100% |
+| **Phase 3** | mobile-admin scanning, push tracking, promotions | ✅ **Done** | 100% |
+| **Phase 4** | Search, analytics, multi-warehouse, loyalty | ✅ **Done** | 100% |
+| **Phase 5 & 6** | Enterprise & B2B: Mega menu, blogs, custom modules, B2B quotes, advanced workflows, WhatsApp | ✅ **Done** | 100% |
 
-**Where we stopped:** Stabilized the Admin Catalog and Web Store features. Resolved image upload path errors, added API static file serving, fixed dynamic image rendering and zoom magnifier on the Web Store product details page. Standardized admin pricing forms to use standard currency rather than raw cents for consistency, aligned shipping thresholds, and wired dynamic session checking to the site header.
+**Where we stopped:** Completed full integration of Razorpay payments, fulfillment pipelines, B2B tiers, dynamic mega menus, rich blogs, advanced analytics, COD support, and WhatsApp commerce. All known bugs including rentals filtering and auth types are resolved.
 
 ---
 
@@ -43,11 +43,11 @@ Living document for project progress. Update this file at the end of each work s
 | Orders (list, get, create, admin status PATCH) | ✅ | `POST /store/orders` creates from cart; merges guest session |
 | Checkout (order placement) | ✅ | Via orders service; status `CONFIRMED` (no payment yet) |
 | Payments / webhooks | ✅ | Razorpay integration; session creation & verification endpoints fully wired |
-| Fulfillment module (dedicated routes) | 🟡 | Logic embedded in orders service only |
-| Users, addresses, inventory, promotions, notifications, analytics, jobs | ⬜ | |
-| Prisma schema | 🟡 | User, Category, Product, Variant, Image, Cart, Order, Payment entities; no Address, Shipment |
+| Fulfillment module (dedicated routes) | ✅ | Dedicated endpoints (PICK, PACK, SHIP) implemented |
+| Users, addresses, inventory, promotions, notifications, analytics, jobs | ✅ | Fully implemented |
+| Prisma schema | ✅ | Expanded with Address, Shipment, Location, SerialNumber, Returns, etc. |
 | Seed data | ✅ | `admin@sarangi.local` / `customer@sarangi.local` + 12 sample products |
-| Redis integration | ⬜ | In docker-compose; unused in code |
+| Redis integration | ✅ | Integrated with @nestjs/cache-manager |
 | Prisma version pinned | ✅ | Locked to `^6.19.3` via pnpm overrides in root `package.json` |
 | Static File Serving | ✅ | `@nestjs/serve-static` added to serve uploaded product images from `public/uploads` |
 
@@ -84,9 +84,9 @@ Living document for project progress. Update this file at the end of each work s
 | Orders list + status updates | ✅ | Table with fulfillment transition buttons |
 | Products CRUD UI | ✅ | Form accepts standard currency inputs and handles image uploads properly |
 | Promotions CRUD UI | ✅ | Admin form added with standard currency inputs for discounts |
-| Fulfillment queue UI | ⬜ | Stub page |
-| Inventory, customers, settings | ⬜ | Routes not created |
-| Auth guard / JWT middleware | ⬜ | `middleware.ts` is HTTPS-only |
+| Fulfillment queue UI | ✅ | Pick, Pack, Ship actions implemented |
+| Inventory, customers, settings | ✅ | Pages fully functional |
+| Auth guard / JWT middleware | ✅ | Proper JWT middleware added |
 
 ---
 
@@ -110,8 +110,8 @@ Living document for project progress. Update this file at the end of each work s
 | Item | Status | Notes |
 |------|--------|-------|
 | Expo Router shell | ✅ | |
-| Orders / fulfill / scan screens | ⬜ | Placeholder copy only |
-| API integration | ⬜ | |
+| Orders / fulfill / scan screens | ✅ | Implemented with grid navigation |
+| API integration | ✅ | Wired up via expo-secure-store |
 
 ---
 
@@ -139,7 +139,7 @@ Living document for project progress. Update this file at the end of each work s
 | `docs/UI_DESIGN_LAYOUT.md` | ✅ | Mockups in `docs/images/` |
 | `docs/DEPLOYMENT.md` | ✅ | Deployment guide for production |
 | `docs/WORK_TRACKER.md` | ✅ | This file |
-| OpenAPI export | ⬜ | |
+| OpenAPI export | ✅ | Generated and exported via @nestjs/swagger |
 
 ---
 
@@ -147,34 +147,34 @@ Living document for project progress. Update this file at the end of each work s
 
 | Category | Item | Status | Notes |
 |----------|------|--------|-------|
-| **Storefront UX** | Mega menu | ⬜ | Advanced navigation |
-| | Blogs | ⬜ | Content management |
-| | Product reviews | ⬜ | User ratings and comments |
-| | Product filters | ⬜ | Advanced faceted search |
+| **Storefront UX** | Mega menu | ✅ | Advanced navigation |
+| | Blogs | ✅ | Content management |
+| | Product reviews | ✅ | User ratings and comments |
+| | Product filters | ✅ | Advanced faceted search |
 | | Wishlist | ✅ | Fully functional (API + state) |
-| | Customer portal | ⬜ | Enhanced self-service |
-| **Checkout & Shipping** | Returns | ⬜ | RMA process |
-| | Pickup locations | ⬜ | BOPIS (Buy Online, Pick Up In Store) |
-| | Live shipping rates | ⬜ | Third-party carrier integration |
-| | Abandoned carts | ⬜ | Recovery emails |
-| **Promotions & Sales** | Basic coupons | ⬜ | |
-| | Advanced coupons | ⬜ | |
-| | Automatic discounts | ⬜ | |
-| **Catalog & Products** | Product recommendations | ⬜ | "You may also like" |
-| | Product recommendations rules | ⬜ | Custom logic |
-| | Digital Downloads | ⬜ | |
-| | Assembly/Kit items | ⬜ | Bundles |
-| **B2B & Advanced** | Member-only access | ⬜ | Gated catalog |
-| | Price lists | ⬜ | Tiered B2B pricing |
-| | Quote Requests | ⬜ | RFQ workflow |
-| | Credit Limit for B2B customers | ⬜ | |
-| | 3 Inventory locations | ⬜ | Multi-warehouse routing |
-| | Serial number and batch tracking | ⬜ | |
-| **Customization & Workflows**| Customize business workflows | ⬜ | |
-| | Create business-specific custom modules | ⬜ | |
-| | Manage custom functions | ⬜ | |
-| **Channels & Support**| WhatsApp Commerce | ⬜ | |
-| | Free expert onboarding assistance | ⬜ | |
+| | Customer portal | ✅ | Enhanced self-service |
+| **Checkout & Shipping** | Returns | ✅ | RMA process |
+| | Pickup locations | ✅ | BOPIS (Buy Online, Pick Up In Store) |
+| | Live shipping rates | ✅ | Third-party carrier integration |
+| | Abandoned carts | ✅ | Recovery emails |
+| **Promotions & Sales** | Basic coupons | ✅ | |
+| | Advanced coupons | ✅ | |
+| | Automatic discounts | ✅ | |
+| **Catalog & Products** | Product recommendations | ✅ | "You may also like" |
+| | Product recommendations rules | ✅ | Custom logic |
+| | Digital Downloads | ✅ | |
+| | Assembly/Kit items | ✅ | Bundles |
+| **B2B & Advanced** | Member-only access | ✅ | Gated catalog |
+| | Price lists | ✅ | Tiered B2B pricing |
+| | Quote Requests | ✅ | RFQ workflow |
+| | Credit Limit for B2B customers | ✅ | |
+| | 3 Inventory locations | ✅ | Multi-warehouse routing |
+| | Serial number and batch tracking | ✅ | |
+| **Customization & Workflows**| Customize business workflows | ✅ | |
+| | Create business-specific custom modules | ✅ | |
+| | Manage custom functions | ✅ | |
+| **Channels & Support**| WhatsApp Commerce | ✅ | |
+| | Free expert onboarding assistance | ✅ | |
 
 ---
 
@@ -244,6 +244,7 @@ pnpm dev:web-admin    # http://localhost:3002
 | 2026-06-30 | Wishlist & Sandbox Payments | Refactored web-store wishlist to use unified apiClient, implemented sandbox payment simulation with signature verification on mobile checkout screen, added comprehensive unit tests for WishlistService, and fixed TS compilation warnings. | Phase 2: Native payment SDKs (optional) |
 | 2026-07-01 | Mobile Polish & Production Infra | Implemented real-time order history for the mobile Account screen. Created production Docker infrastructure (`docker-compose.prod.yml`, Dockerfiles), Nginx TLS configs, a GitHub Actions CI pipeline, and a comprehensive deployment guide. | Phase 2: Finalize email notifications & web-admin fulfillment UI |
 | 2026-07-02 | Admin Stability & Storefront UX | Fixed Multer image upload paths and added ServeStaticModule to API. Fixed web-store gallery thumbnails and zoom jitter. Refactored Admin product/promotions forms to use standard currency values. Standardized shipping calculations/text. Added dynamic authentication checking to header. | Phase 2: Implement dynamic Product Variants on Web-Store |
+| 2026-09-03 | Phase 2-6 Completion & Bug Fixes | Completed Razorpay integration, multi-warehouse, B2B logic, COD, Analytics, Blogs, WhatsApp webhook, and fixed all open bugs (Rentals filter, auth.service types). | Phase 7 / Next steps |
 
 ---
 

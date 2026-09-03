@@ -1,8 +1,28 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { SJPageBanner, SJSectionHead, SJRentStep } from '@/components/atomic/SJHomeComponents';
 import { SJProductCard } from '@/components/atomic/SJProductCard';
 
 export default function RentalsPage() {
+  const [activePlan, setActivePlan] = useState('day');
+
+  const getMultiplier = () => {
+    if (activePlan === 'event') return 2.5;
+    if (activePlan === 'week') return 5;
+    return 1;
+  };
+
+  const getLabel = () => {
+    if (activePlan === 'event') return '/event';
+    if (activePlan === 'week') return '/week';
+    return '/day';
+  };
+
+  const getPrice = (base: number) => {
+    return `₹${Math.round(base * getMultiplier()).toLocaleString()}${getLabel()}`;
+  };
+
   return (
     <>
       <SJPageBanner 
@@ -14,9 +34,9 @@ export default function RentalsPage() {
       <section className="section" style={{ paddingBottom: '40px' }}>
         <div className="container">
           <div className="rent-plan-toggle">
-            <span className="active">By The Day</span>
-            <span>By The Event (3–5 Days)</span>
-            <span>Weekly</span>
+            <span className={activePlan === 'day' ? 'active' : ''} onClick={() => setActivePlan('day')}>By The Day</span>
+            <span className={activePlan === 'event' ? 'active' : ''} onClick={() => setActivePlan('event')}>By The Event (3–5 Days)</span>
+            <span className={activePlan === 'week' ? 'active' : ''} onClick={() => setActivePlan('week')}>Weekly</span>
           </div>
         </div>
       </section>
@@ -25,10 +45,10 @@ export default function RentalsPage() {
         <div className="container">
           <SJSectionHead eyebrow="Bridal &amp; Occasion Jewellery" title="Statement Sets, By The Day" />
           <div className="product-grid">
-            <SJProductCard isRent badgeOverride="For Rent" glyph="💎" category="Bridal Set" title="Kanjivaram Bridal Jewellery Set" price="₹1,899/day" rentNote="Deposit ₹5,000 · refundable" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="👑" category="Bridal Set" title="22k-Finish Kemp Bridal Haaram" price="₹2,299/day" rentNote="Deposit ₹6,000 · refundable" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="💍" category="Bridal Set" title="Reception Diamond-Finish Set" price="₹1,599/day" rentNote="Deposit ₹4,500 · refundable" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="🎶" category="Bridal Set" title="Engagement Pearl &amp; Kundan Set" price="₹1,299/day" rentNote="Deposit ₹3,500 · refundable" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="💎" category="Bridal Set" title="Kanjivaram Bridal Jewellery Set" price={getPrice(1899)} rentNote="Deposit ₹5,000 · refundable" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="👑" category="Bridal Set" title="22k-Finish Kemp Bridal Haaram" price={getPrice(2299)} rentNote="Deposit ₹6,000 · refundable" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="💍" category="Bridal Set" title="Reception Diamond-Finish Set" price={getPrice(1599)} rentNote="Deposit ₹4,500 · refundable" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="🎶" category="Bridal Set" title="Engagement Pearl &amp; Kundan Set" price={getPrice(1299)} rentNote="Deposit ₹3,500 · refundable" />
           </div>
         </div>
       </section>
@@ -37,10 +57,10 @@ export default function RentalsPage() {
         <div className="container">
           <SJSectionHead eyebrow="Classical Dance" title="Costumes &amp; Performance Jewellery" />
           <div className="product-grid">
-            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Bharatanatyam" title="Arangetram Performance Set" price="₹1,799/day" rentNote="Includes temple jewellery set" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Mohiniyattam" title="Classic Kasavu Performance Set" price="₹1,299/day" rentNote="Includes jewellery &amp; hair accessories" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Kathak" title="Ghagra Performance Ensemble" price="₹1,599/day" rentNote="Sizes 6–14 yrs and adult" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Kuchipudi" title="Temple-Border Performance Sari Set" price="₹1,499/day" rentNote="Includes belt &amp; jewellery" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Bharatanatyam" title="Arangetram Performance Set" price={getPrice(1799)} rentNote="Includes temple jewellery set" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Mohiniyattam" title="Classic Kasavu Performance Set" price={getPrice(1299)} rentNote="Includes jewellery &amp; hair accessories" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Kathak" title="Ghagra Performance Ensemble" price={getPrice(1599)} rentNote="Sizes 6–14 yrs and adult" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="🎭" category="Kuchipudi" title="Temple-Border Performance Sari Set" price={getPrice(1499)} rentNote="Includes belt &amp; jewellery" />
           </div>
         </div>
       </section>
@@ -50,7 +70,7 @@ export default function RentalsPage() {
           <SJSectionHead eyebrow="Complete The Look" title="Makeup Kits &amp; Artist Booking" />
           <div className="product-grid">
             <SJProductCard isRent badgeOverride="For Rent" glyph="💄" category="Makeup" title="Bridal Makeup Artist + Kit" price="₹3,500/session" rentNote="Home visit available" />
-            <SJProductCard isRent badgeOverride="For Rent" glyph="💄" category="Makeup" title="Dance Stage Makeup Kit" price="₹899/day" rentNote="Includes false lashes &amp; bindi set" />
+            <SJProductCard isRent badgeOverride="For Rent" glyph="💄" category="Makeup" title="Dance Stage Makeup Kit" price={getPrice(899)} rentNote="Includes false lashes &amp; bindi set" />
             <SJProductCard isRent badgeOverride="For Rent" glyph="💄" category="Makeup" title="Party Glam Artist Session" price="₹2,200/session" rentNote="Studio or home visit" />
             <SJProductCard isRent badgeOverride="For Rent" glyph="💄" category="Makeup" title="Hairstyling + Draping Add-On" price="₹1,200/session" rentNote="Book with any makeup session" />
           </div>

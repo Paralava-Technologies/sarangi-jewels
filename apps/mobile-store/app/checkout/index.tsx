@@ -34,11 +34,11 @@ export default function CheckoutScreen() {
     try {
       // 1. Create order (returns Order in PENDING_PAYMENT status)
       const res = await apiClient.store.placeOrder({ note });
-      const order = res.data;
-      setCurrentOrder(order);
+      const orderData = res.data;
+      setCurrentOrder(orderData);
 
       // 2. Create Payment Session
-      const sessionRes = await apiClient.store.createPaymentSession({ orderId: order.id });
+      const sessionRes = await apiClient.store.createPaymentSession({ paymentId: orderData.paymentId! });
       const session = sessionRes.data;
       setPaymentSession(session);
 
@@ -46,7 +46,7 @@ export default function CheckoutScreen() {
         setShowMockModal(true);
       } else {
         const options = {
-          description: `Order ${order.orderNumber}`,
+          description: `Order ${orderData.orders[0]?.orderNumber}`,
           image: 'https://sarangi.com/logo.png', // Replace with actual logo URL
           currency: session.currency,
           key: session.keyId,
@@ -61,13 +61,13 @@ export default function CheckoutScreen() {
           // Verify on backend
           setSubmitting(true);
           await apiClient.store.verifyPayment({
-            orderId: order.id,
+            paymentId: orderData.paymentId!,
             razorpayOrderId: data.razorpay_order_id,
             razorpayPaymentId: data.razorpay_payment_id,
             razorpaySignature: data.razorpay_signature,
           });
           await refreshCart();
-          setSuccess(order.orderNumber);
+          setSuccess(orderData.orders[0]?.orderNumber);
         } catch (error: any) {
           Alert.alert('Payment Error', error.description || 'Payment failed or was cancelled');
         } finally {
@@ -87,13 +87,13 @@ export default function CheckoutScreen() {
 
     try {
       await apiClient.store.verifyPayment({
-        orderId: currentOrder.id,
+        paymentId: currentOrder.paymentId,
         razorpayOrderId: paymentSession.providerOrderId,
         razorpayPaymentId: `pay_mock_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
         razorpaySignature: 'mock_signature_verified',
       });
       await refreshCart();
-      setSuccess(currentOrder.orderNumber);
+      setSuccess(currentOrder.orders[0]?.orderNumber);
     } catch (err: any) {
       Alert.alert('Payment Error', err?.message || 'Verification of payment failed');
     } finally {
@@ -193,7 +193,7 @@ export default function CheckoutScreen() {
             <Text style={styles.modalTitle}>Sarangi Jewels Sandbox Payment</Text>
             <Text style={styles.modalText}>
               You are running in development mode. Press below to simulate a successful transaction for order{' '}
-              <Text style={{ fontWeight: 'bold' }}>{currentOrder?.orderNumber}</Text>.
+              <Text style={{ fontWeight: 'bold' }}>{currentOrder?.orders?.[0]?.orderNumber}</Text>.
             </Text>
             <View style={styles.modalActions}>
               <Pressable style={styles.btn} onPress={handleSimulatePaymentSuccess}>

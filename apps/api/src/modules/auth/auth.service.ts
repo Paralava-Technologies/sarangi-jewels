@@ -2,8 +2,8 @@ import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import { UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { registerSchema, loginSchema } from '@sarangi/validation';
-import type { LoginInput, RegisterInput } from '@sarangi/validation';
+import { registerSchema, loginSchema, sendOtpSchema, verifyOtpSchema } from '@sarangi/validation';
+import type { LoginInput, RegisterInput, SendOtpInput, VerifyOtpInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
 
@@ -69,16 +69,16 @@ export class AuthService {
     return this.issueTokens(user.id, user.email, user.role);
   }
 
-  async sendOtp(input: import('@sarangi/validation').SendOtpInput) {
-    const data = import('@sarangi/validation').then(m => m.sendOtpSchema.parse(input));
+  async sendOtp(input: SendOtpInput) {
+    const data = sendOtpSchema.parse(input);
     // In a real application, send the OTP via Twilio or AWS SNS
     // For this mock, we will generate a 6-digit OTP and print it to the console
     const code = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log(`[MOCK SMS] Sending OTP ${code} to ${input.phone}`);
+    console.log(`[MOCK SMS] Sending OTP ${code} to ${data.phone}`);
 
     await this.prisma.otpToken.create({
       data: {
-        phone: input.phone,
+        phone: data.phone,
         code,
         expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
       }
@@ -87,11 +87,12 @@ export class AuthService {
     return { message: 'OTP sent successfully' };
   }
 
-  async verifyOtp(input: import('@sarangi/validation').VerifyOtpInput) {
+  async verifyOtp(input: VerifyOtpInput) {
+    const data = verifyOtpSchema.parse(input);
     const otp = await this.prisma.otpToken.findFirst({
       where: {
-        phone: input.phone,
-        code: input.code,
+        phone: data.phone,
+        code: data.code,
         expiresAt: { gt: new Date() },
       },
       orderBy: { createdAt: 'desc' }
@@ -102,21 +103,21 @@ export class AuthService {
     }
 
     // Find user or create one
-    let user = await this.prisma.user.findUnique({ where: { phone: input.phone } });
+    let user = await this.prisma.user.findUnique({ where: { phone: data.phone } });
     if (!user) {
       user = await this.prisma.user.create({
         data: {
-          phone: input.phone,
+          phone: data.phone,
           role: UserRole.CUSTOMER,
         },
       });
       // Try sending welcome SMS (if we had an SMS service)
-      console.log(`[MOCK SMS] Welcome to Sarangi Jewels! Sent to ${input.phone}`);
+      console.log(`[MOCK SMS] Welcome to Sarangi Jewels! Sent to ${data.phone}`);
     }
 
     // Clean up used OTPs
     await this.prisma.otpToken.deleteMany({
-      where: { phone: input.phone }
+      where: { phone: data.phone }
     });
 
     return this.issueTokens(user.id, user.email || user.phone || '', user.role);

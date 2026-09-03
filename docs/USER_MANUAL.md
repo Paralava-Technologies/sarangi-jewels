@@ -231,3 +231,23 @@ sequenceDiagram
    - **Allow Cash on Delivery:** Turn COD on or off globally for the entire store.
 4. **Financial Limits:** Set the "Max Rental Deposit" limit and configure global Shipping Rates.
 5. Click **"Save Settings"** at the bottom of the page.
+
+### 2.7 Advanced Operations (B2B & Scale)
+
+#### 2.7.1 Managing B2B Tiered Price Lists
+1. **Assigning User Tiers:** Go to **Dashboard > Customers**. Edit a user profile to assign a `UserTier` (e.g., `RETAIL`, `WHOLESALE`).
+2. **Setting Prices:** Go to **Dashboard > Catalog > Products** and edit a product. Under the Variants section, you can add `TieredPrice` overrides for specific tiers. Logged-in wholesale users will automatically see these discounted prices.
+
+#### 2.7.2 Multi-warehouse & Inventory Management
+1. **Locations:** Go to **Dashboard > Settings > Locations** to add multiple physical warehouses or store branches.
+2. **Stock Allocation:** When managing stock for a product variant (**Dashboard > Catalog > Inventory**), you will allocate stock specifically to a chosen `Location` rather than a global pool.
+3. Orders are intelligently routed to the nearest warehouse with available stock.
+
+#### 2.7.3 Serial Number Tracking for High-Value Items
+1. For high-value goods (e.g., bridal necklaces), go to the Inventory manager for that item.
+2. Instead of standard bulk quantity, add individual `SerialNumber` records (e.g., `NECK-001`, `NECK-002`).
+3. During fulfillment (in the Mobile Admin App or Web Dashboard), you must scan or select the exact serial number being shipped, guaranteeing item-level traceability.
+
+#### 2.7.4 Automated Abandoned Carts
+1. **Monitoring:** No manual action is required to send emails; a background Cron Job automatically scans the database every hour.
+2. **Settings:** Ensure the SendGrid API Key is configured in your environment variables. Carts abandoned for over 24 hours will automatically trigger a recovery email to the customer.

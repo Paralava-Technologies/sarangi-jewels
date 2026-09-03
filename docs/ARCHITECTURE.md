@@ -36,14 +36,14 @@ flowchart TB
     WA <-->|REST| API
     MS <-->|REST| API
     MA <-->|REST| API
-    
+
     API <--> GRPC
     API <--> WORKER
-    
+
     API <--> DB
     API <--> REDIS
     API <--> S3
-    
+
     API <--> PG
     API <--> WA_API
 ```
@@ -74,20 +74,20 @@ mindmap
       Docker (Containerization)
 ```
 
-| Layer | Choice | Rationale |
-|-------|--------|-----------|
-| Monorepo | **pnpm** + **Turborepo** | Shared types, one CI pipeline, fast builds |
-| API | **NestJS** (TypeScript) | Modules map to domains; guards, DI, jobs |
-| Customer web | **Next.js 15** (App Router) | SEO for products, SSR, image optimization |
-| Admin web | **Next.js 15** (separate app) | Different auth, layout, no SEO noise |
-| Mobile (store + admin) | **Expo** (React Native) | OTA updates, shared TS with web packages |
-| DB | **PostgreSQL** | Orders, inventory, relational catalog |
-| Cache / sessions | **Redis** | Cart sessions, rate limits, job queues |
-| Search (phase 2) | **Meilisearch** or PG full-text | Faceted jewellery search |
-| Media | **S3-compatible** + CDN | High-res product imagery |
-| Payments | **Stripe** or **Razorpay** (region) | PCI scope minimized via provider |
-| Push (mobile) | **FCM** + Expo Notifications | Order status, promos |
-| Email / SMS | **Resend** / **Twilio** | Order confirmations, shipping |
+| Layer                  | Choice                              | Rationale                                  |
+| ---------------------- | ----------------------------------- | ------------------------------------------ |
+| Monorepo               | **pnpm** + **Turborepo**            | Shared types, one CI pipeline, fast builds |
+| API                    | **NestJS** (TypeScript)             | Modules map to domains; guards, DI, jobs   |
+| Customer web           | **Next.js 15** (App Router)         | SEO for products, SSR, image optimization  |
+| Admin web              | **Next.js 15** (separate app)       | Different auth, layout, no SEO noise       |
+| Mobile (store + admin) | **Expo** (React Native)             | OTA updates, shared TS with web packages   |
+| DB                     | **PostgreSQL**                      | Orders, inventory, relational catalog      |
+| Cache / sessions       | **Redis**                           | Cart sessions, rate limits, job queues     |
+| Search (phase 2)       | **Meilisearch** or PG full-text     | Faceted jewellery search                   |
+| Media                  | **S3-compatible** + CDN             | High-res product imagery                   |
+| Payments               | **Stripe** or **Razorpay** (region) | PCI scope minimized via provider           |
+| Push (mobile)          | **FCM** + Expo Notifications        | Order status, promos                       |
+| Email / SMS            | **Resend** / **Twilio**             | Order confirmations, shipping              |
 
 ---
 
@@ -99,34 +99,34 @@ The system is designed to be cloud-agnostic and containerized, allowing deployme
 flowchart LR
     subgraph Cloud_Infrastructure ["Cloud Infrastructure"]
         LB[Load Balancer]
-        
+
         subgraph Frontend_Host ["Frontend Host"]
             VERCEL[Vercel / Netlify]
             VERCEL -->|Hosts| WS(Web Store)
             VERCEL -->|Hosts| WA(Web Admin)
         end
-        
+
         subgraph Backend_Cluster ["Backend Cluster"]
             API1(API Container 1)
             API2(API Container 2)
             GRPC(Custom Logic Container)
         end
-        
+
         subgraph Managed_Data_Services ["Managed Data Services"]
             RDS[(Managed PostgreSQL)]
             ELASTICACHE[(Managed Redis)]
             S3[(AWS S3 Media Bucket)]
         end
     end
-    
+
     Internet((Internet Users)) --> LB
     LB --> VERCEL
     LB --> API1
     LB --> API2
-    
+
     API1 <--> GRPC
     API2 <--> GRPC
-    
+
     API1 --> RDS
     API1 --> ELASTICACHE
     API1 --> S3
@@ -141,6 +141,7 @@ flowchart LR
 To ensure zero-downtime deployments and high availability, the platform relies on automated CI/CD and intelligent load balancing.
 
 #### CI/CD Pipeline (GitHub Actions)
+
 ```mermaid
 sequenceDiagram
     participant Dev as Developer
@@ -148,7 +149,7 @@ sequenceDiagram
     participant CI as GitHub Actions (CI)
     participant Registry as Docker Registry
     participant CD as Deployment (CD)
-    
+
     Dev->>Git: Push to `main`
     Git->>CI: Trigger Build Workflow
     CI->>CI: 1. Run `pnpm lint` & `pnpm test`
@@ -157,9 +158,11 @@ sequenceDiagram
     CI->>CD: 4. Trigger Webhook / Restart Containers
     CD-->>Dev: Deployment Success / Slack Alert
 ```
-*Because the project is a monorepo, **Turborepo** intelligently determines which apps changed (e.g., if only `web-store` changed, it skips building the `api`), drastically reducing deployment times.*
+
+_Because the project is a monorepo, **Turborepo** intelligently determines which apps changed (e.g., if only `web-store` changed, it skips building the `api`), drastically reducing deployment times._
 
 #### Load Balancing & Horizontal Scaling
+
 - **Traffic Routing:** An AWS Application Load Balancer (ALB) or NGINX ingress controller acts as the entry point. It terminates SSL/TLS and inspects the request paths.
 - **API Auto-Scaling:** As traffic spikes (e.g., during a flash sale), the container orchestration platform (AWS ECS/K8s) spins up additional replica containers of the `api`.
 - **Statelessness:** The NestJS API is completely stateless. Session data and carts are stored in **Redis**, meaning a user's request can hit `API Container 1` and their next request can hit `API Container 2` without losing their login state.
@@ -178,7 +181,7 @@ sequenceDiagram
     participant WebStore
     participant API
     participant Razorpay
-    
+
     Customer->>WebStore: Clicks "Complete Purchase"
     WebStore->>API: POST /checkout (Cart Data)
     API->>API: Validate Inventory & Prices
@@ -206,14 +209,14 @@ sequenceDiagram
     participant Meta as Meta Graph API
     participant API as Sarangi API
     actor Admin as Admin Dashboard
-    
+
     User->>Meta: Sends WhatsApp Message
     Meta->>API: POST /webhooks/whatsapp (Inbound)
     API->>API: Parse Message & Check Settings
     API->>API: Create Support Ticket Reply
     API-->>Meta: 200 OK
     API-->>Admin: Real-time update in Inbox
-    
+
     Admin->>API: Types Reply in Dashboard
     API->>API: Save Reply to DB
     API->>Meta: POST /messages (Outbound)
@@ -392,11 +395,11 @@ apps/mobile-admin/
 
 ### 4.2 Audience-specific routes (same backend)
 
-| Prefix | Used by | Purpose |
-|--------|---------|---------|
-| `/v1/store/*` | web-store, mobile-store | Catalog, cart, checkout, customer orders |
-| `/v1/admin/*` | web-admin, mobile-admin | Products, inventory, all orders, fulfillment |
-| `/v1/webhooks/*` | Payment/shipping providers | Signed callbacks only |
+| Prefix           | Used by                    | Purpose                                      |
+| ---------------- | -------------------------- | -------------------------------------------- |
+| `/v1/store/*`    | web-store, mobile-store    | Catalog, cart, checkout, customer orders     |
+| `/v1/admin/*`    | web-admin, mobile-admin    | Products, inventory, all orders, fulfillment |
+| `/v1/webhooks/*` | Payment/shipping providers | Signed callbacks only                        |
 
 Guards enforce **role + scope**: a customer token cannot call `/admin/orders`.
 
@@ -424,20 +427,21 @@ erDiagram
     PRODUCT ||--o{ PRODUCT_IMAGE : displays
     PRODUCT_VARIANT ||--o{ INVENTORY_ITEM : tracks
     INVENTORY_ITEM ||--o{ SERIAL_NUMBER : physical_units
-    
+
     USER ||--o{ ADDRESS : saves
     USER ||--o{ ORDER : places
     USER ||--o{ CART : owns
-    
+
     ORDER ||--o{ ORDER_LINE : contains
     ORDER ||--|| PAYMENT : processed_via
     ORDER ||--o{ SHIPMENT : dispatched_via
     ORDER ||--o{ ORDER_STATUS_HISTORY : logs
-    
+
     PROMOTION ||--o{ COUPON : issues
 ```
 
-**Jewellery & Rental specific fields:** 
+**Jewellery & Rental specific fields:**
+
 - **Product/Variant:** material, purity (e.g. 18K), gemstone, weight, care instructions, certificate URL, collection tag (e.g. pendants, care-accessories).
 - **Rentals:** `SERIAL_NUMBER` tracks individual physical units. Orders block out `startDate` and `endDate` against these specific serials to prevent double-booking.
 
@@ -445,11 +449,11 @@ erDiagram
 
 ## 6. Authentication and authorization
 
-| Actor | Method | Notes |
-|-------|--------|-------|
+| Actor                 | Method                                                                                         | Notes              |
+| --------------------- | ---------------------------------------------------------------------------------------------- | ------------------ |
 | Customer (web/mobile) | Email/password + optional OTP; refresh tokens in httpOnly cookie (web) or SecureStore (mobile) | Same `users` table |
-| Admin | Separate login on `web-admin` / `mobile-admin`; MFA recommended | Role-based access |
-| API | JWT access (short) + refresh (long); rotate on use | |
+| Admin                 | Separate login on `web-admin` / `mobile-admin`; MFA recommended                                | Role-based access  |
+| API                   | JWT access (short) + refresh (long); rotate on use                                             |                    |
 
 Roles: `CUSTOMER`, `ADMIN`, `FULFILLMENT`, `SUPPORT`. NestJS `@Roles()` + policy checks on order transitions (e.g. only `FULFILLMENT` can set `SHIPPED`).
 
@@ -462,18 +466,18 @@ stateDiagram-v2
     [*] --> CHECKOUT: Customer places order
     CHECKOUT --> PENDING_PAYMENT: Awaiting Razorpay/COD
     PENDING_PAYMENT --> CONFIRMED: Payment Success / COD Selected
-    
+
     state AdminFulfillmentQueue {
         CONFIRMED --> PROCESSING: Assigned to Picker
         PROCESSING --> PICKED: Barcode Scanned
         PICKED --> PACKED: Weight & Photo Logged
         PACKED --> SHIPPED: Carrier API Tracking Added
     }
-    
+
     SHIPPED --> DELIVERED: Notifications & Webhooks
     DELIVERED --> SUCCESS: COD Reconciled
     SUCCESS --> [*]
-    
+
     CONFIRMED --> REFUNDED: Admin Cancellation
     REFUNDED --> [*]
 ```
@@ -484,35 +488,35 @@ stateDiagram-v2
 
 ## 8. Cross-cutting concerns
 
-| Concern | Approach |
-|---------|----------|
-| i18n / currency | Store in user/session; prices in DB in minor units (cents/paise) |
-| SEO | web-store SSR product pages, structured data (Product JSON-LD) |
-| Images | Multiple resolutions; lazy load; watermark optional for catalogue |
-| Security | HTTPS only, CSP on web, certificate pinning (mobile, phase 2) |
-| Observability | OpenTelemetry in API; Sentry on all apps |
-| CI/CD | Turborepo affected builds; deploy api + web separately; EAS for mobile |
+| Concern         | Approach                                                               |
+| --------------- | ---------------------------------------------------------------------- |
+| i18n / currency | Store in user/session; prices in DB in minor units (cents/paise)       |
+| SEO             | web-store SSR product pages, structured data (Product JSON-LD)         |
+| Images          | Multiple resolutions; lazy load; watermark optional for catalogue      |
+| Security        | HTTPS only, CSP on web, certificate pinning (mobile, phase 2)          |
+| Observability   | OpenTelemetry in API; Sentry on all apps                               |
+| CI/CD           | Turborepo affected builds; deploy api + web separately; EAS for mobile |
 
 ---
 
 ## 9. Environment topology
 
-| Environment | Purpose |
-|-------------|---------|
-| `local` | docker-compose: Postgres, Redis, MinIO, api, web-store |
-| `staging` | Full stack; test payments |
+| Environment  | Purpose                                                                                  |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `local`      | docker-compose: Postgres, Redis, MinIO, api, web-store                                   |
+| `staging`    | Full stack; test payments                                                                |
 | `production` | API on containers (Fly.io/AWS/GCP); Vercel or similar for Next.js; EAS production mobile |
 
 ---
 
 ## 10. Phased delivery
 
-| Phase | Scope |
-|-------|--------|
-| **MVP** | api + web-store + web-admin: catalog, cart, checkout, order list, manual fulfillment status |
-| **Phase 2** | mobile-store, payments live, email notifications |
-| **Phase 3** | mobile-admin scanning, push tracking, promotions |
-| **Phase 4** | Search, analytics, multi-warehouse, loyalty |
+| Phase       | Scope                                                                                       |
+| ----------- | ------------------------------------------------------------------------------------------- |
+| **MVP**     | api + web-store + web-admin: catalog, cart, checkout, order list, manual fulfillment status |
+| **Phase 2** | mobile-store, payments live, email notifications                                            |
+| **Phase 3** | mobile-admin scanning, push tracking, promotions                                            |
+| **Phase 4** | Search, analytics, multi-warehouse, loyalty                                                 |
 
 ---
 
@@ -533,14 +537,159 @@ stateDiagram-v2
 4. Build web-store MVP, then web-admin order queue, then mobile apps against frozen API v1.
 
 ## 13. Credentials
-PostgreSQL Seed complete.
-  Admin:    admin@sarangi.local / Admin123!
-  Customer: customer@sarangi.local / Customer123!
 
+PostgreSQL Seed complete.
+Admin: admin@sarangi.local / Admin123!
+Customer: customer@sarangi.local / Customer123!
 
 ## 14. Modern Upgrades (Phase 5+)
+
 - **Microservices & gRPC**: The monolithic API has been extended to support high-performance microservices (TCP/Redis/gRPC transport) inside the `@sarangi/custom-logic` module. This allows custom business logic to scale independently.
 - **WhatsApp CRM**: Integrated Meta Graph API bidirectional messaging. Inbound WhatsApp messages are parsed via webhook into the Inbox/Support system. Admin replies auto-dispatch outbound messages to customers.
 - **Rental & Makeup Booking**: Advanced inventory control allowing date-based bookings (start/end dates) mapped to physical serial numbers, blocking stock across calendars.
 - **Atomic Design System**: Web-store fully migrated to an atomic components architecture (`src/components/atomic/`) encapsulating logic and presentation into Molecules and Organisms.
 - **Blog CMS**: Fully integrated markdown/HTML rich-text blogging platform with SEO metadata and community commenting engine (approval/rejection moderation).
+
+---
+
+## 15. Advanced Enterprise Features (B2B & Scale)
+
+### 15.1 Advanced Shipping (BOPIS / Live Rates / COD)
+
+The fulfillment architecture supports flexible shipping and return methodologies:
+
+- **BOPIS (Buy Online, Pick Up In Store):** Represented by an `isPickup` boolean flag on the `Order` model. Bypasses carrier rate calculations and shifts the fulfillment state machine directly to the physical store's pickup queue.
+- **Live Carrier Rates:** A dedicated `ShippingModule` integrates with third-party logistics (Delhivery/BlueDart). At checkout, the module calculates volumetric weight and destination pin codes to fetch dynamic shipping options.
+- **Returns (RMA):** Uses `RMA` and `RMALine` entities to process authorized returns, automatically returning items to inventory or marking them as damaged upon inspection.
+- **Cash on Delivery (COD):** The checkout flow allows fallback to COD, especially useful in regions with high payment gateway drop-offs.
+
+```mermaid
+sequenceDiagram
+    actor Customer
+    participant Checkout
+    participant API
+    participant ShippingAPI as Delhivery/BlueDart
+
+    Customer->>Checkout: Enters Pin Code & Selects Delivery
+    Checkout->>API: POST /shipping/rates (Weight, Pin)
+    API->>ShippingAPI: Request Live Quote
+    ShippingAPI-->>API: Returns Options (Express, Standard)
+    API-->>Checkout: Renders Shipping Options
+    Customer->>Checkout: Selects COD
+    Checkout->>API: Place Order (isPickup: false, COD: true)
+    API-->>Customer: Order Confirmed
+```
+
+### 15.2 Automated Abandoned Carts
+
+To maximize conversion rates, the platform incorporates an automated cart recovery engine.
+
+- **Cron Job Automation:** Powered by `@nestjs/schedule`, a worker executes an `@Cron(CronExpression.EVERY_HOUR)` task within `CartService`.
+- **Email Integration:** The worker scans the database for `Cart` records updated more than 24 hours ago with items still inside. It triggers `sendAbandonedCartEmail` via `MailService` (using SendGrid) and marks the cart as "reminded" to prevent spamming.
+
+```mermaid
+flowchart TD
+    CRON(("Hourly Cron Job")) --> SCAN["Scan Carts (updatedAt < 24h & isReminded = false)"]
+    SCAN --> CHECK{"Has Items?"}
+    CHECK -- Yes --> EMAIL["SendGrid: Abandoned Cart Email"]
+    CHECK -- No --> SKIP["Ignore"]
+    EMAIL --> MARK["Update Cart: isReminded = true"]
+```
+
+### 15.3 B2B Tiered Price Lists
+
+The platform supports a hybrid B2C/B2B model from a single codebase.
+
+- **User Tiers:** Customers are assigned a `UserTier` (e.g., `RETAIL`, `WHOLESALE`, `VIP`). This tier is embedded in the JWT claims during authentication.
+- **Gated Pricing:** The `TieredPrice` model links specific price lists to `ProductVariant`s. When the API queries products, it evaluates the user's tier claim and injects the appropriate discounted price dynamically, ensuring B2B users see their negotiated rates natively.
+
+```mermaid
+flowchart LR
+    USER["User Login"] --> JWT["JWT Token Claim: Tier=WHOLESALE"]
+    JWT --> API["API Catalog Request"]
+    API --> DB[("Product + TieredPrice")]
+    DB -- WHOLESALE Price --> API
+    API -- Responds with B2B Price --> FRONTEND["Web Store UI"]
+```
+
+### 15.4 Multi-warehouse Architecture & Serial Tracking
+
+Inventory is highly distributed and rigorously tracked to prevent overselling and track high-value units.
+
+- **Locations & Distributed Inventory:** The `Location` model represents physical warehouses. The `InventoryLevel` model uses a composite primary key `[variantId, locationId]`. Orders are routed to the nearest location with stock.
+- **Serial Number Tracking:** Each physical high-value item has a `SerialNumber` record linking it to a `ProductVariant`.
+- **Lifecycle Mapping:** Serials transition from `IN_STOCK` to `SOLD`. During the picking stage of fulfillment, a specific serial number is scanned and bound to the `OrderLine`, providing end-to-end traceability.
+
+```mermaid
+erDiagram
+    LOCATION {
+        String id
+        String name
+        String address
+    }
+    INVENTORY_LEVEL {
+        String variantId
+        String locationId
+        Int quantity
+    }
+    PRODUCT_VARIANT ||--o{ INVENTORY_LEVEL : stocked_in
+    LOCATION ||--o{ INVENTORY_LEVEL : holds
+    PRODUCT_VARIANT ||--o{ SERIAL_NUMBER : physical_items
+
+    SERIAL_NUMBER {
+        String id
+        String status
+        String orderId
+    }
+    ORDER ||--o{ SERIAL_NUMBER : fulfills
+```
+
+---
+
+## 16. Microservices & Background Jobs Architecture
+
+To support high scalability and independent deployments, the backend is designed using a hybrid monolith-microservice architecture. Core eCommerce functions live in the central API, while CPU-intensive or highly customized business logic is offloaded to dedicated microservices.
+
+### 16.1 gRPC Custom Logic Microservice
+The system incorporates a high-performance gRPC microservice designed to handle custom, client-specific business logic without bloating the core API.
+
+- **Transport & Protocol:** Uses `gRPC` over HTTP/2 with Protocol Buffers (`custom-logic.proto`) defining strict data contracts between the core API and the microservice.
+- **Integration:** The main NestJS application (`main.ts`) calls `app.connectMicroservice()` to bind to `localhost:50051`. The `CustomLogicController` utilizes the `@GrpcMethod('CustomLogicService', 'ProcessTask')` decorator to listen for incoming RPC calls.
+- **Benefits:** This decoupled approach allows developers to write custom workflows (e.g., complex pricing algorithms, third-party ERP syncing) in isolated environments that scale independently of the customer-facing web traffic.
+
+```mermaid
+sequenceDiagram
+    participant CoreAPI as NestJS Core API
+    participant GRPC as Custom Logic Microservice
+    participant Proto as custom-logic.proto
+
+    CoreAPI->>Proto: Serialize TaskRequest
+    Proto-->>CoreAPI: Binary payload
+    CoreAPI->>GRPC: HTTP/2 POST (localhost:50051/ProcessTask)
+    GRPC->>GRPC: Execute highly scalable custom logic
+    GRPC->>Proto: Serialize TaskResponse
+    Proto-->>GRPC: Binary payload
+    GRPC-->>CoreAPI: HTTP/2 Response (success, result)
+```
+
+### 16.2 Background Jobs & Schedulers
+The backend employs a combination of CRON schedulers and queue workers to manage long-running tasks asynchronously.
+
+- **NestJS Scheduler (CRON):** Simple, recurring tasks are handled natively by `@nestjs/schedule`. For example, the `CartService` uses `@Cron(CronExpression.EVERY_HOUR)` to execute the Abandoned Cart workflow, scanning the database and dispatching emails via `MailService`.
+- **Redis & BullMQ (Workers):** For heavy, event-driven background processing (e.g., bulk image processing, massive email campaigns, multi-warehouse stock synchronization), the architecture delegates payloads to a Redis-backed BullMQ queue. Dedicated worker processes consume these queues to prevent blocking the main HTTP event loop.
+
+```mermaid
+flowchart TD
+    subgraph Core_API ["Core API Event Loop"]
+        REQ[Incoming Request] --> ACTION[Controller Action]
+        ACTION --> |Offload Heavy Task| QUEUE[(Redis BullMQ)]
+        ACTION --> RES[HTTP 200 OK]
+    end
+
+    subgraph Background_Workers ["Asynchronous Processors"]
+        QUEUE --> WORKER1[Worker: Image Optimization]
+        QUEUE --> WORKER2[Worker: Bulk Mailer]
+        
+        SCHEDULER((NestJS @Cron)) --> |Hourly Trigger| TASK[Abandoned Cart Scan]
+    end
+```
