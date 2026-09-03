@@ -10,6 +10,8 @@ import { addToCartSchema, updateCartLineSchema } from '@sarangi/validation';
 import type { AddToCartInput, UpdateCartLineInput } from '@sarangi/validation';
 import { PrismaService } from '../../prisma/prisma.service';
 import { MailService } from '../mail/mail.service';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 import { randomUUID } from 'crypto';
 
 export interface CartContext {
@@ -24,6 +26,7 @@ export class CartService {
   constructor(
     private prisma: PrismaService,
     private mailService: MailService,
+    @InjectQueue('email-queue') private emailQueue: Queue,
   ) {}
 
   async getOrCreateSession(): Promise<string> {
@@ -442,7 +445,10 @@ export class CartService {
       if (cart.lines.length === 0 || !cart.user?.email) continue;
       
       const cartUrl = `${process.env.STORE_URL || 'http://localhost:3000'}/cart`;
-      await this.mailService.sendAbandonedCartEmail(cart.user.email, cartUrl);
+      await this.emailQueue.add('abandoned-cart', {
+        email: cart.user.email,
+        cartUrl,
+      });
     }
   }
 }

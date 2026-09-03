@@ -28,12 +28,15 @@ export default function RentalsPage() {
     return <div className="p-8 text-neutral-500">Loading rentals...</div>;
   }
 
-  // Get date range for the matrix (next 30 days)
+  // Get date range for the matrix (30 days window: 15 days past, 15 days future)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 15);
+  
   const days = Array.from({ length: 30 }).map((_, i) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + i);
     return d;
   });
 
@@ -84,6 +87,11 @@ export default function RentalsPage() {
                           </Link>
                           <span>•</span>
                           <span className="truncate max-w-[80px]">{rental.order.user?.firstName} {rental.order.user?.lastName}</span>
+                          {rental.order.isPickup ? (
+                            <span className="ml-1 rounded bg-violet-100 text-violet-800 px-1 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider">Pickup</span>
+                          ) : (
+                            <span className="ml-1 rounded bg-blue-100 text-blue-800 px-1 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider">Ship</span>
+                          )}
                         </div>
                       </td>
                       {days.map((day, i) => {

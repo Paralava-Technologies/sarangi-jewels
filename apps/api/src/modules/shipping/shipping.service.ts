@@ -8,7 +8,49 @@ export class ShippingService {
 
   async getLiveRates(postalCode: string, weightGrams: number) {
     this.logger.log(`Fetching live rates for postal code: ${postalCode}, weight: ${weightGrams}g`);
-    // Mock integration with Delhivery/Bluedart
+    // Implement actual fetch call to a logistics provider (e.g., Delhivery)
+    try {
+      const delhiveryToken = process.env.DELHIVERY_TOKEN;
+      if (!delhiveryToken) {
+        this.logger.warn('No DELHIVERY_TOKEN configured, falling back to mock rates');
+        return this.getMockRates();
+      }
+
+      // Simplified API call for demonstration of live integration
+      const response = await fetch(
+        `https://track.delhivery.com/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=${postalCode}&cgm=${weightGrams}`,
+        {
+          headers: {
+            'Authorization': `Token ${delhiveryToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Delhivery API Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      return {
+        rates: [
+          {
+            carrier: 'Delhivery',
+            serviceName: 'Express',
+            rateCents: Math.round((data[0]?.total_amount || 150) * 100),
+            currency: 'INR',
+            estimatedDays: 2,
+          }
+        ],
+      };
+    } catch (error) {
+      this.logger.error(`Failed to fetch live rates: ${error}`);
+      return this.getMockRates();
+    }
+  }
+
+  private getMockRates() {
     return {
       rates: [
         {

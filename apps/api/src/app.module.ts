@@ -3,6 +3,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { CacheModule } from '@nestjs/cache-manager';
+import { BullModule } from '@nestjs/bullmq';
 import * as redisStore from 'cache-manager-redis-store';
 import { join } from 'path';
 import { AdminModule } from './modules/admin/admin.module';
@@ -41,6 +42,16 @@ import { CustomLogicModule } from './modules/custom-logic/custom-logic.module';
         store: redisStore,
         host: config.get('REDIS_HOST') || 'localhost',
         port: config.get('REDIS_PORT') || 6380,
+      }),
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        redis: {
+          host: config.get('REDIS_HOST') || 'localhost',
+          port: config.get('REDIS_PORT') || 6380,
+        },
       }),
     }),
     ServeStaticModule.forRoot({
