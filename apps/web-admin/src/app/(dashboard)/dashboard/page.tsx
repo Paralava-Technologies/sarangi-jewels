@@ -312,8 +312,9 @@ export default function DashboardPage() {
                       <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
                         {ordersByStatus.map((status) => {
                           const pct = status.count / totalStatusCount;
-                          const strokeDasharray = `${pct * 314} 314`;
-                          const strokeDashoffset = -currentOffset * 314;
+                          const circumference = 2 * Math.PI * 40;
+                          const strokeDasharray = `${pct * circumference} ${circumference}`;
+                          const strokeDashoffset = -currentOffset * circumference;
                           currentOffset += pct;
                           const color = statusColors[status.status] || '#cbd5e1';
                           return (
@@ -321,7 +322,7 @@ export default function DashboardPage() {
                               key={status.status}
                               cx="50"
                               cy="50"
-                              r="50"
+                              r="40"
                               fill="transparent"
                               stroke={color}
                               strokeWidth="20"
@@ -331,7 +332,7 @@ export default function DashboardPage() {
                             />
                           );
                         })}
-                        <circle cx="50" cy="50" r="40" fill="white" />
+                        <circle cx="50" cy="50" r="30" fill="white" />
                       </svg>
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                         <span className="text-2xl font-bold">{totalStatusCount}</span>

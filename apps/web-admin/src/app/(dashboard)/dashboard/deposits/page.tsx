@@ -191,11 +191,11 @@ export default function DepositsPage(): React.JSX.Element {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     {refundsDue.includes(r) && r.order?.status !== 'REFUNDED' ? (
-                      <Link href={`/dashboard/orders`} className="text-white bg-brand-primary px-3 py-1.5 rounded hover:bg-brand-primary/90 transition-colors">
+                      <Link href={`/dashboard/orders?search=${r.order?.orderNumber}`} className="text-white bg-brand-primary px-3 py-1.5 rounded hover:bg-brand-primary/90 transition-colors">
                         Refund Now
                       </Link>
                     ) : (
-                      <Link href={`/dashboard/orders`} className="text-brand-primary hover:text-brand-primary/80 px-3 py-1.5 border border-brand-primary rounded">
+                      <Link href={`/dashboard/orders?search=${r.order?.orderNumber}`} className="text-brand-primary hover:text-brand-primary/80 px-3 py-1.5 border border-brand-primary rounded">
                         View
                       </Link>
                     )}

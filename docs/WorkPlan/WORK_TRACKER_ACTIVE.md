@@ -296,9 +296,9 @@ etc, whatever is relevant. Apply the settings in the store, api, and admin.
 - [x] 80. http://localhost:3002/dashboard/content/2b4ac493-ecf6-462b-be2f-8b8bc64bb2a1 not working
   - **Resolution**: Implemented the Edit Blog Post view by creating `[id]/page.tsx` under `apps/web-admin/src/app/(dashboard)/dashboard/content/`. Also added `fetchBlog` and `updateBlog` to `api.ts` so admins can edit existing posts.
 
-- [ ] 81. Content Blog should support images, videos, text, links, table, etc. like rich text editor.
-- [ ] 82. Content Blog should support SEO meta tags, tags, categories, etc.
-- [ ] 83. Content Blog should support comments.
+- [x] 81. Content Blog should support images, videos, text, links, table, etc. like rich text editor.
+- [x] 82. Content Blog should support SEO meta tags, tags, categories, etc.
+- [x] 83. Content Blog should support comments.
 - [x] 84. There are no option to publish the blog from admin.
   - **Resolution**: Verified that the create (`new/page.tsx`) and edit (`[id]/page.tsx`) pages have a "Publish immediately" checkbox toggle, which updates the `published` field in the database. The blog list view also displays 'Draft' or 'Published' status badges.
 
@@ -436,3 +436,7 @@ message not shown as session expired and need to take to login
   - **Resolution**: Converted `rentals/page.tsx` to a Client Component, added state for the active plan filter, and dynamically updated the prices and labels based on the selected plan.
 - [x] BUG11 - apps/api/src/modules/auth/auth.service.ts is having errors.
   - **Resolution**: Fixed TypeScript errors in `auth.service.ts` caused by incorrect schema imports. Imported the `SendOtpInput` and `VerifyOtpInput` schemas directly from `@sarangi/validation` and properly parsed the input.
+- [x] Rentals Deposits page Refund Button is taking to orders page. Is there anything happening in background? Should the order be filtered and details shown?
+  - **Resolution**: Updated the "Refund Now" and "View" links to include a `search` query parameter with the `orderNumber`. This ensures the user is taken to the Orders page with the specific order already filtered and visible.
+- [x] BUG12 - In http://localhost:3002/dashboard, Orders by Status chart, can the radius of the chart decreased so that full circle chart is visible instead of current clipped version.
+  - **Resolution**: Updated the SVG circle elements in `dashboard/page.tsx` to use a radius of 40 (with stroke width 20) instead of 50. Recalculated `circumference` dynamically to `2 * Math.PI * 40` to ensure the `strokeDasharray` and `strokeDashoffset` render the segments perfectly without clipping at the viewBox edges.
