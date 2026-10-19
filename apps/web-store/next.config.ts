@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
       // Production MinIO / S3 CDN
       { protocol: 'https', hostname: 'media.sarangijewels.com' },
       { protocol: 'https', hostname: 's3.noeve.store' },
+      { protocol: 'https', hostname: 'sarangi-api.noevecreations.com' },
       { protocol: 'https', hostname: 'sarangi-api.noeve.store' },
     ],
   },

@@ -1,61 +1,65 @@
 # Deployment Guide: Sarangi Jewels on Hostinger VPS (Alongside `lifeterrain.com` & `noeve.store`)
 
-This guide covers deploying **Sarangi Jewels** (`@sarangi/api`, `@sarangi/web-store`, `@sarangi/web-admin`) on your existing Hostinger VPS (`187.127.136.221`) alongside `lifeterrain.com` and `noeve.store`, using subdomains on `noeve.store` (or `lifeterrain.com`) since Sarangi Jewels does not have a dedicated domain yet.
+This guide covers deploying **Sarangi Jewels** (`@sarangi/api`, `@sarangi/web-store`, `@sarangi/web-admin`) on your existing Hostinger VPS (`187.127.136.221`) alongside `lifeterrain.com` and `noeve.store`, using subdomains on `noevecreations.com` (`sarangi.noevecreations.com`, `sarangi-api.noevecreations.com`, `sarangi-admin.noevecreations.com`).
 
 ## Port & Resource Allocation Overview
 
 To prevent any conflicts with your already running applications on the VPS:
 
-| Application | Service | Internal Port | Subdomain (Recommended) |
-| :--- | :--- | :--- | :--- |
-| **LifeTerrain** | Existing Apps | `3000` – `3002` | `lifeterrain.com` |
-| **Noeve Store** | API / Store / Admin | `3004` / `3005` / `3006` | `api.noeve.store` / `noeve.store` / `admin.noeve.store` |
-| **Sarangi Jewels** | **Backend API** (`@sarangi/api`) | **`3007`** | **`sarangi-api.noeve.store`** |
-| **Sarangi Jewels** | **Web Store** (`@sarangi/web-store`) | **`3008`** | **`sarangi.noeve.store`** |
-| **Sarangi Jewels** | **Admin Panel** (`@sarangi/web-admin`) | **`3009`** | **`sarangi-admin.noeve.store`** |
-| **Shared Services** | PostgreSQL / Redis / MinIO | `5432` / `6379` / `9000` | Shared instance (`sarangi` DB, `s3.noeve.store`) |
+| Application         | Service                                | Internal Port            | Subdomain / Domain                                      |
+| :------------------ | :------------------------------------- | :----------------------- | :------------------------------------------------------ |
+| **LifeTerrain**     | Existing Apps                          | `3000` – `3002`          | `lifeterrain.com`                                       |
+| **Noeve Store**     | API / Store / Admin                    | `3004` / `3005` / `3006` | `api.noeve.store` / `noeve.store` / `admin.noeve.store` |
+| **Sarangi Jewels**  | **Backend API** (`@sarangi/api`)       | **`3007`**               | **`sarangi-api.noevecreations.com`**                    |
+| **Sarangi Jewels**  | **Web Store** (`@sarangi/web-store`)   | **`3008`**               | **`sarangi.noevecreations.com`**                        |
+| **Sarangi Jewels**  | **Admin Panel** (`@sarangi/web-admin`) | **`3009`**               | **`sarangi-admin.noevecreations.com`**                  |
+| **Shared Services** | PostgreSQL / Redis / MinIO             | `5432` / `6379` / `9000` | Shared instance (`sarangi` DB, `s3.noeve.store`)        |
 
 > **Note:** Node.js, `pnpm`, `pm2`, PostgreSQL, Redis, MinIO, Nginx, and Certbot are already installed on your VPS from the `noeve.store` setup, so we only need to create a new database and deploy the app.
 
 ---
 
-## Step 1: Add Subdomain DNS Records on BigRock
+## Step 1: Add Subdomain DNS Records for `noevecreations.com`
 
-Log into your **BigRock Control Panel** for `noeve.store` (or `lifeterrain.com` if you prefer using that domain), go to **Manage DNS -> A Records**, and add the following 3 **A Records** pointing to your Hostinger VPS IP (`187.127.136.221`):
+Log into your DNS Control Panel for `noevecreations.com`, go to **Manage DNS -> A Records**, and add the following 3 **A Records** pointing to your Hostinger VPS IP (`187.127.136.221`):
 
 - **Host:** `sarangi` → **Points to:** `187.127.136.221` (Frontend Web Store)
 - **Host:** `sarangi-admin` → **Points to:** `187.127.136.221` (Admin Dashboard)
 - **Host:** `sarangi-api` → **Points to:** `187.127.136.221` (Backend API)
 
-Verify DNS propagation from your VPS terminal before running Certbot in Step 6:
+Verify DNS propagation from your VPS terminal before running Certbot in Step 7:
+
 ```bash
-dig +short sarangi.noeve.store sarangi-api.noeve.store sarangi-admin.noeve.store
+dig +short sarangi.noevecreations.com sarangi-api.noevecreations.com sarangi-admin.noevecreations.com
 ```
-*(Wait until all three return `187.127.136.221`).*
+
+_(Wait until all three return `187.127.136.221`)._
 
 ---
 
-## Step 2: Create the `sarangi` PostgreSQL Database
+## Step 2: Create the `sarangi` PostgreSQL Database & User
 
 SSH into your Hostinger VPS:
+
 ```bash
 ssh root@187.127.136.221
 ```
 
-Since PostgreSQL is already installed and running with user `noeveadmin` (or you can create a dedicated `sarangiadmin` user), create a separate database `sarangi` so Sarangi Jewels data is completely isolated from Noeve Store:
+Create a separate database `sarangi` and user `sarangiadmin` so Sarangi Jewels data is completely isolated from Noeve Store:
 
 ```bash
 sudo -u postgres psql
 ```
 
 Run the following SQL commands inside the `psql` prompt:
+
 ```sql
 CREATE DATABASE sarangi;
-GRANT ALL PRIVILEGES ON DATABASE sarangi TO noeveadmin;
-ALTER DATABASE sarangi OWNER TO noeveadmin;
+CREATE USER sarangiadmin WITH ENCRYPTED PASSWORD 'BigB@2026';
+GRANT ALL PRIVILEGES ON DATABASE sarangi TO sarangiadmin;
+ALTER DATABASE sarangi OWNER TO sarangiadmin;
 \q
 ```
-*(Alternatively, if you want a separate DB user: `CREATE USER sarangiadmin WITH ENCRYPTED PASSWORD 'YOUR_DB_PASSWORD'; GRANT ALL PRIVILEGES ON DATABASE sarangi TO sarangiadmin; ALTER DATABASE sarangi OWNER TO sarangiadmin;`)*
 
 ---
 
@@ -84,10 +88,10 @@ Paste the following configuration (note the ports `3007` and `50052`, and databa
 ```env
 # ── Database
 # NOTE: URL-encode '@' as '%40' inside DATABASE_URL!
-POSTGRES_USER=noeveadmin
-POSTGRES_PASSWORD=Sree@21082007
+POSTGRES_USER=sarangiadmin
+POSTGRES_PASSWORD=BigB@2026
 POSTGRES_DB=sarangi
-DATABASE_URL=postgresql://noeveadmin:Sree%4021082007@localhost:5432/sarangi?schema=public
+DATABASE_URL=postgresql://sarangiadmin:BigB%402026@localhost:5432/sarangi?schema=public
 
 # ── Redis (shared local instance)
 REDIS_URL=redis://localhost:6379
@@ -98,8 +102,8 @@ REDIS_PORT=6379
 NODE_ENV=production
 API_PORT=3007
 GRPC_PORT=50052
-API_URL=https://sarangi-api.noeve.store
-CORS_ORIGINS=https://sarangi.noeve.store,https://sarangi-admin.noeve.store
+API_URL=https://sarangi-api.noevecreations.com
+CORS_ORIGINS=https://sarangi.noevecreations.com,https://sarangi-admin.noevecreations.com
 JWT_SECRET=CHANGE_ME_SARANGI_LONG_RANDOM_JWT_SECRET_MIN_64_CHARS
 JWT_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=7d
@@ -118,7 +122,7 @@ RAZORPAY_KEY_SECRET=lCaqF8El84vo9ONElpX0dvxt
 RAZORPAY_WEBHOOK_SECRET=b7K9mP2vL7qR4xN5bJ1c_G3tY6zM0eR1
 
 # ── Next.js Public API URL (baked into web-store and web-admin during build)
-NEXT_PUBLIC_API_URL=https://sarangi-api.noeve.store/v1
+NEXT_PUBLIC_API_URL=https://sarangi-api.noevecreations.com/v1
 ```
 
 ### Clean & Symlink `.env` Across Workspaces
@@ -152,7 +156,8 @@ pnpm run db:seed
 pnpm build
 ```
 
-*(Note: `pnpm run db:seed` creates the default Sarangi Jewels accounts:)*
+_(Note: `pnpm run db:seed` creates the default Sarangi Jewels accounts:)_
+
 - **Admin:** `admin@sarangi.local` / `Admin123!`
 - **Customer:** `customer@sarangi.local` / `Customer123!`
 
@@ -179,6 +184,7 @@ pm2 save
 ```
 
 Check that all processes (`noeve-*` and `sarangi-*`) are `online`:
+
 ```bash
 pm2 status
 ```
@@ -199,7 +205,7 @@ Paste the following server blocks:
 # Sarangi Jewels — Backend API (Port 3007)
 server {
     listen 80;
-    server_name sarangi-api.noeve.store;
+    server_name sarangi-api.noevecreations.com;
     client_max_body_size 50M;
 
     location / {
@@ -219,7 +225,7 @@ server {
 # Sarangi Jewels — Frontend Web Store (Port 3008)
 server {
     listen 80;
-    server_name sarangi.noeve.store;
+    server_name sarangi.noevecreations.com;
 
     location / {
         proxy_pass http://127.0.0.1:3008;
@@ -238,7 +244,7 @@ server {
 # Sarangi Jewels — Admin Dashboard (Port 3009)
 server {
     listen 80;
-    server_name sarangi-admin.noeve.store;
+    server_name sarangi-admin.noevecreations.com;
 
     location / {
         proxy_pass http://127.0.0.1:3009;
@@ -256,6 +262,7 @@ server {
 ```
 
 Enable the site and reload Nginx:
+
 ```bash
 sudo ln -sf /etc/nginx/sites-available/sarangi /etc/nginx/sites-enabled/sarangi
 sudo nginx -t
@@ -264,10 +271,10 @@ sudo systemctl reload nginx
 
 ### 2. Provision SSL Certificates with Certbot
 
-Once `dig +short sarangi.noeve.store sarangi-api.noeve.store sarangi-admin.noeve.store` returns `187.127.136.221`, run Certbot:
+Once `dig +short sarangi.noevecreations.com sarangi-api.noevecreations.com sarangi-admin.noevecreations.com` returns `187.127.136.221`, run Certbot:
 
 ```bash
-sudo certbot --nginx -d sarangi.noeve.store -d sarangi-admin.noeve.store -d sarangi-api.noeve.store
+sudo certbot --nginx -d sarangi.noevecreations.com -d sarangi-admin.noevecreations.com -d sarangi-api.noevecreations.com
 ```
 
 ---

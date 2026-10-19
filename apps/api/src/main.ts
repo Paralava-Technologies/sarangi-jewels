@@ -1,6 +1,7 @@
+import 'dotenv/config';
+import * as path from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-// Trigger restart
 import type { NextFunction, Request, Response } from 'express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -43,11 +44,6 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new ZodFilter());
-
-  // Serve static files from /public
-  const expressAppStatic = app.getHttpAdapter().getInstance();
-  const path = require('path');
-  expressAppStatic.use('/public', require('express').static(path.join(__dirname, '..', 'public')));
 
   const config = new DocumentBuilder()
     .setTitle('Sarangi Jewels API')
