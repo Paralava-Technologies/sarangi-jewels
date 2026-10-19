@@ -58,12 +58,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
+  const grpcPort = process.env.GRPC_PORT ?? 50051;
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: 'customlogic',
       protoPath: path.join(__dirname, 'proto/custom-logic.proto'),
-      url: 'localhost:50051',
+      url: `localhost:${grpcPort}`,
     },
   });
 

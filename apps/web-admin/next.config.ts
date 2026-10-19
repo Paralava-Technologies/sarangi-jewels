@@ -3,8 +3,8 @@ import type { NextConfig } from 'next';
 const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig: NextConfig = {
-  // Required for Docker multi-stage standalone build
-  output: isProd ? 'standalone' : undefined,
+  // Only enable standalone output when explicitly building for Docker
+  output: process.env.NEXT_STANDALONE === 'true' ? 'standalone' : undefined,
 
   transpilePackages: ['@sarangi/api-client', '@sarangi/shared-types', '@sarangi/ui-tokens'],
   async headers() {

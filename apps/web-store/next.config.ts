@@ -2,9 +2,11 @@ import type { NextConfig } from 'next';
 
 const isProd = process.env.NODE_ENV === 'production';
 
+const apiPort = process.env.API_PORT || '3001';
+
 const nextConfig: NextConfig = {
-  // Required for Docker multi-stage standalone build
-  output: isProd ? 'standalone' : undefined,
+  // Only enable standalone output when explicitly building for Docker
+  output: process.env.NEXT_STANDALONE === 'true' ? 'standalone' : undefined,
 
   transpilePackages: ['@sarangi/api-client', '@sarangi/shared-types', '@sarangi/ui-tokens'],
   images: {
@@ -12,10 +14,13 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'placehold.co' },
       { protocol: 'http',  hostname: 'localhost',   port: '9000' },
       { protocol: 'http',  hostname: 'localhost',   port: '3001' },
+      { protocol: 'http',  hostname: 'localhost',   port: '3007' },
       { protocol: 'http',  hostname: 'localhost',   port: '4000' },
       { protocol: 'http',  hostname: 'localhost',   port: '3000' },
       // Production MinIO / S3 CDN
       { protocol: 'https', hostname: 'media.sarangijewels.com' },
+      { protocol: 'https', hostname: 's3.noeve.store' },
+      { protocol: 'https', hostname: 'sarangi-api.noeve.store' },
     ],
   },
   async headers() {
@@ -36,7 +41,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/public/:path*',
-        destination: 'http://localhost:3001/public/:path*',
+        destination: `http://localhost:${apiPort}/public/:path*`,
       },
     ];
   },
