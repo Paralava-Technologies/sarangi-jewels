@@ -41,6 +41,7 @@ export function SJProductCard({ product, isRent, glyph = '💎', badgeOverride, 
               src={image.url}
               alt={image.alt ?? displayTitle}
               fill
+              unoptimized={image.url.startsWith('http')}
               className="object-cover"
               sizes="(max-width: 768px) 50vw, 25vw"
             />
